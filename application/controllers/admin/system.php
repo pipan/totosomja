@@ -307,18 +307,14 @@ class system extends CI_Controller{
 					ENGINE innoDB");
 			
 			//Table newsletter_subscriber
-			$this->dbforge->add_field('id');
-			$fields = array(
-					'email' => array(
-							'type' => 'varchar',
-							'constraint' => '100',
-					),
-					'subscribe_date' => array(
-							'type' => 'datetime',
-					),
-			);
-			$this->dbforge->add_field($fields);
-			$this->dbforge->create_table('newsletter_subscriber', true);
+			$this->db->query("CREATE TABLE IF NOT EXISTS newsletter_subscriber(
+					id int(9) NOT NULL AUTO_INCREMENT,
+					email varchar(100) NOT NULL,
+					subscribe_date datetime NOT NULL,
+					PRIMARY KEY (id),
+					INDEX email_id USING BTREE (email))
+					COLLATE utf8_general_ci,
+					ENGINE innoDB");
 			
 			//Table tag
 			$this->db->query("CREATE TABLE IF NOT EXISTS tag(

@@ -7,6 +7,7 @@ class Shop extends CI_Controller{
 		parent::__construct();
 		$this->load->helper('file');
 		$this->load->helper('builder');
+		is_login($this);
 		
 		$this->data['login'] = $this->session->userdata('login');
 	}

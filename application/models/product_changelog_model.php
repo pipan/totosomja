@@ -1,5 +1,5 @@
 <?php
-class Product_model extends CI_Model{
+class Product_changelog_model extends CI_Model{
 	
 	public $relation;
 	public static $select = array('product_changelog.product_id', 'product_changelog.admin_id', 'product_changelog.change_id', 'product_changelog.change_date');
@@ -40,67 +40,9 @@ class Product_model extends CI_Model{
 		return $select;
 	}
 	
-	public function get_sellable($where = array(), $list = true){
-		$where = array_merge(array('canceled =' => '0', 'sellable =' => '1'), $where);
-		$join = array('category', 'type', 'color', 'size', 'material', 'supplier');
-		$this->db->select($this->join($join, Product_model::$select_id));
-		$this->db->where($where);
-		$query = $this->db->get('product');
-		if ($list){
-			return $query->result_array();
-		}
-		else{
-			return $query->row_array();
-		}
-	}
-	
-	/**
-	 * @param integet $limit_from - od ktoreo zaznamu treba vytvarat dopyt
-	 * @param integer $limit - aky je maximalny pocet (limit) v zazname
-	 * @return array - pole zaznamov, maximalny pocet je $limit
-	 */
-	public function get_sellable_list($where, $limit_from, $limit){
-		$where = array_merge($where, array('canceled =' => '0', 'sellable =' => '1'));
-		$join = array('category', 'type', 'color', 'size', 'material', 'supplier');
-		$this->db->select($this->join($join, Product_model::$select_id));
-		$this->db->where($where);
-		$query = $this->db->get('product', $limit, $limit_from);
-		return $query->result_array();
-	}
-	
-	/**
-	 * ziskanie zoznamu jedneho produktu na zaklade slugu - specialneho nazvu
-	 * @return row jeden zaznam - produkt
-	 */
-	public function get_by_slug($slug){
-		$where = array('canceled =' => '0', 'sellable =' => '1', 'product_slug' => $slug);
-		$join = array('category', 'type', 'color', 'size', 'material', 'supplier');
-		$this->db->select($this->join($join, Product_model::$select_id));
-		$query = $this->db->get_where('product', $where);
-		return $query->row_array();
-	}
-	
-	public function count_all_sellable($where = array()){
-		$where = array_merge($where, array('canceled =' => '0', 'sellable =' => '1'));
-		$this->db->where($where);
-		return $this->db->count_all_results('product');
-	}
-	
 	public function save($data){
 		$this->db->insert('product_changelog', $data);
 		$ret = $this->db->insert_id();
 		return $ret;
-	}
-	
-	public function update($id, $set){
-		$this->db->where(array('id =' => $id));
-		$this->db->set($set);
-		$this->db->update('product');
-	}
-	
-	public function set_canceled($id){
-		$this->db->where(array('id =' => $id));
-		$this->db->set('canceled', '1');
-		$this->db->update('product');
 	}
 }

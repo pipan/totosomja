@@ -96,6 +96,11 @@ $route['shirt'] = "customer/shirt/index";
 //registration
 $route['(:any)/login/(:any)'] = "customer/login/$2/$1";
 $route['login/(:any)'] = "customer/login/$2";
+//newsletter
+$route['(:any)/newsletter/(:any)'] = "customer/newsletter/$2/$1";
+$route['newsletter/(:any)'] = "customer/newsletter/$1";
+$route['(:any)/newsletter'] = "customer/newsletter/index/$1";
+$route['newsletter'] = "customer/newsletter/index";
 //login
 $route['(:any)/login'] = "customer/login/index/$1";
 $route['login'] = "customer/login";

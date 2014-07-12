@@ -7,6 +7,8 @@ class Product extends CI_Controller{
 		$this->load->helper('file');
 		$this->load->helper('gender');
 		$this->load->library('form_validation');
+		$this->load->model('admin_model');
+		$this->load->model('change_label_model');
 		$this->load->model('type_model');
 		$this->load->model('category_model');
 		$this->load->model('color_model');
@@ -14,6 +16,7 @@ class Product extends CI_Controller{
 		$this->load->model('material_model');
 		$this->load->model('supplier_model');
 		$this->load->model("product_model");
+		$this->load->model("product_changelog_model");
 	}
 	
 	public function image_upload(){
@@ -105,6 +108,22 @@ class Product extends CI_Controller{
 							'sellable' => $sellable,
 					);
 					$this->product_model->update($id, $table_data);
+					$table_data = array(
+							'product_id' => $id,
+							'admin_id' => $this->session->userdata('admin_id'),
+							'change_id' => 8,
+							'change_date' => date("Y-n-d H:i:s"),
+					);
+					$this->product_changelog_model->save($table_data);
+					if ($sellable == 0){
+						$table_data = array(
+								'product_id' => $id,
+								'admin_id' => $this->session->userdata('admin_id'),
+								'change_id' => 1,
+								'change_date' => date("Y-n-d H:i:s"),
+						);
+						$this->product_changelog_model->save($table_data);
+					}
 					redirect("admin/product");
 				}
 			}
@@ -171,7 +190,7 @@ class Product extends CI_Controller{
 			else{
 				$table_data = array(
 						'product_name' => $this->input->post('name'),
-						'product_slug' => url_title($this->input->post('name'), '-', TRUE),
+						'product_slug' => url_title(convert_accented_characters($this->input->post('name')), '-', TRUE),
 						'category_id' => $this->input->post('category_id'),
 						'type_id' => $this->input->post('type_id'),
 						'color_id' => $this->input->post('color_id'),
@@ -188,6 +207,13 @@ class Product extends CI_Controller{
 				);
 				$id = $this->product_model->save($table_data);
 				write_file("./content/product/description/".$id.".txt", $this->input->post('description'));
+				$table_data = array(
+						'product_id' => $id,
+						'admin_id' => $this->session->userdata('admin_id'),
+						'change_id' => 7,
+						'change_date' => date("Y-n-d H:i:s"),
+				);
+				$this->product_changelog_model->save($table_data);
 				redirect("admin/product");
 			}
 		}
@@ -253,7 +279,7 @@ class Product extends CI_Controller{
 					}
 					$table_data = array(
 							'product_name' => $this->input->post('name'),
-							'product_slug' => url_title($this->input->post('name'), '-', TRUE),
+							'product_slug' => url_title(convert_accented_characters($this->input->post('name')), '-', TRUE),
 							'category_id' => $this->input->post('category_id'),
 							'type_id' => $this->input->post('type_id'),
 							'color_id' => $this->input->post('color_id'),
@@ -270,6 +296,13 @@ class Product extends CI_Controller{
 					);
 					$id = $this->product_model->save($table_data);
 					write_file("./content/product/description/".$id.".txt", $this->input->post('description'));
+					$table_data = array(
+							'product_id' => $id,
+							'admin_id' => $this->session->userdata('admin_id'),
+							'change_id' => 6,
+							'change_date' => date("Y-n-d H:i:s"),
+					);
+					$this->product_changelog_model->save($table_data);
 					redirect("admin/product");
 				}
 			}

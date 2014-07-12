@@ -177,7 +177,7 @@ class Blog extends CI_Controller{
 					$table_data = array(
 							'admin_id' => $this->session->userdata('admin_id'),
 							'title' => $title,
-							'slug' => url_title($title, '-', TRUE),
+							'slug' => url_title(convert_accented_characters($title), '-', TRUE),
 							'series_id' => $series,
 							'post_date' => date("Y-n-d H:i:s"),
 							'thumbnail' => $thumbnail,
@@ -239,7 +239,7 @@ class Blog extends CI_Controller{
 						foreach ($this->input->post('tag') as $tag){
 							$table_data = array(
 									'tag_name' => $tag['text'],
-									'tag_slug' => url_title($tag['text'], '-', TRUE),
+									'tag_slug' => url_title(convert_accented_characters($tag['text']), '-', TRUE),
 							);
 							$tag_id = $this->tag_model->save($table_data);
 							$table_data = array(

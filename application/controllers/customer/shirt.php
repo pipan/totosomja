@@ -25,6 +25,7 @@ class Shirt extends CI_Controller{
 		$this->load->model("customer_model");
 		$this->load->model("wishlist_model");
 		$this->load->model("comment_model");
+		is_login($this);
 		
 		$this->data['login'] = $this->session->userdata('login');
 	}

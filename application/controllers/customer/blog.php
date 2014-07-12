@@ -21,9 +21,11 @@ class Blog extends CI_Controller{
 		$this->load->model("blog_series_model");
 		$this->load->model("tag_model");
 		$this->load->model("blog_in_tag_model");
+		is_login($this);
 		
 		$this->data['login'] = $this->session->userdata('login');
 		$this->data['lang'] = $this->lang;
+		$this->data['style'] = array('style_blog');
 	}
 	
 	public function valid_blog(){
