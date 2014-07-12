@@ -1,0 +1,30 @@
+/* CSS Document */
+#reg_form label{
+  color:#0B243B;
+  display:inline-block;
+  width:200px;
+}
+#reg_form label.exception{
+  color:#0B243B;
+  width:auto;
+}
+#reg_form input[type=text], #reg_form input[type=password]{
+  width:180;
+  margin:2px;
+}
+
+#body_full{
+  position:relative;
+  overflow:hidden;
+  padding:30px 50px;
+}
+#body_login{
+  float:left;
+  width:220px;
+  padding:10px;
+}
+#body_registration{
+  float:right;
+  width:440px;
+  padding:10px;
+}

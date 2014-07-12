@@ -1,0 +1,73 @@
+/* CSS Document */
+
+textarea{
+  width:250px;
+  height:100px;
+}
+
+#body_left{
+  padding:20px 40px;
+  width:460px;
+}
+#body_left a{
+  color:#000000;
+}
+#body_left a:hover{
+  color:#04B4AE;
+}
+#body_left label{
+  color:#0B243B;
+  display:inline-block;
+  width:190px;
+}
+#body_left label.exception{
+  color:#0B243B;
+  width:auto;
+}
+
+#content_edit, #image_edit, #link_edit, #video_edit, #tag_edit{
+  background-color:rgb(4, 180, 174);
+  color:#ffffff;
+  padding:10px;
+  margin-bottom:10px;
+}
+
+.light_blue_bg label{
+	font-style: italic;
+	color: #0B243B;
+	size: 11px;
+}
+.light_blue_bg select{
+	padding: 0px;
+	margin: 0px;
+	color: #000000;
+	background-color: #ffffff;
+	border-color: #0B243B;
+	border-width: 1px;
+}
+.light_blue_bg input[type=text], .light_blue_bg textarea{
+	padding: 0px;
+	margin: 0px;
+	color: #000000;
+	background-color: #ffffff;
+	width: 218px;
+	border-color: #0B243B;
+	border-width: 1px;
+}
+.light_blue_bg input[type=text].half_size{
+	padding: 0px;
+	margin: 0px;
+	color: #000000;
+	background-color: #ffffff;
+	width: 108px;
+	border-color: #0B243B;
+	border-width: 1px;
+}
+
+
+.blog_edit_command{
+	float: right;
+}
+.blog_edit_button{
+	width: 30px;
+}

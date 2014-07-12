@@ -1,0 +1,14 @@
+/* CSS Document */
+#newsletter_form label{
+  color:#0B243B;
+  display:inline-block;
+  padding:5px 0px;
+  width:180px;
+}
+#newsletter_form label.exception{
+  color:#0B243B;
+  width:auto;
+}
+#newsletter_form input[type=text], #reg_form input[type=password]{
+  width:180;
+}
