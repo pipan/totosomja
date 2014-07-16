@@ -11,6 +11,11 @@ class Type extends CI_Controller{
 	
 	public function index(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - type";
 			$data['type'] = $this->type_model->get();
 			$data['functions'] = array(
@@ -39,6 +44,11 @@ class Type extends CI_Controller{
 	
 	public function new_type(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - new type";
 			$data['functions'] = array(
 					array(
@@ -86,6 +96,11 @@ class Type extends CI_Controller{
 	
 	public function edit($id = 0){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - new type";
 			$data['functions'] = array(
 				array(

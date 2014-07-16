@@ -5,6 +5,7 @@ class Product extends CI_Controller{
 		parent::__construct();
 		$this->load->helper('form');
 		$this->load->helper('file');
+		$this->load->helper('text');
 		$this->load->helper('gender');
 		$this->load->library('form_validation');
 		$this->load->model('admin_model');
@@ -19,11 +20,23 @@ class Product extends CI_Controller{
 		$this->load->model("product_changelog_model");
 	}
 	
-	public function image_upload(){
-		if ($this->upload->do_upload('image')){
+	public function valid_id($val, $id){
+		if ($id == 0 || $this->product_model->is_sellable(array('id' => $id))){
 			return true;
 		}
-		$this->form_validation->set_message('image_upload', 'Cannot upload image, make sure image size is less then 512kB or contact system admin');
+		$this->form_validation->set_message('valid_id', 'Wrong product id');
+		return false;
+	}
+	
+	public function image_upload($val, $id){
+		if ($this->upload->do_upload('image')){
+			return $this->upload->data()['file_name'];
+		}
+		else if ($id > 0){
+			$product = $this->product_model->get($id);
+			return $product['product_image'];
+		}
+		$this->form_validation->set_message('image_upload', 'Cannot upload image '.$id.', make sure image size is less then 512kB or contact system admin');
 		return false;
 	}
 	
@@ -48,6 +61,10 @@ class Product extends CI_Controller{
 							'link' => base_url().'index.php/admin/product/new_product',
 							'text' => 'add product',
 					),
+					array(
+							'link' => base_url().'index.php/admin/product/help',
+							'text' => 'help',
+					),
 			);
 			
 			if ($this->product_model->is_sellable()){
@@ -65,6 +82,35 @@ class Product extends CI_Controller{
 				$this->load->view("templates/right_body_manager", $data);
 				$this->load->view("templates/footer", $data);
 			}
+		}
+		else{
+			redirect("admin/manager/login");
+		}
+	}
+	
+	public function help(){
+		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+				
+			$data['title'] = "totosomja - products help";
+			$data['functions'] = array(
+					array(
+							'link' => base_url().'index.php/admin/product/new_product',
+							'text' => 'add product',
+					),
+					array(
+							'link' => base_url().'index.php/admin/product/help',
+							'text' => 'help',
+					),
+			);
+			
+			$this->load->view("templates/header_manager", $data);
+			$this->load->view("manager/product/help", $data);
+			$this->load->view("templates/right_body_manager", $data);
+			$this->load->view("templates/footer", $data);
 		}
 		else{
 			redirect("admin/manager/login");
@@ -139,14 +185,34 @@ class Product extends CI_Controller{
 		}
 	}
 	
-	public function new_product(){
+	public function new_product($id = false){
 		if (is_admin_login($this)){
 			$language = "en";
 			$this->lang->load("general", $language);
 			$data['lang'] = $this->lang;
 			$data['language'] = $language;
+			if ($id != false){
+				$data['product'] = $this->product_model->get($id);
+				$data['product']['description'] = read_file("./content/product/description/".$id.".txt");
+			}
+			else{
+				$data['product'] = array(
+						'id' => 0,
+						'product_name' => '',
+						'type_id' => 0,
+						'category_id' => 0,
+						'size_id' => 0,
+						'color_id' => 0,
+						'material_id' => 0,
+						'supplier_id' => 0,
+						'price' => '',
+						'store' => '',
+						'gender' => 0,
+						'description' => '',
+				);
+			}
 			
-			$this->form_validation->set_rules('name', 'name', 'required|callback_is_unique_sellable[0]');
+			$this->form_validation->set_rules('name', 'name', 'required|callback_is_unique_sellable[0]|valid_id['.$id.']');
 			$this->form_validation->set_rules('category_id', 'category', 'required');
 			$this->form_validation->set_rules('type_id', 'type', 'required');
 			$this->form_validation->set_rules('price', 'price', 'required');
@@ -157,7 +223,7 @@ class Product extends CI_Controller{
 			$this->form_validation->set_rules('store', 'store', 'required');
 			$this->form_validation->set_rules('gender', 'gender', 'required');
 			$this->form_validation->set_rules('description', 'description', 'required');
-			$this->form_validation->set_rules('image', 'image', 'callback_image_upload');
+			$this->form_validation->set_rules('image_name', 'image', 'callback_image_upload['.$id.']');
 			
 			$config['upload_path'] = './content/product/image/';
 			$config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -200,7 +266,7 @@ class Product extends CI_Controller{
 						'price' => $this->input->post('price'),
 						'store' => $this->input->post('store'),
 						'gender' => $this->input->post('gender'),
-						'product_image' => $this->upload->data()['file_name'],
+						'product_image' => $this->input->post('image_name'),
 						'sellable' => 1,
 						'canceled' => 0,
 						'created' => date("Y-n-d H:i:s"),

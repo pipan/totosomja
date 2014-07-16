@@ -10,6 +10,11 @@ class Color extends CI_Controller{
 	
 	public function index(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - color";
 			$data['color'] = $this->color_model->get();
 			$data['functions'] = array(
@@ -38,6 +43,11 @@ class Color extends CI_Controller{
 	
 	public function new_color(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - new color";
 			$data['functions'] = array(
 				array(
@@ -47,6 +57,7 @@ class Color extends CI_Controller{
 			);
 			
 			$this->form_validation->set_rules('name', 'color name', 'required');
+			$this->form_validation->set_rules('name_en', 'color name en', 'required');
 			
 			if ($this->form_validation->run() === FALSE){
 				$this->load->view("templates/header_manager", $data);
@@ -56,7 +67,8 @@ class Color extends CI_Controller{
 			}
 			else{
 				$table_data = array(
-					'color_name' => $this->input->post('name'),
+						'color_name' => $this->input->post('name'),
+						'color_name_en' => $this->input->post('name_en'),
 				);
 				$this->color_model->save($table_data);
 				redirect("admin/color");
@@ -69,6 +81,11 @@ class Color extends CI_Controller{
 	
 	public function edit($id = 0){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - new color";
 			$data['functions'] = array(
 				array(
@@ -81,6 +98,7 @@ class Color extends CI_Controller{
 				$data['color'] = $this->color_model->get($id);
 				
 				$this->form_validation->set_rules('name', 'color name', 'required');
+				$this->form_validation->set_rules('name_en', 'color name en', 'required');
 				
 				if ($this->form_validation->run() === FALSE){
 					$this->load->view("templates/header_manager", $data);
@@ -90,7 +108,8 @@ class Color extends CI_Controller{
 				}
 				else{
 					$table_data = array(
-						'color_name' => $this->input->post('name'),
+							'color_name' => $this->input->post('name'),
+							'color_name_en' => $this->input->post('name_en'),
 					);
 					$this->color_model->save($table_data, $id);
 					redirect("admin/color");

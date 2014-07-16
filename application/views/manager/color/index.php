@@ -6,14 +6,16 @@
 		<table>
 			<tr>
 				<td>name</td>
-				<td>change</td>
+				<td>name en</td>
+				<td></td>
 			</tr>
 			<?php
 			foreach($color as $c){
 				?>
 				<tr>
 					<td><?php echo $c["color_name"];?></td>
-					<td><a href="<?php echo base_url()."index.php/admin/color/edit/".$c["id"];?>">change</a></td>
+					<td><?php echo $c["color_name_en"];?></td>
+					<td><a href="<?php echo base_url()."index.php/admin/color/edit/".$c["id"];?>"><img src="<?php echo assets_url()."images/update_logo.png";?>" />change</a></td>
 				</tr>
 			<?php
 			}

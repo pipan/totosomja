@@ -9,7 +9,7 @@
 				<td>title</td>
 				<td>series</td>
 				<td>post date</td>
-				<td>change</td>
+				<td></td>
 			</tr>
 			<?php
 			foreach($blog as $b){
@@ -19,7 +19,7 @@
 					<td><?php echo $b['title'];?></td>
 					<td><?php echo $b['series_name']?></td>
 					<td><?php echo $b['post_date']?></td>
-					<td><a href = "<?php echo base_url()."index.php/admin/blog/edit/".$b["id"];?>">change</a></td>
+					<td><a href = "<?php echo base_url()."index.php/admin/blog/edit/".$b["id"];?>"><img src="<?php echo assets_url()."images/update_logo.png";?>" />change</a></td>
 				</tr>
 				<?php
 			}

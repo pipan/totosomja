@@ -61,14 +61,16 @@ class Shirt extends CI_Controller{
 	}
 	
 	public function wish($slug, $language){
-		$product = $this->product_model->get_by_slug($slug);
-		if (!$this->wishlist_model->is_customer_wishing($this->session->userdata('login')['id'], $product['id'])){
-			$table_data = array(
-					'product_id' => $product['id'],
-					'customer_id' => $this->session->userdata('login')['id'],
-					'wish_date' => date("Y-n-d H:i:s"),
-			);
-			$this->wishlist_model->save($table_data);
+		if (is_login($this)){
+			$product = $this->product_model->get_by_slug($slug);
+			if (!$this->wishlist_model->is_customer_wishing($this->session->userdata('login')['id'], $product['id'])){
+				$table_data = array(
+						'product_id' => $product['id'],
+						'customer_id' => $this->session->userdata('login')['id'],
+						'wish_date' => date("Y-n-d H:i:s"),
+				);
+				$this->wishlist_model->save($table_data);
+			}
 		}
 		redirect($language."/shirt/".$slug);
 	}

@@ -5,8 +5,11 @@ class Blog extends CI_Controller{
 		parent::__construct();
 		$this->load->helper('form');
 		$this->load->helper('file');
+		$this->load->helper('text');
 		$this->load->library('form_validation');
 		$this->load->library('blog_parser');
+		$this->load->model("admin_model");
+		$this->load->model("blog_series_model");
 		$this->load->model("blog_model");
 		$this->load->model("blog_series_model");
 		$this->load->model("tag_model");
@@ -143,7 +146,6 @@ class Blog extends CI_Controller{
 				$this->form_validation->set_rules('body', 'body', 'required');
 				$this->form_validation->set_rules('bodyTextarea', 'textarea body', 'required');
 				$this->form_validation->set_rules('thumbnail', 'image thumbnail', 'required');
-				$this->form_validation->set_rules('series', 'blog series', 'required');
 				
 				if ($this->form_validation->run() === FALSE){
 					$log = "ID: ".$edit_id.PHP_EOL;
@@ -264,6 +266,11 @@ class Blog extends CI_Controller{
 	
 	public function error_save(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - blog error";
 			$data['functions'] = array(
 					array(

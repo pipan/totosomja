@@ -7,7 +7,7 @@
 			<tr>
 				<td>name</td>
 				<td>delivery</td>
-				<td>change</td>
+				<td></td>
 			</tr>
 			<?php
 			foreach ($supplier as $s){
@@ -20,7 +20,7 @@
 					echo $delivery[0]." ".$delivery[1];
 					?>
 					</td>
-					<td><a href="<?php echo base_url()."index.php/admin/supplier/edit/".$s["id"];?>">change</a></td>
+					<td><a href="<?php echo base_url()."index.php/admin/supplier/edit/".$s["id"];?>"><img src="<?php echo assets_url()."images/update_logo.png";?>" />change</a></td>
 				</tr>
 				<?php
 			}

@@ -80,6 +80,14 @@ class Product_model extends CI_Model{
 		return $select;
 	}
 	
+	public function get($id){
+		$where = array('canceled =' => '0', 'sellable =' => '1', 'id' => $id);
+		$this->db->select(Product_model::$select_id);
+		$this->db->where($where);
+		$query = $this->db->get('product');
+		return $query->row_array();
+	}
+	
 	public function get_sellable($where = array(), $list = true){
 		$where = array_merge(array('canceled =' => '0', 'sellable =' => '1'), $where);
 		$join = array('category', 'type', 'color', 'size', 'material', 'supplier');

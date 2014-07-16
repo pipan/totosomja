@@ -3,8 +3,8 @@
 /*
 *Variables
 */
-var BASE_URL = 'http://localhost/CI_totosomja/';
-var ROOT_DIR = 'http://localhost/CI_totosomja/';
+var BASE_URL = 'http://localhost/git/totosomja/';
+var ROOT_DIR = 'http://localhost/git/totosomja/';
 var delay_array=new Array();
 var specialSetPage;
 

@@ -4,7 +4,9 @@ textarea{
   width:250px;
   height:100px;
 }
-
+td.center{
+	text-align: center;
+}
 #body_left{
   padding:20px 40px;
   width:460px;
@@ -25,7 +27,26 @@ textarea{
   width:auto;
 }
 
-#content_edit, #image_edit, #link_edit, #video_edit, #tag_edit{
+#body_right_simulator{
+	width: 240px;
+	position: relative;
+	left: 110px;
+}
+#motd_preview{
+	background-color:rgb(4, 180, 174);
+	color:#ffffff;
+	padding:10px;
+	margin-bottom:10px;
+}
+#motd_preview a{
+	text-decoration: underline;
+	color:#ffffff
+}
+#motd_preview a:hover{
+	color:#0B243B;
+}
+
+#content_edit, #image_edit, #link_edit, #video_edit, #tag_edit, #poll_edit{
   background-color:rgb(4, 180, 174);
   color:#ffffff;
   padding:10px;
@@ -70,4 +91,20 @@ textarea{
 }
 .blog_edit_button{
 	width: 30px;
+}
+
+.help_body ol{
+	margin: 0px auto;
+}
+.help_body ol li{
+	padding: 5px 0px;
+}
+.help_body img{
+	max-width: 100%;
+}
+.help_blok{
+	margin: 10px 0px 5px 0px;
+}
+.help_note{
+	padding: 10px;
 }

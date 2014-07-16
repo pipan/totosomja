@@ -8,8 +8,7 @@
 				<td>name</td>
 				<td>image</td>
 				<td>description</td>
-				<td>change</td>
-				<td>create simular</td>
+				<td></td>
 			</tr>
 			<?php
 			foreach($category as $c){
@@ -18,8 +17,7 @@
 					<td><?php echo $c["category_name"];?></td>
 					<td><img style="width:100px;" src="<?php echo content_url()."category/image/".$c["category_image"];?>" /></td>
 					<td><?php echo read_file("./content/category/description/".$c['id'].".txt");?></td>
-					<td><a href = "<?php echo base_url()."index.php/admin/category/edit/".$c["id"];?>">change</a></td>
-					<td><a href = "<?php echo base_url()."index.php/admin/category/new_cateogyr/".$c["id"];?>">simular</a></td>
+					<td><a href = "<?php echo base_url()."index.php/admin/category/edit/".$c["id"];?>"><img src="<?php echo assets_url()."images/update_logo.png";?>" />change</a></td>
 				</tr>
 				<?php
 			}

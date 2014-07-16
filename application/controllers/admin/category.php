@@ -11,6 +11,11 @@ class Category extends CI_Controller{
 	
 	public function index(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - category";
 			$data['category'] = $this->category_model->get();
 			$data['functions'] = array(
@@ -39,6 +44,11 @@ class Category extends CI_Controller{
 	
 	public function new_category(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - new category";
 			$data['functions'] = array(
 				array(
@@ -86,6 +96,11 @@ class Category extends CI_Controller{
 	
 	public function edit($id = 0){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - new category";
 			$data['functions'] = array(
 				array(

@@ -10,6 +10,11 @@ class Material extends CI_Controller{
 	
 	public function index(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - material";
 			$data['material'] = $this->material_model->get();
 			$data['functions'] = array(
@@ -38,6 +43,11 @@ class Material extends CI_Controller{
 	
 	public function new_material(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - new material";
 			$data['functions'] = array(
 					array(
@@ -69,6 +79,11 @@ class Material extends CI_Controller{
 	
 	public function edit($id = 0){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - new material";
 			$data['functions'] = array(
 					array(

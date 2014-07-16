@@ -165,20 +165,12 @@ a:hover{
   overflow:hidden;
   padding:30px 50px;
 }
-#advertisment{
-  background-color:#0B243B;
-  text-align:center;
-}
 #filter{
   background-color:#0B243B;
   margin:20px 0px 0px 0px;
   width:220px;
   height:260px;
   padding:10px;
-}
-#motd{
-  background-color:#04B4AE;
-  margin: 10px 0px 0px 0px;
 }
 #footer{
   width:800px;
@@ -215,30 +207,30 @@ a:hover{
   color:#04B4AE;
   text-decoration:none;
 }
-#navigator{
+#navigator, #motd{
   background-color:rgb(4, 180, 174);
   color:#ffffff;
   padding:10px;
   margin-bottom:10px;
 }
-#navigator a{
+#navigator a, #motd a{
   text-decoration:none;
   color:#ffffff
 }
-#navigator a:hover{
+#navigator a:hover, #motd a:hover{
   color:#0B243B;
 }
-#functions{
+#functions, #advertisment{
   background-color:rgb(11, 36, 59);
   color:#ffffff;
   padding:10px;
   margin: 0px 0px 10px 0px;
 }
-#functions a{
+#functions a, #advertisment a{
   text-decoration:none;
   color:#ffffff
 }
-#functions a:hover{
+#functions a:hover, #advertisment a:hover{
   color:#04B4AE;
 }
 #pages{
@@ -270,11 +262,12 @@ a:hover{
   float:left;
 }
 .product_body_item_border{
-  background-color:#ffffff;
   position:relative;
-  border: solid 3px #04B4AE;
-  width:234px;
-  height:274px;
+  //border: solid 3px #04B4AE;
+  //width: 234px;
+  //height: 274px;
+  width:240px;
+  height:280px;
   margin:10px;
   float:left;
 }
@@ -484,4 +477,10 @@ a:hover{
 
 .page_number{
 	display: inline-block
+}
+
+.vote_answer{
+}
+.vote_percentage{
+	float: right;
 }

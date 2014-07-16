@@ -16,11 +16,11 @@
 							<a href="<?php echo base_url()."index.php/".$language."/shirt/".$w['product_slug'];?>"><?php echo $w['product_name'];?></a>
 						</div>
 						<div class="wish_date">
-							<?php echo $w['wish_date'];?>
+							<?php echo date_to_word($language, $w['wish_date']);?>
 						</div>
 						<div class="wish_functions">
 							<div class="wish_function_remove">
-								<a href="<?php echo base_url()."index.php/".$language."/profile/remove_wish/".$w['product_id'];?>">remove</a>
+								<a href="<?php echo base_url()."index.php/".$language."/profile/remove_wish/".$w['product_id'];?>"><?php echo $lang->line('wishlist_remove');?></a>
 							</div>
 						</div>
 					</div>

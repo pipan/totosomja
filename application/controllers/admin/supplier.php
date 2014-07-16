@@ -11,6 +11,11 @@ class Supplier extends CI_Controller{
 	
 	public function index(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - supplier";
 			$data['supplier'] = $this->supplier_model->get();
 			$data['functions'] = array(
@@ -39,6 +44,11 @@ class Supplier extends CI_Controller{
 	
 	public function new_supplier(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - new supplier";
 			$data['functions'] = array(
 					array(
@@ -73,6 +83,11 @@ class Supplier extends CI_Controller{
 	
 	public function edit($id = 0){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - edit supplier";
 			$data['functions'] = array(
 					array(

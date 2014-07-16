@@ -10,6 +10,7 @@ class Profile extends CI_Controller{
 		$this->load->helper('builder');
 		$this->load->helper('login');
 		$this->load->helper('string');
+		$this->load->helper('MY_date');
 		$this->load->library('form_validation');
 		$this->load->library('bcrypt');
 		$this->load->model('type_model');
@@ -26,6 +27,7 @@ class Profile extends CI_Controller{
 		
 		$this->data['login'] = $this->session->userdata('login');
 		$this->data['lang'] = $this->lang;
+		$this->data['style'] = array('style_registration');
 	}
 	
 	public function check_password(){

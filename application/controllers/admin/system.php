@@ -16,10 +16,14 @@ class system extends CI_Controller{
 			//Table size
 			$this->dbforge->add_field('id');
 			$fields = array(
-				'size_name' => array(
-						'type' => 'varchar',
-						'constraint' => '20',
-				),
+					'size_name' => array(
+							'type' => 'varchar',
+							'constraint' => '20',
+					),
+					'size_name_en' => array(
+							'type' => 'varchar',
+							'constraint' => '20',
+					),
 			);
 			$this->dbforge->add_field($fields);
 			$this->dbforge->create_table('size', true);
@@ -28,6 +32,10 @@ class system extends CI_Controller{
 			$this->dbforge->add_field('id');
 			$fields = array(
 					'color_name' => array(
+							'type' => 'varchar',
+							'constraint' => '30',
+					),
+					'color_name_en' => array(
 							'type' => 'varchar',
 							'constraint' => '30',
 					),
@@ -334,6 +342,52 @@ class system extends CI_Controller{
 					PRIMARY KEY (id),
 					FOREIGN KEY (blog_id) REFERENCES blog(id),
 					FOREIGN KEY (tag_id) REFERENCES tag(id))
+					COLLATE utf8_general_ci,
+					ENGINE innoDB");
+			
+			//Table poll
+			$this->db->query("CREATE TABLE IF NOT EXISTS poll(
+					id int(9) NOT NULL AUTO_INCREMENT,
+					admin_id int(9) NOT NULL,
+					question varchar(40) NOT NULL,
+					poll_post_date datetime NOT NULL,
+					PRIMARY KEY (id),
+					FOREIGN KEY (admin_id) REFERENCES admin(id))
+					COLLATE utf8_general_ci,
+					ENGINE innoDB");
+			
+			//Table message
+			$this->db->query("CREATE TABLE IF NOT EXISTS message(
+					id int(9) NOT NULL AUTO_INCREMENT,
+					admin_id int(9) NOT NULL,
+					message_name varchar(40),
+					poll_id int(9),
+					post_date datetime NOT NULL,
+					PRIMARY KEY (id),
+					FOREIGN KEY (admin_id) REFERENCES admin(id),
+					FOREIGN KEY (poll_id) REFERENCES poll(id))
+					COLLATE utf8_general_ci,
+					ENGINE innoDB");
+			
+			//Table poll_answer
+			$this->db->query("CREATE TABLE IF NOT EXISTS poll_answer(
+					id int(9) NOT NULL AUTO_INCREMENT,
+					poll_id int(9) NOT NULL,
+					answer varchar(30) NOT NULL,
+					PRIMARY KEY (id),
+					FOREIGN KEY (poll_id) REFERENCES poll(id))
+					COLLATE utf8_general_ci,
+					ENGINE innoDB");
+			
+			//Table poll_vote
+			$this->db->query("CREATE TABLE IF NOT EXISTS poll_vote(
+					id int(9) NOT NULL AUTO_INCREMENT,
+					customer_id int(9) NOT NULL,
+					poll_answer_id int(9) NOT NULL,
+					vote_date datetime NOT NULL,
+					PRIMARY KEY (id),
+					FOREIGN KEY (customer_id) REFERENCES customer(id),
+					FOREIGN KEY (poll_answer_id) REFERENCES poll_answer(id))
 					COLLATE utf8_general_ci,
 					ENGINE innoDB");
 		}

@@ -3,7 +3,7 @@ class Blog_model extends CI_Model{
 	
 	public $relation;
 	public static $select = array('blog.title', 'blog.slug', 'blog.admin_id', 'blog.series_id', 'blog.post_date', 'blog.thumbnail');
-	public static $select_id = array('blog.id' ,'blog.title', 'blog.slug', 'blog.admin_id', 'blog.series_id', 'blog.post_date', 'blog.thumbnail');
+	public static $select_id = array('blog.id', 'blog.title', 'blog.slug', 'blog.admin_id', 'blog.series_id', 'blog.post_date', 'blog.thumbnail');
 	
 	public function __construct(){
 		parent::__construct();
@@ -12,13 +12,13 @@ class Blog_model extends CI_Model{
 						'join' => 'admin',
 						'on' => 'blog.admin_id=admin.id',
 						'type' => 'inner',
-						'select' => array('admin.admin_name', 'admin.admin_surname'),
+						'select' => Admin_model::$select,
 				),
 				'series' => array(
 						'join' => 'blog_series',
 						'on' => 'blog.series_id=blog_series.id',
 						'type' => 'left',
-						'select' => array('blog_series.series_name'),
+						'select' => Blog_series_model::$select,
 				),
 		);
 	}

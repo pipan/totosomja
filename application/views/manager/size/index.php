@@ -6,14 +6,14 @@
 		<table>
 			<tr>
 				<td>name</td>
-				<td>change</td>
+				<td></td>
 			</tr>
 			<?php
 			foreach($size as $s){
 				?>
 				<tr>
 					<td><?php echo $s["size_name"];?></td>
-					<td><a href = "<?php echo base_url()."index.php/admin/size/edit/".$s["id"];?>">change</a></td>
+					<td><a href = "<?php echo base_url()."index.php/admin/size/edit/".$s["id"];?>"><img src="<?php echo assets_url()."images/update_logo.png";?>" />change</a></td>
 				</tr>
 				<?php
 			}

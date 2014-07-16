@@ -13,6 +13,10 @@
 					<input id="color_name" type="text" name="name" value="<?php echo set_value('name', $color['color_name']);?>" />
 				</div>
 				<div>
+					<label for="color_name_en">name en</label>
+					<input id="color_name_en" type="text" name="name_en" value="<?php echo set_value('name_en', $color['color_name_en']);?>" />
+				</div>
+				<div>
 					<input type="submit" name="change" value="change" />
 				</div>
 			</form>

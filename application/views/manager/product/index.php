@@ -24,9 +24,9 @@
 				<td>supplier</td>
 				-->
 				<td>sellable</td>
-				<td>update</td>
-				<td>change</td>
-				<td>create simular</td>
+				<td></td>
+				<td></td>
+				<td></td>
 			</tr>
 			<?php
 			foreach ($product as $p){
@@ -55,9 +55,9 @@
 					<td><?php echo $p['supplier_name'];?></td>
 					-->
 					<td><?php echo $p['sellable'];?></td>
-					<td><a href = "<?php echo base_url()."index.php/admin/product/update/".$p['id'];?>">update</a></td>
-					<td><a href = "<?php echo base_url()."index.php/admin/product/edit/".$p['id'];?>">change</a></td>
-					<td><a href = "index.php?new=new&ID=<?php echo $p['id'];?>">simular</a></td>
+					<td class="center"><a href = "<?php echo base_url()."index.php/admin/product/update/".$p['id'];?>"><img src="<?php echo assets_url()."images/update_logo.png";?>" />update</a></td>
+					<td class="center"><a href = "<?php echo base_url()."index.php/admin/product/edit/".$p['id'];?>"><img src="<?php echo assets_url()."images/change_logo.png";?>" />change</a></td>
+					<td class="center"><a href = "<?php echo base_url()."index.php/admin/product/new_product/".$p['id'];?>"><img src="<?php echo assets_url()."images/create_simular_logo.png";?>" />create</a></td>
 				</tr>
 				<?php
 			}

@@ -40,6 +40,8 @@
 /*
  * routes for admin version
  */
+$route['admin/message/(:any)'] = "admin/message/$1";
+$route['admin/message'] = "admin/message";
 $route['admin/profile/(:any)'] = "admin/profile/$1";
 $route['admin/profile'] = "admin/profile";
 $route['admin/blog_series/(:any)'] = "admin/blog_series/$1";
@@ -58,6 +60,7 @@ $route['admin/size/(:any)'] = "admin/size/$1";
 $route['admin/size'] = "admin/size";
 $route['admin/color/(:any)'] = "admin/color/$1";
 $route['admin/color'] = "admin/color";
+$route['admin/product/new_product/(:num)'] = "admin/product/new_product/$1";
 $route['admin/product/(:any)'] = "admin/product/$1";
 $route['admin/product'] = "admin/product";
 $route['admin/manager/(:any)'] = "admin/manager/$1";
@@ -110,6 +113,11 @@ $route['(:any)/profile/(:any)'] = "customer/profile/$2/$1";
 $route['profile/(:any)'] = "customer/profile/$1";
 $route['(:any)/profile'] = "customer/profile/index/$1";
 $route['profile'] = "customer/profile";
+//shop/index
+$route['(:any)/shop/(:any)'] = "customer/shop/$2/$1";
+$route['shop/(:any)'] = "customer/shop/$1";
+$route['(:any)/shop'] = "customer/shop/index/$1";
+$route['shop'] = "customer/shop";
 
 $route['(:any)'] = "customer/shop/index/$1";
 $route['default_controller'] = "customer/shop";

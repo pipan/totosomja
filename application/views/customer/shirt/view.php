@@ -1,7 +1,7 @@
 <div id="body">
 	<div id="body_left" class="light_blue_bg_transparent">
 		<div class="product_body_column">
-			<div class="product_body_item_border"> 
+			<div class="product_body_item_border white_bg_transparent"> 
 				<div class="product_body_item_border_image_body">
 					<img class="product_body_item_border_image" src="<?php echo base_url()."content/product/image/".$shirt['product_image'];?>" />
 				</div>
@@ -79,7 +79,7 @@
 		<div class="product_body_padding" style="clear:both;">
 			<div>
 				<?php 
-				if (!$wish){
+				if ($login != false && !$wish){
 					?>
 					<input type="button" name="pridat do wishlistu" value="wishlist" onClick="redirect('<?php echo base_url()."index.php/".$language."/shirt/wish/".$shirt['product_slug'];?>')" />
 					<?php
