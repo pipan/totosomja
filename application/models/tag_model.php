@@ -2,11 +2,19 @@
 class Tag_model extends CI_Model{
 	
 	public $relation;
-	public static $select = array('tag.tag_name', 'tag.tag_slug');
-	public static $select_id = array('tag.id' ,'tag.tag_name', 'tag.tag_slug');
+	public static $select = array('tag.tag_name', 'tag.tag_slug', 'tag.language_id');
+	public static $select_id = array('tag.id', 'tag.tag_name', 'tag.tag_slug', 'tag.language_id');
 	
 	public function __construct(){
 		parent::__construct();
+		$this->relation = array(
+				'language' => array(
+						'join' => 'language',
+						'on' => 'tag.language_id=language.id',
+						'type' => 'inner',
+						'select' => Language_model::$select,
+				),
+		);
 	}
 	
 	public function is_empty(){
@@ -30,14 +38,19 @@ class Tag_model extends CI_Model{
 		}
 	}
 	
-	public function get_by_name($name){
-		$query = $this->db->get_where('tag', array('tag_name =' => $name));
+	public function get_by_name($name, $lang_id){
+		$query = $this->db->get_where('tag', array('tag_name =' => $name, 'language_id =' => $lang_id));
+		return $query->row_array();
+	}
+	
+	public function get_by_data($data){
+		$query = $this->db->get_where('tag', array('tag_slug =' => $data['tag_slug'], 'language_id =' => $data['language_id']));
 		return $query->row_array();
 	}
 	
 	public function save($data, $id = false){
 		if ($id == false){
-			if (($ret = $this->get_by_name($data['tag_name'])) == false){
+			if (($ret = $this->get_by_data($data)) == false){
 				$this->db->insert('tag', $data);
 				$ret = $this->db->insert_id();
 			}

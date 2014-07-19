@@ -1,2 +1,0 @@
-TEXT: ultimate
-LINK: http://ultimate-forum.php5.sk

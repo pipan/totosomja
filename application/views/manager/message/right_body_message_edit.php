@@ -55,12 +55,14 @@
 				<div>
 					<form id="blog_poll_form">
 						<div>
-							<div><label for="message_poll_qustion">qusrion</label></div>
-							<div><input id="message_poll_question" name="poll_question" type="text" value="<?php echo $poll_question;?>" onInput="editor.components.poll.setQuestion();" /></div>
+							<div><label for="message_poll_qustion">qustion</label></div>
+							<div style="position: relative;"><div id="message_poll_question_language_sk" class="inside_label">SK</div><input id="message_poll_question" name="poll_question" type="text" value="<?php echo $poll_question;?>" onInput="editor.components.poll.setQuestion();" onFocus="hide('#message_poll_question_language_sk');" onBlur="show('#message_poll_question_language_sk');" /></div>
+							<div style="position: relative;"><div id="message_poll_question_language_en" class="inside_label">EN</div><input id="message_poll_question_en" name="poll_question_en" type="text" value="<?php echo $poll_question_en;?>" onInput="editor.components.poll.setQuestion();" onFocus="hide('#message_poll_question_language_en');" onBlur="show('#message_poll_question_language_en');" /></div>
 						</div>
 						<div style="float:left;">
 							<div><label for="message_poll_answer">answer</label></div>
-							<div><input id="message_poll_answer"  class="half_size" name="poll_answer" type="text" /></div>
+							<div class="half_size" style="position: relative;"><div id="message_poll_answer_language_sk" class="inside_label">SK</div><input id="message_poll_answer"  class="half_size" name="poll_answer" type="text" onFocus="hide('#message_poll_answer_language_sk');" onBlur="show('#message_poll_answer_language_sk');" /></div>
+							<div class="half_size" style="position: relative;"><div id="message_poll_answer_language_en" class="inside_label">EN</div><input id="message_poll_answer_en"  class="half_size" name="poll_answer_en" type="text" onFocus="hide('#message_poll_answer_language_en');" onBlur="show('#message_poll_answer_language_en');" /></div>
 						</div>
 						<div style="float:right;">
 							<div><label>actions</label></div>

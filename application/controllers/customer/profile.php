@@ -155,6 +155,7 @@ class Profile extends CI_Controller{
 	
 	public function wishlist($language = "sk"){
 		if (is_login($this)){
+			$this->data['language_ext'] = get_language_ext($language);
 			$this->data['title'] = "totosomja - edit profile";
 			$this->lang->load("general", $language);
 			$this->lang->load("profile", $language);

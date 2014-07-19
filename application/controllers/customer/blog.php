@@ -16,9 +16,9 @@ class Blog extends CI_Controller{
 		$this->load->model("admin_model");
 		$this->load->model("address_model");
 		$this->load->model("customer_model");
+		$this->load->model("blog_series_model");
 		$this->load->model("blog_model");
 		$this->load->model("comment_blog_model");
-		$this->load->model("blog_series_model");
 		$this->load->model("tag_model");
 		$this->load->model("blog_in_tag_model");
 		is_login($this);
@@ -41,6 +41,8 @@ class Blog extends CI_Controller{
 	 * @param number $page - cislo stranky ktoru zobrazujem, default $page = 1
 	 */
 	public function index($page = 1, $language = "sk"){
+		$language = valid_language($language);
+		$this->data['language_ext'] = get_language_ext($language);
 		$this->lang->load("general", $language);
 		$this->data['language'] = $language;
 		if ($page < 1){
@@ -65,19 +67,26 @@ class Blog extends CI_Controller{
 	 * @param string $slug - specialny nazov blogu
 	 */
 	public function view($slug, $language = "sk"){
+		$language = valid_language($language);
+		$this->data['language_ext'] = get_language_ext($language);
+		$lang_id = $this->language_model->get_by_name($language);
 		$this->lang->load("general", $language);
 		$this->lang->load("blog", $language);
 		$this->data['language'] = $language;
 		$this->data['show_error'] = false;
-		$this->data['blog'] = $this->blog_model->get_by_slug($slug);
-		$this->data['creator'] = $this->admin_model->get($this->data['blog']['admin_id']);
-		$this->data['tag'] = $this->blog_in_tag_model->get_by_blog_id($this->data['blog']['id']);
 		$this->data['year_list'] = $this->blog_model->get_year_list();
 		$this->data['blog_navigator'] = $this->blog_model->get_blog_navigator();
-		$this->data['comments'] = $this->comment_blog_model->get_by_blog_id($this->data['blog']['id']);
-		
+		$this->data['blog'] = $this->blog_model->get_by_slug($slug, $this->data['language_ext']);
 		if ($this->data['blog'] != false){
+			$tag_data = array(
+					'blog_id' => $this->data['blog']['id'],
+					'language_id' => $lang_id['id'],
+			);
+			$this->data['tag'] = $this->blog_in_tag_model->get_by_data($tag_data);
+			
+			//akcie ktore moze robit lognuty
 			if (is_login($this)){
+				//comment
 				if ($this->input->post('send') != false){
 					$this->data['show_error'] = true;
 				}
@@ -96,7 +105,8 @@ class Blog extends CI_Controller{
 					write_file("./content/blog/".$this->data['blog']['id']."/comments/".$comment_id.".txt", $this->input->post('comment'));
 				}
 			}
-		
+			
+			$this->data['comments'] = $this->comment_blog_model->get_by_blog_id($this->data['blog']['id']);
 			$this->data['title'] = "totosomja - ".$this->data['blog']['title'];
 			
 			$this->load->view("templates/header", $this->data);
@@ -113,14 +123,21 @@ class Blog extends CI_Controller{
 	}
 	
 	public function tag($tag, $page = 1, $language = "sk"){
+		$language = valid_language($language);
+		$this->data['language_ext'] = get_language_ext($language);
+		$lang_id = $this->language_model->get_by_name($language);
 		$this->lang->load("general", $language);
 		$this->data['language'] = $language;
 		
 		if ($page < 1){
 			$page = 1;
 		}
+		$tag_data = array(
+				'tag_slug' => $tag,
+				'language_id' => $lang_id['id'],
+		);
 		$this->data['title'] = "totosomja - blog";
-		$this->data['blogs'] = $this->blog_in_tag_model->get_list_by_tag_slug($tag, ($page - 1) * $this->limit, $this->limit);
+		$this->data['blogs'] = $this->blog_in_tag_model->get_list_by_data($tag_data, ($page - 1) * $this->limit, $this->limit);
 		$this->data['page'] = $page;
 		$this->data['page_offset'] = 3;
 		$this->data['last_page'] = ceil($this->blog_in_tag_model->count_all_by_tag_slug($tag) / $this->limit);

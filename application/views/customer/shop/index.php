@@ -6,13 +6,13 @@
 			foreach ($shirt as $s){
 				?>
 				<div class="product_preview">
-					<a href="<?php echo base_url()."index.php/".$language."/shirt/".$s['product_slug'];?>">
+					<a href="<?php echo base_url()."index.php/".$language."/shirt/".$s['product_slug'.$language_ext];?>">
 						<div class="product_body_item_border white_bg_transparent"> 
 							<div class="product_body_item_border_image_body">
 								<img class="product_body_item_border_image" src="<?php echo base_url()."content/product/image/".$s['product_image'];?>" />
 							</div>
 							<div class="product_body_item_border_name">
-								<a href="<?php echo base_url()."index.php/".$language."/shirt/".$s['product_slug'];?>"><?php echo $s['product_name'];?></a>
+								<a href="<?php echo base_url()."index.php/".$language."/shirt/".$s['product_slug'.$language_ext];?>"><?php echo $s['product_name'.$language_ext];?></a>
 							</div>
 						</div>
 					</a>

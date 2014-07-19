@@ -2,8 +2,8 @@
 class Poll_answer_model extends CI_Model{
 	
 	public $relation;
-	public static $select = array('poll_answer.poll_id', 'poll_answer.answer');
-	public static $select_id = array('poll_answer.id', 'poll_answer.poll_id', 'poll_answer.answer');
+	public static $select = array('poll_answer.poll_id', 'poll_answer.answer', 'poll_answer.answer_en');
+	public static $select_id = array('poll_answer.id', 'poll_answer.poll_id', 'poll_answer.answer', 'poll_answer.answer_en');
 	
 	public function __construct(){
 		parent::__construct();

@@ -2,8 +2,8 @@
 class Product_model extends CI_Model{
 	
 	public $relation;
-	public static $select = array('product.product_name', 'product.product_slug', 'product.category_id', 'product.type_id', 'product.color_id', 'product.size_id', 'product.material_id', 'product.supplier_id', 'product.gender', 'product.store', 'product.product_image', 'product.price', 'product.sellable', 'product.canceled', 'product.created');
-	public static $select_id = array('product.id' ,'product.product_name', 'product.product_slug', 'product.category_id', 'product.type_id', 'product.color_id', 'product.size_id', 'product.material_id', 'product.supplier_id', 'product.gender', 'product.store', 'product.product_image', 'product.price', 'product.sellable', 'product.canceled', 'product.created');
+	public static $select = array('product.product_name', 'product.product_name_en', 'product.product_slug', 'product.product_slug_en', 'product.category_id', 'product.type_id', 'product.color_id', 'product.size_id', 'product.material_id', 'product.supplier_id', 'product.gender', 'product.store', 'product.product_image', 'product.price', 'product.sellable', 'product.canceled', 'product.created');
+	public static $select_id = array('product.id', 'product.product_name', 'product.product_name_en', 'product.product_slug', 'product.product_slug_en', 'product.category_id', 'product.type_id', 'product.color_id', 'product.size_id', 'product.material_id', 'product.supplier_id', 'product.gender', 'product.store', 'product.product_image', 'product.price', 'product.sellable', 'product.canceled', 'product.created');
 	
 	public function __construct(){
 		parent::__construct();
@@ -11,7 +11,7 @@ class Product_model extends CI_Model{
 				'category' => array(
 						'join' => 'category',
 						'on' => 'product.category_id=category.id',
-						'type' => 'inner',
+						'type' => 'left',
 						'select' => Category_model::$select,
 				),
 				'type' => array(
@@ -23,25 +23,25 @@ class Product_model extends CI_Model{
 				'color' => array(
 						'join' => 'color',
 						'on' => 'product.color_id=color.id',
-						'type' => 'inner',
+						'type' => 'left',
 						'select' => Color_model::$select,
 				),
 				'size' => array(
 						'join' => 'size',
 						'on' => 'product.size_id=size.id',
-						'type' => 'inner',
+						'type' => 'left',
 						'select' => Size_model::$select,
 				),
 				'material' => array(
 						'join' => 'material',
 						'on' => 'product.material_id=material.id',
-						'type' => 'inner',
+						'type' => 'left',
 						'select' => Material_model::$select,
 				),
 				'supplier' => array(
 						'join' => 'supplier',
 						'on' => 'product.supplier_id=supplier.id',
-						'type' => 'inner',
+						'type' => 'left',
 						'select' => Supplier_model::$select,
 				),
 		);
@@ -62,9 +62,17 @@ class Product_model extends CI_Model{
 	}
 	
 	public function is_unique_sellable($name){
-		$slug = url_title($name, '-', TRUE);
+		$slug = url_title(convert_accented_characters($name), '-', TRUE);
 		if ($this->is_sellable(array('product_slug =' => $slug))){
 			return $this->get_sellable(array('product_slug =' => $slug), false)['id'];
+		}
+		return true;
+	}
+	
+	public function is_unique_sellable_en($name){
+		$slug = url_title(convert_accented_characters($name), '-', TRUE);
+		if ($this->is_sellable(array('product_slug_en =' => $slug))){
+			return $this->get_sellable(array('product_slug_en =' => $slug), false)['id'];
 		}
 		return true;
 	}
@@ -120,8 +128,8 @@ class Product_model extends CI_Model{
 	 * ziskanie zoznamu jedneho produktu na zaklade slugu - specialneho nazvu
 	 * @return row jeden zaznam - produkt
 	 */
-	public function get_by_slug($slug){
-		$where = array('canceled =' => '0', 'sellable =' => '1', 'product_slug' => $slug);
+	public function get_by_slug($slug, $ext){
+		$where = array('canceled =' => '0', 'sellable =' => '1', 'product_slug'.$ext => $slug);
 		$join = array('category', 'type', 'color', 'size', 'material', 'supplier');
 		$this->db->select($this->join($join, Product_model::$select_id));
 		$query = $this->db->get_where('product', $where);

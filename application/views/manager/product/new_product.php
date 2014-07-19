@@ -18,6 +18,10 @@
 					<input id="product_name" type="text" name="name" value="<?php echo set_value('name', $product['product_name']);?>" />
 				</div>
 				<div>
+					<label for="product_name_en">name en</label>
+					<input id="product_name_en" type="text" name="name_en" value="<?php echo set_value('name_en', $product['product_name_en']);?>" />
+				</div>
+				<div>
 					<label for="product_type">type</label>
 					<?php 
 					$model['type']->select_form("product_type", "type_id", set_value('type', $product['type_id']));
@@ -75,6 +79,10 @@
 				<div>
 					<label for="product_description">description</label>
 					<textarea id="product_description" name="description"><?php echo set_value('description', $product['description']);?></textarea>
+				</div>
+				<div>
+					<label for="product_description_en">description en</label>
+					<textarea id="product_description_en" name="description_en"><?php echo set_value('description_en', $product['description_en']);?></textarea>
 				</div>
 				<div>
 					<input type="submit" name="add" value="add" />

@@ -10,38 +10,38 @@
 		<div class="product_body_column">
 			<div class="product_body_item_info"> 
 				<div class="title2">
-					<?php echo $shirt['product_name'];?>
+					<?php echo $shirt['product_name'.$language_ext];?>
 				</div>
 				<div class="product_body_item_info_block">
 					<div class="product_body_item_info_line"> 
 						<div class="product_body_item_info_label">
-							Typ
+							<?php echo $lang->line('product_view_type');?>
 						</div>
 						<div class="product_body_item_info_value">
-							<?php echo gender_to_string($shirt["gender"]);?>
+							<?php echo $lang->line('product_view_gender_'.$shirt["gender"]);?>
 						</div>
 					</div>
 					<div class="product_body_item_info_line"> 
 						<div class="product_body_item_info_label">
-							Velkost
+							<?php echo $lang->line('product_view_size');?>
 						</div>
 						<div class="product_body_item_info_value">
-							<?php echo $shirt['size_name'];?>
+							<?php echo $shirt['size_name'.$language_ext];?>
 						</div>
 					</div>
 					<div class="product_body_item_info_line"> 
 						<div class="product_body_item_info_label">
-							Farba
+							<?php echo $lang->line('product_view_color');?>
 						</div>
 						<div class="product_body_item_info_value">
-							<?php echo $shirt['color_name'];?>
+							<?php echo $shirt['color_name'.$language_ext];?>
 						</div>
 					</div>
 				</div>
 				<div class="product_body_item_info_block">
 					<div class="product_body_item_info_line"> 
 						<div class="product_body_item_info_label">
-							Cena
+							<?php echo $lang->line('product_view_price');?>
 						</div>
 						<div class="product_body_item_info_value title2">
 							<?php echo $shirt["price"]." EUR";?>
@@ -51,7 +51,7 @@
 				<div class="product_body_item_info_block">
 					<div class="product_body_item_info_line"> 
 						<div class="product_body_item_info_label">
-							Po&#269;et ks
+							<?php echo $lang->line('product_view_number');?>
 						</div>
 						<div class="product_body_item_info_value">
 							<select name="pieces" class="dark_exception">
@@ -67,7 +67,7 @@
 					</div>
 					<div class="product_body_item_info_line"> 
 						<div class="product_body_item_info_label">
-							Dostupnos&#357;
+							<?php echo $lang->line('product_view_availability');?>
 						</div>
 						<div class="product_body_item_info_value">
 							<?php echo store_to_string($shirt["store"]);?>
@@ -81,14 +81,14 @@
 				<?php 
 				if ($login != false && !$wish){
 					?>
-					<input type="button" name="pridat do wishlistu" value="wishlist" onClick="redirect('<?php echo base_url()."index.php/".$language."/shirt/wish/".$shirt['product_slug'];?>')" />
+					<input type="button" name="pridat do wishlistu" value="<?php echo $lang->line('product_view_wishlist_button');?>" onClick="redirect('<?php echo base_url()."index.php/".$language."/shirt/wish/".$shirt['product_slug'.$language_ext];?>')" />
 					<?php
 				}
 				?>
-				<input type="button" name="kupis" value="kupit" />
+				<input type="button" name="kupis" value="<?php echo $lang->line('product_view_add_to_cart_button');?>" />
 			</div>
 			<div>
-				<?php echo read_file("./content/product/description/".$shirt['id'].".txt");?>
+				<?php echo read_file("./content/product/description/".$shirt['id'].$language_ext.".txt");?>
 			</div>
 		</div>
 		<?php 
@@ -100,7 +100,7 @@
 					if ($show_error){
 						echo validation_errors();
 					}
-					echo form_open($language."/shirt/".$shirt['product_slug']);
+					echo form_open($language."/shirt/".$shirt['product_slug'.$language_ext]);
 					?>
 						<div>
 							<textarea name="comment"><?php
@@ -120,7 +120,7 @@
 		else{
 			?>
 			<div class="product_body_padding">
-				Hodnotit mozu len registrovany zakaznici
+				<?php echo $lang->line('product_view_error_can_comment');?>
 			</div>
 			<?php
 		}

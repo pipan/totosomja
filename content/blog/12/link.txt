@@ -1,2 +1,0 @@
-TEXT: Seahorseking
-LINK: http://seahorseking.yweb.sk/

@@ -57,6 +57,7 @@ class Size extends CI_Controller{
 			);
 			
 			$this->form_validation->set_rules('name', 'size name', 'required');
+			$this->form_validation->set_rules('name_en', 'size name en', 'required');
 			
 			if ($this->form_validation->run() === FALSE){
 				$this->load->view("templates/header_manager", $data);
@@ -66,9 +67,10 @@ class Size extends CI_Controller{
 			}
 			else{
 				$table_data = array(
-					'size_name' => $this->input->post('name'),
+						'size_name' => $this->input->post('name'),
+						'size_name_en' => $this->input->post('name_en'),
 				);
-				$this->size_model->save($table_name);
+				$this->size_model->save($table_data);
 				redirect("admin/size");
 			}
 		}
@@ -96,6 +98,7 @@ class Size extends CI_Controller{
 				$data['size'] = $this->size_model->get($id);
 				
 				$this->form_validation->set_rules('name', 'size name', 'required');
+				$this->form_validation->set_rules('name_en', 'size name en', 'required');
 				
 				if ($this->form_validation->run() === FALSE){
 					$this->load->view("templates/header_manager", $data);
@@ -105,7 +108,8 @@ class Size extends CI_Controller{
 				}
 				else{
 					$table_data = array(
-						'size_name' => $this->input->post('name'),
+							'size_name' => $this->input->post('name'),
+							'size_name_en' => $this->input->post('name_en'),
 					);
 					$this->size_model->save($table_data, $id);
 					redirect("admin/size");

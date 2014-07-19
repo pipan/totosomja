@@ -22,6 +22,7 @@ function EditorApplication(){
 	this.title = "";
 	this.body = "";
 	this.id = 0;
+	this.lang = "sk";
 	
 	this.setTitle = function(){
 		this.title = $(this.titleTextareaId).val();
@@ -82,7 +83,7 @@ function EditorApplication(){
 		$('body').css({'cursor':'wait'});
 		$('#body_right a').css({'cursor':'wait'});
 		if (editor.id > 0){
-			url = BASE_URL + "index.php/admin/blog/save_new_blog/" + editor.id;
+			url = BASE_URL + "index.php/admin/blog/save_new_blog/" + editor.id + "/" + editor.lang;
 		}
 		else{
 			url = BASE_URL + "index.php/admin/blog/save_new_blog";

@@ -2,8 +2,8 @@
 class Message_model extends CI_Model{
 	
 	public $relation;
-	public static $select = array('message.admin_id', 'message.message_name', 'message.poll_id', 'message.post_date');
-	public static $select_id = array('message.id', 'message.admin_id', 'message.message_name', 'message.poll_id', 'message.post_date');
+	public static $select = array('message.admin_id', 'message.message_name', 'message.message_name_en', 'message.poll_id', 'message.post_date');
+	public static $select_id = array('message.id', 'message.admin_id', 'message.message_name', 'message.message_name_en', 'message.poll_id', 'message.post_date');
 	
 	public function __construct(){
 		parent::__construct();

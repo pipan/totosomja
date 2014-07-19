@@ -1,0 +1,4 @@
+TEXT: duchonka
+LINK: http://www.prasice.sk/docs/duchonka/duchonka2.jpg
+WIDTH: 200
+ALIGNMENT: left

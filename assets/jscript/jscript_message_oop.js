@@ -19,6 +19,7 @@ function EditorApplication(){
 	this.title = "";
 	this.body = "";
 	this.id = 0;
+	this.lang = "sk";
 	
 	this.setTitle = function(){
 		this.title = $(this.titleTextareaId).val();
@@ -87,7 +88,7 @@ function EditorApplication(){
 		$('body').css({'cursor':'wait'});
 		$('#body_right a').css({'cursor':'wait'});
 		if (editor.id > 0){
-			url = BASE_URL + "index.php/admin/message/save_new_message/" + editor.id;
+			url = BASE_URL + "index.php/admin/message/save_new_message/" + editor.id + "/" + editor.lang;
 		}
 		else{
 			url = BASE_URL + "index.php/admin/message/save_new_message";
@@ -98,7 +99,7 @@ function EditorApplication(){
 			redirect(BASE_URL + "index.php/admin/message");
 		});
 		post.fail(function(jqXHR, textStatus, errorThrown){
-			//$("#result").html(textStatus + " - " + errorThrown);
+			//$("#result").html(textStatus + " - " + errorThrown + "-" + jqXHR.status + "<br>" + jqXHR.responseText);
 			redirect(BASE_URL + "index.php/admin/message/error_save");
 		});
 	};
@@ -112,6 +113,7 @@ function EditorApplication(){
 			link: this.components.link.getSendableData(),
 			poll: this.components.poll.getSendableData(),
 			poll_question: this.components.poll.question,
+			poll_question_en: this.components.poll.question_en,
 		};
 		return sendData;
 	};
@@ -212,6 +214,7 @@ function PollComponent(){
 	this.appliable = [];
 	this.refreshable = ['#message_body_poll'];
 	this.question = "";
+	this.question_en = "";
 	
 	this.setSelected = function(selected){
 		if (selected <= this.size){
@@ -221,17 +224,19 @@ function PollComponent(){
 			}
 			else{
 				$("#message_poll_answer").val("");
+				$("#message_poll_answer_en").val("");
 			}
 		}
 	};
 	
 	this.setQuestion = function(){
 		this.question = $("#message_poll_question").val();
-		$("#message_body_poll_question").html(this.question); 
+		this.question_en = $("#message_poll_question_en").val();
+		this.preview_question();
 	};
 	
 	this.setList = function(){
-		if ($("#message_poll_answer").val() != ""){
+		if ($("#message_poll_answer").val() != "" && $("#message_poll_answer_en").val() != ""){
 			id = this.selected;
 			if (id == 0){
 				id = this.size;
@@ -240,15 +245,15 @@ function PollComponent(){
 			else{
 				id--;
 			}
-			this.list[id] = new BlogPoll($("#message_poll_answer").val());
+			this.list[id] = new BlogPoll($("#message_poll_answer").val(), $("#message_poll_answer_en").val());
 			this.render();
 			this.setSelected(0);
 			editor.refresh();
 		}
 	};
 	
-	this.loadList = function(answer){
-		this.list[this.size] = new BlogPoll(answer);
+	this.loadList = function(answer, answer_en){
+		this.list[this.size] = new BlogPoll(answer, answer_en);
 		this.size++;
 	};
 	
@@ -260,10 +265,19 @@ function PollComponent(){
 		$("#message_poll_list").html(html);
 	};
 	
+	this.preview_question = function(){
+		if (editor.lang == "sk"){
+			$("#message_body_poll_question").html(this.question);
+		}
+		else{
+			$("#message_body_poll_question").html(this.question_en);
+		}
+	};
+	
 	this.preview = function(){
 		var text = "<ol>";
 		for (var i = 0; i < this.size; i++){
-			text += "<li>" + this.list[i].answer + "</li>"; 
+			text += "<li>" + this.list[i].preview_value() + "</li>"; 
 		}
 		text += "</ol>";
 		return text;
@@ -334,24 +348,36 @@ function BlogLink(link, text){
 	};
 }
 
-function BlogPoll(answer){
+function BlogPoll(answer, answer_en){
 	this.answer = answer;
+	this.answer_en = answer_en;
 	
 	this.setForm = function(){
 		$("#message_poll_answer").val(this.answer);
+		$("#message_poll_answer_en").val(this.answer_en);
 	};
 	
 	this.render = function(i){
 		var ret = "<div id='poll_" + (i + 1) + "' onMouseover='toggleVisibility(\"#poll_" + (i + 1) + " .cancel_cross\");' onMouseout='toggleVisibility(\"#poll_" + (i + 1) + " .cancel_cross\");'>" +
-		"<div class='clickable' style='float:left; width: 150px; white-space: nowrap;' onClick='editor.components.poll.setSelected(" + (i + 1) + ");'>" + this.answer + "</div>" +
+		"<div class='clickable' style='float:left; width: 150px; white-space: nowrap;' onClick='editor.components.poll.setSelected(" + (i + 1) + ");'>" + this.preview_value() + "</div>" +
 		"<div class='cancel_cross clickable' style='float: right; display: none;' onClick='editor.components.poll.removeList(" + (i + 1) + ");'></div>" +
 		"</div>";
 		return ret;
 	};
 	
+	this.preview_value = function(){
+		if (editor.lang == "sk"){
+			return this.answer;
+		}
+		else{
+			return this.answer_en;
+		}
+	};
+	
 	this.getSendableData = function(){
 		var sendData = {
 			answer: this.answer,
+			answer_en: this.answer_en,
 		};
 		return sendData;
 	};

@@ -80,7 +80,9 @@ $route['admin'] = "admin/manager";
 //blog
 $route['(:any)/blog/(:num)'] = "customer/blog/index/$2/$1";
 $route['(:any)/blog/tag/(:num)/(:any)'] = "customer/blog/tag/$3/$2/$1";
-$route['(:any)/blog/tag/(:any)'] = "customer/blog/tag/$2/$1";
+$route['blog/tag/(:num)/(:any)'] = "customer/blog/tag/$2/$1";
+$route['(:any)/blog/tag/(:any)'] = "customer/blog/tag/$2/1/$1";
+$route['blog/tag/(:any)'] = "customer/blog/tag/$1";
 $route['(:any)/blog/(:any)'] = "customer/blog/view/$2/$1";
 $route['(:any)/blog'] = "customer/blog/index/1/$1";
 $route['blog/(:num)'] = "customer/blog/index/$1";

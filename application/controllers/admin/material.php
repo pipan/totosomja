@@ -57,6 +57,7 @@ class Material extends CI_Controller{
 			);
 			
 			$this->form_validation->set_rules('name', 'material name', 'required');
+			$this->form_validation->set_rules('name_en', 'material name en', 'required');
 			
 			if ($this->form_validation->run() === FALSE){
 				$this->load->view("templates/header_manager", $data);
@@ -67,6 +68,7 @@ class Material extends CI_Controller{
 			else{
 				$table_data = array(
 						'material_name' => $this->input->post('name'),
+						'material_name_en' => $this->input->post('name_en'),
 				);
 				$this->material_model->save($table_data);
 				redirect("admin/material");
@@ -96,6 +98,7 @@ class Material extends CI_Controller{
 				$data['material'] = $this->material_model->get($id);
 				
 				$this->form_validation->set_rules('name', 'material name', 'required');
+				$this->form_validation->set_rules('name_en', 'material name en', 'required');
 				
 				if ($this->form_validation->run() === FALSE){
 					$this->load->view("templates/header_manager", $data);
@@ -105,7 +108,8 @@ class Material extends CI_Controller{
 				}
 				else{
 					$table_data = array(
-							'size_name' => $this->input->post('name'),
+							'material_name' => $this->input->post('name'),
+							'material_name_en' => $this->input->post('name_en'),
 					);
 					$this->material_model->save($table_data, $id);
 					redirect("admin/material");

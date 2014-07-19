@@ -30,8 +30,11 @@ class Shop extends CI_Controller{
 	}
 	
 	public function index($language = "sk"){
+		$language = valid_language($language);
+		$this->data['language_ext'] = get_language_ext($language);
 		$this->data['title'] = "totosomja - tri&#269;k&aacute; s joga, vegan a vegetarian tematikou";
 		$this->lang->load("general", $language);
+		$this->lang->load("message", $language);
 		$this->data['lang'] = $this->lang;
 		$this->data['language'] = $language;
 		
@@ -45,8 +48,8 @@ class Shop extends CI_Controller{
 		
 		$this->data['message'] = $this->message_model->get_last();
 		if ($this->data['message'] != false){
-			$this->data['message_title'] = rawUrlDecode(read_file("./content/message/".$this->data['message']['id']."/title.txt"));
-			$this->data['message_body'] = rawUrlDecode(read_file("./content/message/".$this->data['message']['id']."/body.txt"));
+			$this->data['message_title'] = rawUrlDecode(read_file("./content/message/".$this->data['message']['id']."/title".$this->data['language_ext'].".txt"));
+			$this->data['message_body'] = rawUrlDecode(read_file("./content/message/".$this->data['message']['id']."/body".$this->data['language_ext'].".txt"));
 			if ($this->data['message']['poll_id'] != false){
 				$this->data['can_vote'] = ($this->session->userdata('login') != false && $this->poll_vote_model->can_vote($this->session->userdata('login')['id'], $this->data['message']['poll_id']));
 				$this->data['poll_answer'] = $this->poll_vote_model->get_vote($this->data['message']['poll_id']);
@@ -74,6 +77,8 @@ class Shop extends CI_Controller{
 	
 	public function vote($language = "sk"){
 		if (is_login($this)){
+			$language = valid_language($language);
+			$this->data['language_ext'] = get_language_ext($language);
 			$this->form_validation->set_rules('poll_id', 'poll id', 'required');
 			$this->form_validation->set_rules('answer_id', 'answer id', 'required');
 			

@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database', 'session');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'assets', 'content', 'admin', 'login');
+$autoload['helper'] = array('url', 'assets', 'content', 'admin', 'login', 'language', 'db');
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('select_model', 'address_model', 'customer_model');
+$autoload['model'] = array('select_model', 'address_model', 'customer_model', 'language_model');
 
 
 /* End of file autoload.php */

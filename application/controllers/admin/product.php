@@ -18,6 +18,7 @@ class Product extends CI_Controller{
 		$this->load->model('supplier_model');
 		$this->load->model("product_model");
 		$this->load->model("product_changelog_model");
+		$this->load->model("wishlist_model");
 	}
 	
 	public function valid_id($val, $id){
@@ -36,7 +37,7 @@ class Product extends CI_Controller{
 			$product = $this->product_model->get($id);
 			return $product['product_image'];
 		}
-		$this->form_validation->set_message('image_upload', 'Cannot upload image '.$id.', make sure image size is less then 512kB or contact system admin');
+		$this->form_validation->set_message('image_upload', 'Cannot upload image '.$id.', make sure you choose file and image size is less then 512kB or contact system admin');
 		return false;
 	}
 	
@@ -45,6 +46,14 @@ class Product extends CI_Controller{
 			return true;
 		}
 		$this->form_validation->set_message('is_unique_sellable', 'product name has to be unique');
+		return false;
+	}
+	
+	public function is_unique_sellable_en($val, $id){
+		if (($same_id = $this->product_model->is_unique_sellable_en($val)) == true || $same_id === $id){
+			return true;
+		}
+		$this->form_validation->set_message('is_unique_sellable_en', 'product name en has to be unique');
 		return false;
 	}
 	
@@ -130,6 +139,10 @@ class Product extends CI_Controller{
 							'link' => base_url().'index.php/admin/product/new_product',
 							'text' => 'add product',
 					),
+					array(
+							'link' => base_url().'index.php/admin/product/help',
+							'text' => 'help',
+					),
 			);
 			
 			if ($id > 0 && $this->product_model->is_sellable(array('product.id =' => $id))){	
@@ -199,6 +212,7 @@ class Product extends CI_Controller{
 				$data['product'] = array(
 						'id' => 0,
 						'product_name' => '',
+						'product_name_en' => '',
 						'type_id' => 0,
 						'category_id' => 0,
 						'size_id' => 0,
@@ -209,20 +223,23 @@ class Product extends CI_Controller{
 						'store' => '',
 						'gender' => 0,
 						'description' => '',
+						'description_en' => '',
 				);
 			}
 			
 			$this->form_validation->set_rules('name', 'name', 'required|callback_is_unique_sellable[0]|valid_id['.$id.']');
-			$this->form_validation->set_rules('category_id', 'category', 'required');
+			$this->form_validation->set_rules('name_en', 'name en', 'required|callback_is_unique_sellable_en[0]');
+			$this->form_validation->set_rules('category_id', 'category', '');
 			$this->form_validation->set_rules('type_id', 'type', 'required');
 			$this->form_validation->set_rules('price', 'price', 'required');
-			$this->form_validation->set_rules('color_id', 'color', 'required');
-			$this->form_validation->set_rules('size_id', 'size', 'required');
-			$this->form_validation->set_rules('material_id', 'material', 'required');
-			$this->form_validation->set_rules('supplier_id', 'supplier', 'required');
+			$this->form_validation->set_rules('color_id', 'color', '');
+			$this->form_validation->set_rules('size_id', 'size', '');
+			$this->form_validation->set_rules('material_id', 'material', '');
+			$this->form_validation->set_rules('supplier_id', 'supplier', '');
 			$this->form_validation->set_rules('store', 'store', 'required');
 			$this->form_validation->set_rules('gender', 'gender', 'required');
 			$this->form_validation->set_rules('description', 'description', 'required');
+			$this->form_validation->set_rules('description_en', 'description en', 'required');
 			$this->form_validation->set_rules('image_name', 'image', 'callback_image_upload['.$id.']');
 			
 			$config['upload_path'] = './content/product/image/';
@@ -245,6 +262,10 @@ class Product extends CI_Controller{
 							'link' => base_url().'index.php/admin/product/new_product',
 							'text' => 'add product',
 					),
+					array(
+							'link' => base_url().'index.php/admin/product/help',
+							'text' => 'help',
+					),
 			);
 			
 			if ($this->form_validation->run() === FALSE){
@@ -256,16 +277,18 @@ class Product extends CI_Controller{
 			else{
 				$table_data = array(
 						'product_name' => $this->input->post('name'),
+						'product_name_en' => $this->input->post('name_en'),
 						'product_slug' => url_title(convert_accented_characters($this->input->post('name')), '-', TRUE),
-						'category_id' => $this->input->post('category_id'),
-						'type_id' => $this->input->post('type_id'),
-						'color_id' => $this->input->post('color_id'),
-						'size_id' => $this->input->post('size_id'),
-						'material_id' => $this->input->post('material_id'),
-						'supplier_id' => $this->input->post('supplier_id'),
+						'product_slug_en' => url_title(convert_accented_characters($this->input->post('name_en')), '-', TRUE),
+						'category_id' => get_foreign($this->input->post('category_id')),
+						'type_id' => get_foreign($this->input->post('type_id')),
+						'color_id' => get_foreign($this->input->post('color_id')),
+						'size_id' => get_foreign($this->input->post('size_id')),
+						'material_id' => get_foreign($this->input->post('material_id')),
+						'supplier_id' => get_foreign($this->input->post('supplier_id')),
 						'price' => $this->input->post('price'),
 						'store' => $this->input->post('store'),
-						'gender' => $this->input->post('gender'),
+						'gender' => get_foreign($this->input->post('gender'), true),
 						'product_image' => $this->input->post('image_name'),
 						'sellable' => 1,
 						'canceled' => 0,
@@ -273,6 +296,7 @@ class Product extends CI_Controller{
 				);
 				$id = $this->product_model->save($table_data);
 				write_file("./content/product/description/".$id.".txt", $this->input->post('description'));
+				write_file("./content/product/description/".$id."_en.txt", $this->input->post('description_en'));
 				$table_data = array(
 						'product_id' => $id,
 						'admin_id' => $this->session->userdata('admin_id'),
@@ -304,6 +328,7 @@ class Product extends CI_Controller{
 			);
 			if ($id > 0 && $this->product_model->is_sellable(array('product.id =' => $id))){
 				$this->form_validation->set_rules('name', 'name', 'required|callback_is_unique_sellable['.$id.']');
+				$this->form_validation->set_rules('name_en', 'name en', 'required|callback_is_unique_sellable_en['.$id.']');
 				$this->form_validation->set_rules('category_id', 'category', 'required');
 				$this->form_validation->set_rules('type_id', 'type', 'required');
 				$this->form_validation->set_rules('price', 'price', 'required');
@@ -314,6 +339,7 @@ class Product extends CI_Controller{
 				$this->form_validation->set_rules('store', 'store', 'required');
 				$this->form_validation->set_rules('gender', 'gender', 'required');
 				$this->form_validation->set_rules('description', 'description', 'required');
+				$this->form_validation->set_rules('description_en', 'description en', 'required');
 				
 				$config['upload_path'] = './content/product/image/';
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -340,12 +366,14 @@ class Product extends CI_Controller{
 				else{
 					$this->product_model->set_canceled($id);
 					$image = $data['product']['product_image'];
-					if ($this->image_upload()){
+					if ($this->image_upload("", $id)){
 						$image = $this->upload->data()['file_name'];
 					}
 					$table_data = array(
 							'product_name' => $this->input->post('name'),
+							'product_name_en' => $this->input->post('name_en'),
 							'product_slug' => url_title(convert_accented_characters($this->input->post('name')), '-', TRUE),
+							'product_slug_en' => url_title(convert_accented_characters($this->input->post('name_en')), '-', TRUE),
 							'category_id' => $this->input->post('category_id'),
 							'type_id' => $this->input->post('type_id'),
 							'color_id' => $this->input->post('color_id'),
@@ -360,10 +388,15 @@ class Product extends CI_Controller{
 							'canceled' => 0,
 							'created' => date("Y-n-d H:i:s"),
 					);
-					$id = $this->product_model->save($table_data);
-					write_file("./content/product/description/".$id.".txt", $this->input->post('description'));
+					$id_new = $this->product_model->save($table_data);
 					$table_data = array(
-							'product_id' => $id,
+							'product_id' => $id_new,
+					);
+					$this->wishlist_model->change_product($id, $table_data);
+					write_file("./content/product/description/".$id_new.".txt", $this->input->post('description'));
+					write_file("./content/product/description/".$id_new."_en.txt", $this->input->post('description_en'));
+					$table_data = array(
+							'product_id' => $id_new,
 							'admin_id' => $this->session->userdata('admin_id'),
 							'change_id' => 6,
 							'change_date' => date("Y-n-d H:i:s"),

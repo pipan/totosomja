@@ -3,7 +3,7 @@ class system extends CI_Controller{
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('encrypt');
+		$this->load->library('bcrypt');
 		$this->load->helper('string');
 	}
 	/*
@@ -50,6 +50,10 @@ class system extends CI_Controller{
 							'type' => 'varchar',
 							'constraint' => '30',
 					),
+					'material_name_en' => array(
+							'type' => 'varchar',
+							'constraint' => '30',
+					),
 			);
 			$this->dbforge->add_field($fields);
 			$this->dbforge->create_table('material', true);
@@ -58,6 +62,10 @@ class system extends CI_Controller{
 			$this->dbforge->add_field('id');
 			$fields = array(
 					'type_name' => array(
+							'type' => 'varchar',
+							'constraint' => '30',
+					),
+					'type_name_en' => array(
 							'type' => 'varchar',
 							'constraint' => '30',
 					),
@@ -74,6 +82,10 @@ class system extends CI_Controller{
 			$this->dbforge->add_field('id');
 			$fields = array(
 					'category_name' => array(
+							'type' => 'varchar',
+							'constraint' => '30',
+					),
+					'category_name_en' => array(
 							'type' => 'varchar',
 							'constraint' => '30',
 					),
@@ -110,8 +122,7 @@ class system extends CI_Controller{
 					street_number varchar(10) NOT NULL,
 					country varchar(40) NOT NULL,
 					creator_id int(9),
-					PRIMARY KEY (id),
-					FOREIGN KEY (creator_id) REFERENCES customer(id))
+					PRIMARY KEY (id))
 					COLLATE utf8_general_ci,
 					ENGINE innoDB");
 			
@@ -149,21 +160,24 @@ class system extends CI_Controller{
 					id int(9) NOT NULL AUTO_INCREMENT,
 					product_name varchar(70) NOT NULL,
 					product_slug varchar(70) NOT NULL,
+					product_name_en varchar(70) NOT NULL,
+					product_slug_en varchar(70) NOT NULL,
 					type_id int(9) NOT NULL,
-					category_id int(9) NOT NULL,
-					color_id int(9) NOT NULL,
-					size_id int(9) NOT NULL,
-					material_id int(9) NOT NULL,
-					supplier_id int(9) NOT NULL,
+					category_id int(9),
+					color_id int(9),
+					size_id int(9),
+					material_id int(9),
+					supplier_id int(9),
 					gender tinyint(2) NOT NULL,
 					store int(11) NOT NULL,
 					product_image varchar(100),
 					price float(4,2) NOT NULL,
 					sellable tinyint(1) NOT NULL,
 					canceled tinyint(1) NOT NULL,
-					created datetime,
+					created datetime NOT NULL,
 					PRIMARY KEY (id),
 					INDEX product_slug_id USING BTREE (product_slug),
+					INDEX product_slug_en_id USING BTREE (product_slug_en),
 					FOREIGN KEY (type_id) REFERENCES type(id),
 					FOREIGN KEY (category_id) REFERENCES category(id),
 					FOREIGN KEY (color_id) REFERENCES color(id),
@@ -270,6 +284,7 @@ class system extends CI_Controller{
 					id int(9) NOT NULL AUTO_INCREMENT,
 					admin_id int(9) NOT NULL,
 					series_name varchar(50) NOT NULL,
+					series_name_en varchar(50) NOT NULL,
 					PRIMARY KEY (id),
 					FOREIGN KEY (admin_id) REFERENCES admin(id))
 					COLLATE utf8_general_ci,
@@ -281,11 +296,14 @@ class system extends CI_Controller{
 					admin_id int(9) NOT NULL,
 					title varchar(70) NOT NULL,
 					slug varchar(70) NOT NULL,
+					title_en varchar(70),
+					slug_en varchar(70),
 					series_id int(9),
 					post_date datetime,
 					thumbnail varchar(100),
 					PRIMARY KEY (id),
 					INDEX slug_id USING BTREE (slug),
+					INDEX slug_en_id USING BTREE (slug_en),
 					FOREIGN KEY (admin_id) REFERENCES admin(id),
 					FOREIGN KEY (series_id) REFERENCES blog_series(id))
 					COLLATE utf8_general_ci,
@@ -324,13 +342,23 @@ class system extends CI_Controller{
 					COLLATE utf8_general_ci,
 					ENGINE innoDB");
 			
+			//Table language
+			$this->db->query("CREATE TABLE IF NOT EXISTS language(
+					id int(9) NOT NULL AUTO_INCREMENT,
+					language_name varchar(2) NOT NULL,
+					PRIMARY KEY (id))
+					COLLATE utf8_general_ci,
+					ENGINE innoDB");
+			
 			//Table tag
 			$this->db->query("CREATE TABLE IF NOT EXISTS tag(
 					id int(9) NOT NULL AUTO_INCREMENT,
 					tag_name varchar(30) NOT NULL,
 					tag_slug varchar(30) NOT NULL,
+					language_id int(9) NOT NULL,
 					PRIMARY KEY (id),
-					INDEX tag_slug_id USING BTREE (tag_slug))
+					INDEX tag_slug_id USING BTREE (tag_slug, language_id),
+					FOREIGN KEY (language_id) REFERENCES language(id))
 					COLLATE utf8_general_ci,
 					ENGINE innoDB");
 			
@@ -350,6 +378,7 @@ class system extends CI_Controller{
 					id int(9) NOT NULL AUTO_INCREMENT,
 					admin_id int(9) NOT NULL,
 					question varchar(40) NOT NULL,
+					question_en varchar(40) NOT NULL,
 					poll_post_date datetime NOT NULL,
 					PRIMARY KEY (id),
 					FOREIGN KEY (admin_id) REFERENCES admin(id))
@@ -361,6 +390,7 @@ class system extends CI_Controller{
 					id int(9) NOT NULL AUTO_INCREMENT,
 					admin_id int(9) NOT NULL,
 					message_name varchar(40),
+					message_name_en varchar(40),
 					poll_id int(9),
 					post_date datetime NOT NULL,
 					PRIMARY KEY (id),
@@ -374,6 +404,7 @@ class system extends CI_Controller{
 					id int(9) NOT NULL AUTO_INCREMENT,
 					poll_id int(9) NOT NULL,
 					answer varchar(30) NOT NULL,
+					answer_en varchar(30) NOT NULL,
 					PRIMARY KEY (id),
 					FOREIGN KEY (poll_id) REFERENCES poll(id))
 					COLLATE utf8_general_ci,
@@ -387,9 +418,14 @@ class system extends CI_Controller{
 					vote_date datetime NOT NULL,
 					PRIMARY KEY (id),
 					FOREIGN KEY (customer_id) REFERENCES customer(id),
-					FOREIGN KEY (poll_answer_id) REFERENCES poll_answer(id))
+					FOREIGN KEY (poll_answer_id) REFERENCES poll_answer(id) ON DELETE CASCADE)
 					COLLATE utf8_general_ci,
 					ENGINE innoDB");
+			
+			//Alter Address [add foreign key]
+			$this->db->query("ALTER TABLE address
+					ADD FOREIGN KEY (creator_id)
+					REFERENCES customer(id)");
 		}
 		else{
 			redirect("admin/manager/login");
@@ -428,17 +464,47 @@ class system extends CI_Controller{
 					'change_name' => 'unset discount',
 			);
 			$this->db->insert('change_label', $data);
+			$data = array(
+					'id' => '6',
+					'change_name' => 'major change',
+			);
+			$this->db->insert('change_label', $data);
+			$data = array(
+					'id' => '7',
+					'change_name' => 'create',
+			);
+			$this->db->insert('change_label', $data);
+			$data = array(
+					'id' => '8',
+					'change_name' => 'set new store amount',
+			);
+			$this->db->insert('change_label', $data);
 			
 			//admin
 			$this->db->empty_table('admin');
 			$salt = random_string('alnum', 16);
 			$data = array(
 					'id' => '1',
-					'admin_name' => 'admin',
+					'admin_nick' => 'admin',
+					'admin_name' => 'Peter',
+					'admin_surname' => 'Gasparik',
 					'salt' => $salt,
-					'password' => $this->encrypt->encode("password".$salt),
+					'password' => $this->bcrypt->hash_password("password".$salt),
 			);
 			$this->db->insert('admin', $data);
+			
+			//language
+			$this->db->empty_table('language');
+			$data = array(
+					'id' => '1',
+					'language_name' => 'sk',
+			);
+			$this->db->insert('language', $data);
+			$data = array(
+					'id' => '2',
+					'language_name' => 'en',
+			);
+			$this->db->insert('language', $data);
 		}
 		else{
 			redirect("admin/manager/login");

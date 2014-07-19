@@ -1,8 +1,0 @@
-TEXT: steam
-LINK: http://phgame.cz/wp-content/uploads/1042087805_1376825997.png
-WIDTH: 200
-ALIGNMENT: right
-TEXT: smile
-LINK: http://www.boxlessmedia.com/wp-content/uploads/2014/02/smile_wallpaper_2-wide.jpg
-WIDTH: 50
-ALIGNMENT: left

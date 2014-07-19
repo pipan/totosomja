@@ -4,19 +4,19 @@
 			<div id="blog_header">
 				<div id="blog_header_title" class="title1">
 					<?php 
-					echo rawUrlDecode(read_file("./content/blog/".$blog['id']."/title.txt"));
+					echo rawUrlDecode(read_file("./content/blog/".$blog['id']."/title".$language_ext.".txt"));
 					?>
 				</div>
 				<div id="blog_header_info_date" class="gray">
 					<?php echo date_to_word($language, $blog['post_date']);?>
 				</div>
 				<div id="blog_header_info_name" class="gray">
-					<?php echo $creator['admin_name']." ".$creator['admin_surname'];?>
+					<?php echo $blog['admin_name']." ".$blog['admin_surname'];?>
 				</div>
 			</div>
 			<div id="blog_body">
 				<?php 
-				echo rawUrlDecode(read_file("./content/blog/".$blog['id']."/body.txt"));
+				echo rawUrlDecode(read_file("./content/blog/".$blog['id']."/body".$language_ext.".txt"));
 				?>
 			</div>
 			<div class="blog_tags_block">
@@ -40,7 +40,7 @@
 					if ($show_error){
 						echo validation_errors();
 					}
-					echo form_open($language."/blog/".$blog['slug']);
+					echo form_open($language."/blog/".$blog['slug'.$language_ext]);
 					?>
 						<div>
 							<textarea name="comment"><?php
@@ -60,7 +60,7 @@
 		else{
 			?>
 				<div class="product_body_padding">
-					Komentovat mozu len registrovany zakaznici
+					<?php echo $lang->line('blog_view_error_can_comment');?>
 				</div>
 				<?php
 			}

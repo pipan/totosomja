@@ -58,7 +58,9 @@ class Type extends CI_Controller{
 			);
 		
 			$this->form_validation->set_rules('name', 'type name', 'required');
+			$this->form_validation->set_rules('name_en', 'type name en', 'required');
 			$this->form_validation->set_rules('description', 'description', 'required');
+			$this->form_validation->set_rules('description_en', 'description en', 'required');
 			
 			$config['upload_path'] = './content/type/image/';
 			$config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -75,17 +77,20 @@ class Type extends CI_Controller{
 			else{
 				if ($this->upload->do_upload('image')){
 					$table_data = array(
-						'type_name' => $this->input->post('name'),
-						'type_image' => $this->upload->data()['file_name'],
+							'type_name' => $this->input->post('name'),
+							'type_name_en' => $this->input->post('name_en'),
+							'type_image' => $this->upload->data()['file_name'],
 					);
 				}
 				else{
 					$table_data = array(
-						'type_name' => $this->input->post('name'),
+							'type_name' => $this->input->post('name'),
+							'type_name_en' => $this->input->post('name_en'),
 					);
 				}
 				$id = $this->type_model->save($table_data);
 				write_file("./content/type/description/".$id.".txt", $this->input->post('description'));
+				write_file("./content/type/description/".$id."_en.txt", $this->input->post('description_en'));
 				redirect("admin/type");
 			}
 		}
@@ -113,7 +118,9 @@ class Type extends CI_Controller{
 				$data['type'] = $this->type_model->get($id);
 					
 				$this->form_validation->set_rules('name', 'type name', 'required');
+				$this->form_validation->set_rules('name_en', 'type name en', 'required');
 				$this->form_validation->set_rules('description', 'description', 'required');
+				$this->form_validation->set_rules('description_en', 'description en', 'required');
 				
 				$config['upload_path'] = './content/type/image/';
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -131,17 +138,20 @@ class Type extends CI_Controller{
 					if ($this->upload->do_upload('image')){
 						delete_files("./content/type/image/".$data['type']['type_image']);
 						$table_data = array(
-							'type_name' => $this->input->post('name'),
-							'type_image' => $this->upload->data()['file_name'],
+								'type_name' => $this->input->post('name'),
+								'type_name_en' => $this->input->post('name_en'),
+								'type_image' => $this->upload->data()['file_name'],
 						);
 					}
 					else{
 						$table_data = array(
-							'type_name' => $this->input->post('name'),
+								'type_name' => $this->input->post('name'),
+								'type_name_en' => $this->input->post('name_en'),
 						);
 					}
 					$this->type_model->save($table_data, $id);
 					write_file("./content/type/description/".$id.".txt", $this->input->post('description'));
+					write_file("./content/type/description/".$id."_en.txt", $this->input->post('description_en'));
 					redirect("admin/type");
 				}
 			}

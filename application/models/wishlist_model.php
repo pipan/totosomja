@@ -66,6 +66,11 @@ class Wishlist_model extends CI_Model{
 		return $query->result_array();
 	}
 	
+	public function change_product($old_id, $table_data){
+		$this->db->where(array('product_id' => $old_id));
+		$this->db->update('wishlist', $table_data);
+	}
+	
 	public function save($data){
 		$this->db->insert('wishlist', $data);
 		$ret = $this->db->insert_id();

@@ -1,6 +1,7 @@
 	<div id="body_right">
 		<div id="functions">
-			<div><a href="javascript:void();" onClick="editor.save();">save</a></div>
+			<div><a href="javascript:void(0);" onClick="editor.save();">save</a></div>
+			<div><a href="<?php echo base_url()."index.php/admin/blog/help"?>">help</a></div>
 		</div>
 		<div id="content_edit" class="light_blue_bg">
 			<div class="clickable" onClick="toggleVisibility('#content_edit_body');">

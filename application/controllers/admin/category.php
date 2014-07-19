@@ -58,7 +58,9 @@ class Category extends CI_Controller{
 			);
 		
 			$this->form_validation->set_rules('name', 'category name', 'required');
+			$this->form_validation->set_rules('name_en', 'category name en', 'required');
 			$this->form_validation->set_rules('description', 'description', 'required');
+			$this->form_validation->set_rules('description_en', 'description en', 'required');
 			
 			$config['upload_path'] = './content/category/image/';
 			$config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -75,17 +77,20 @@ class Category extends CI_Controller{
 			else{
 				if ($this->upload->do_upload('image')){
 					$table_data = array(
-						'category_name' => $this->input->post('name'),
-						'category_image' => $this->upload->data()['file_name'],
+							'category_name' => $this->input->post('name'),
+							'category_name_en' => $this->input->post('name_en'),
+							'category_image' => $this->upload->data()['file_name'],
 					);
 				}
 				else{
 					$table_data = array(
-						'category_name' => $this->input->post('name'),
+							'category_name' => $this->input->post('name'),
+							'category_name_en' => $this->input->post('name_en'),
 					);
 				}
 				$id = $this->category_model->save($table_data);
 				write_file("./content/category/description/".$id.".txt", $this->input->post('description'));
+				write_file("./content/category/description/".$id."_en.txt", $this->input->post('description_en'));
 				redirect("admin/category");
 			}
 		}
@@ -113,7 +118,9 @@ class Category extends CI_Controller{
 				$data['category'] = $this->category_model->get($id);
 					
 				$this->form_validation->set_rules('name', 'category name', 'required');
+				$this->form_validation->set_rules('name_en', 'category name en', 'required');
 				$this->form_validation->set_rules('description', 'description', 'required');
+				$this->form_validation->set_rules('description_en', 'description en', 'required');
 				
 				$config['upload_path'] = './content/category/image/';
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -131,17 +138,20 @@ class Category extends CI_Controller{
 					if ($this->upload->do_upload('image')){
 						delete_files("./content/category/image/".$data['category']['category_image']);
 						$table_data = array(
-							'category_name' => $this->input->post('name'),
-							'category_image' => $this->upload->data()['file_name'],
+								'category_name' => $this->input->post('name'),
+								'category_name_en' => $this->input->post('name_en'),
+								'category_image' => $this->upload->data()['file_name'],
 						);
 					}
 					else{
 						$table_data = array(
-							'category_name' => $this->input->post('name'),
+								'category_name' => $this->input->post('name'),
+								'category_name_en' => $this->input->post('name_en'),
 						);
 					}
 					$this->category_model->save($table_data, $id);
 					write_file("./content/category/description/".$id.".txt", $this->input->post('description'));
+					write_file("./content/category/description/".$id."_en.txt", $this->input->post('description_en'));
 					redirect("admin/category");
 				}
 			}

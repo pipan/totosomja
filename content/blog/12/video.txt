@@ -1,5 +1,0 @@
-TEXT: linkin park
-LINK: https://www.youtube.com/watch?v=srggFS3TwKQ
-CODE: srggFS3TwKQ
-WIDTH:            100
-ALIGNMENT: left

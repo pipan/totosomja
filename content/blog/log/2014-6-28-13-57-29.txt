@@ -1,5 +1,0 @@
-TITLE: Title 
-TITLE_TEXTAREA: Title 
-BODY: &lt;p&gt;Body &lt;/p&gt;
-BODY_TEXTAREA: Body 
-THUMBNAIL: 0

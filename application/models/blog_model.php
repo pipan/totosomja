@@ -2,8 +2,8 @@
 class Blog_model extends CI_Model{
 	
 	public $relation;
-	public static $select = array('blog.title', 'blog.slug', 'blog.admin_id', 'blog.series_id', 'blog.post_date', 'blog.thumbnail');
-	public static $select_id = array('blog.id', 'blog.title', 'blog.slug', 'blog.admin_id', 'blog.series_id', 'blog.post_date', 'blog.thumbnail');
+	public static $select = array('blog.title', 'blog.slug', 'blog.title_en', 'blog.slug_en', 'blog.admin_id', 'blog.series_id', 'blog.post_date', 'blog.thumbnail');
+	public static $select_id = array('blog.id', 'blog.title', 'blog.slug', 'blog.title_en', 'blog.slug_en', 'blog.admin_id', 'blog.series_id', 'blog.post_date', 'blog.thumbnail');
 	
 	public function __construct(){
 		parent::__construct();
@@ -75,9 +75,9 @@ class Blog_model extends CI_Model{
 	 * ziskanie zoznamu jedneho blogu na zaklade slugu - specialneho nazvu
 	 * @return row jeden zaznam - blog
 	 */
-	public function get_by_slug($slug){
+	public function get_by_slug($slug, $ext){
 		$this->db->select($this->join(array('admin', 'series'), Blog_model::$select_id));
-		$query = $this->db->get_where('blog', array('slug' => $slug));
+		$query = $this->db->get_where('blog', array('slug'.$ext => $slug));
 		return $query->row_array();
 	}
 	
@@ -97,7 +97,7 @@ class Blog_model extends CI_Model{
 	 * @return array nazov a datum vo forme MONTH-YEAR
 	 */
 	public function get_blog_navigator(){
-		$this->db->select("id, title, slug, DATE_FORMAT(blog.post_date, '%c-%Y') as month_year", FALSE);
+		$this->db->select("id, title, slug,, title_en, slug_en, DATE_FORMAT(blog.post_date, '%c-%Y') as month_year", FALSE);
 		$this->db->order_by("YEAR(post_date) DESC, MONTH(post_date) ASC");
 		$query = $this->db->get('blog');
 		return $query->result_array();

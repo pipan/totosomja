@@ -13,7 +13,7 @@
 					</div>
 					<div class="wish_body">
 						<div class="wish_title title3">
-							<a href="<?php echo base_url()."index.php/".$language."/shirt/".$w['product_slug'];?>"><?php echo $w['product_name'];?></a>
+							<a href="<?php echo base_url()."index.php/".$language."/shirt/".$w['product_slug'.$language_ext];?>"><?php echo $w['product_name'.$language_ext];?></a>
 						</div>
 						<div class="wish_date">
 							<?php echo date_to_word($language, $w['wish_date']);?>

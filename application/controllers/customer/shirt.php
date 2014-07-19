@@ -62,20 +62,26 @@ class Shirt extends CI_Controller{
 	
 	public function wish($slug, $language){
 		if (is_login($this)){
-			$product = $this->product_model->get_by_slug($slug);
-			if (!$this->wishlist_model->is_customer_wishing($this->session->userdata('login')['id'], $product['id'])){
-				$table_data = array(
-						'product_id' => $product['id'],
-						'customer_id' => $this->session->userdata('login')['id'],
-						'wish_date' => date("Y-n-d H:i:s"),
-				);
-				$this->wishlist_model->save($table_data);
+			$language = valid_language($language);
+			$language_ext = get_language_ext($language);
+			$product = $this->product_model->get_by_slug($slug, $language_ext);
+			if ($product != false){
+				if (!$this->wishlist_model->is_customer_wishing($this->session->userdata('login')['id'], $product['id'])){
+					$table_data = array(
+							'product_id' => $product['id'],
+							'customer_id' => $this->session->userdata('login')['id'],
+							'wish_date' => date("Y-n-d H:i:s"),
+					);
+					$this->wishlist_model->save($table_data);
+				}
 			}
 		}
 		redirect($language."/shirt/".$slug);
 	}
 	
 	public function index($page = 1, $language = "sk", $filter = false){
+		$language = valid_language($language);
+		$this->data['language_ext'] = get_language_ext($language);
 		$this->lang->load("general", $language);
 		$this->lang->load("filter", $language);
 		$this->data['lang'] = $this->lang;
@@ -116,16 +122,19 @@ class Shirt extends CI_Controller{
 	}
 	
 	public function view($slug, $language = "sk"){
+		$language = valid_language($language);
+		$this->data['language_ext'] = get_language_ext($language);
 		$this->lang->load("general", $language);
 		$this->lang->load("filter", $language);
 		$this->lang->load("product", $language);
 		$this->data['lang'] = $this->lang;
 		$this->data['language'] = $language;
-		$this->data['shirt'] = $this->product_model->get_by_slug($slug);
+		$this->data['shirt'] = $this->product_model->get_by_slug($slug, $this->data['language_ext']);
 		$this->data['show_error'] = false;
-		$this->data['comments'] = $this->comment_model->get_by_product_id($this->data['shirt']['id']);
 		if ($this->data['shirt'] != false){
+			//akcie co moze robit lognuty user
 			if (is_login($this)){
+				//comment
 				if ($this->input->post('send') != false){
 					$this->data['show_error'] = true;
 				}
@@ -145,6 +154,7 @@ class Shirt extends CI_Controller{
 				}
 			}
 			
+			$this->data['comments'] = $this->comment_model->get_by_product_id($this->data['shirt']['id']);
 			$this->data['title'] = "totosomja - ".$this->data['shirt']['product_name'];
 			$this->data['db'] = array(
 					'size' => $this->size_model->get(),

@@ -8,8 +8,8 @@ td.center{
 	text-align: center;
 }
 #body_left{
-  padding:20px 40px;
-  width:460px;
+  padding: 10px;
+  width: 520px;
 }
 #body_left a{
   color:#000000;
@@ -30,7 +30,7 @@ td.center{
 #body_right_simulator{
 	width: 240px;
 	position: relative;
-	left: 110px;
+	left: 130px;
 }
 #motd_preview{
 	background-color:rgb(4, 180, 174);
@@ -68,7 +68,7 @@ td.center{
 }
 .light_blue_bg input[type=text], .light_blue_bg textarea{
 	padding: 0px;
-	margin: 0px;
+	margin: 3px 0px;
 	color: #000000;
 	background-color: #ffffff;
 	width: 218px;
@@ -77,7 +77,7 @@ td.center{
 }
 .light_blue_bg input[type=text].half_size{
 	padding: 0px;
-	margin: 0px;
+	margin: 3px 0px;
 	color: #000000;
 	background-color: #ffffff;
 	width: 108px;

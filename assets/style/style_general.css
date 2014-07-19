@@ -214,7 +214,11 @@ a:hover{
   margin-bottom:10px;
 }
 #navigator a, #motd a{
-  text-decoration:none;
+  text-decoration: underline;
+  color:#ffffff
+}
+#navigator a.exception, #motd a.exception{
+  text-decoration: none;
   color:#ffffff
 }
 #navigator a:hover, #motd a:hover{
@@ -483,4 +487,14 @@ a:hover{
 }
 .vote_percentage{
 	float: right;
+}
+
+.inside_label{
+	position: absolute;
+	right: 1px;
+	top: 4px;
+	background-color: #04B4AE;
+	height: 16px;
+	font-size: 14px;
+	padding: 0px 3px;
 }

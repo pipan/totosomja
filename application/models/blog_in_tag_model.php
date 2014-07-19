@@ -30,13 +30,26 @@ class Blog_in_tag_model extends CI_Model{
 		return (!$this->db->count_all_results() == 1);
 	}
 	
-	public function get($join = array(), $id = false){
-		$select = Blog_in_tag_model::$select_id;
+	public function exists_by_data($data){
+		$this->db->select('id');
+		$this->db->from('blog_in_tag');
+		$this->db->where(array('blog_id =' => $data['blog_id'], 'tag_id =' => $data['tag_id']));
+		return ($this->db->count_all_results() > 0);
+	}
+	
+	public function join($join, $select = false){
+		if ($select == false){
+			$select = Blog_in_tag_model::$select_id;
+		}
 		foreach ($join as $j){
 			$this->db->join($this->relation[$j]['join'], $this->relation[$j]['on'], $this->relation[$j]['type']);
-			$select = array_merge($this->relation[$j]['select'], $select);
+			$select = array_merge($select, $this->relation[$j]['select']);
 		}
-		$this->db->select($select);
+		return $select;
+	}
+	
+	public function get($join = array(), $id = false){
+		$this->db->select($this->join($join, Blog_in_tag_model::$select_id));
 		if ($id == false){
 			$query = $this->db->get('blog_in_tag');
 			return $query->result_array();
@@ -50,16 +63,20 @@ class Blog_in_tag_model extends CI_Model{
 	public function get_by_blog_id($blog_id){
 		$select = array('tag.id');
 		$join = array('tag');
-		foreach ($join as $j){
-			$this->db->join($this->relation[$j]['join'], $this->relation[$j]['on'], $this->relation[$j]['type']);
-			$select = array_merge($this->relation[$j]['select'], $select);
-		}
-		$this->db->select($select);
+		$this->db->select($this->join($join, $select));
 		$query = $this->db->get_where('blog_in_tag', array('blog_id =' => $blog_id));
 		return $query->result_array();
 	}
 	
-	public function get_list_by_tag_slug($tag, $limit_from, $limit){
+	public function get_by_data($data){
+		$select = array('tag.id');
+		$join = array('tag');
+		$this->db->select($this->join($join, $select));
+		$query = $this->db->get_where('blog_in_tag', array('blog_in_tag.blog_id =' => $data['blog_id'], 'tag.language_id =' => $data['language_id']));
+		return $query->result_array();
+	}
+	
+	public function get_list_by_data($data, $limit_from, $limit){
 		$select = Blog_in_tag_model::$select;
 		$join = array('tag', 'blog');
 		foreach ($join as $j){
@@ -67,7 +84,7 @@ class Blog_in_tag_model extends CI_Model{
 			$select = array_merge($this->relation[$j]['select'], $select);
 		}
 		$this->db->select($select);
-		$this->db->where(array('tag_slug =' => $tag));
+		$this->db->where(array('tag.tag_slug =' => $data['tag_slug'], 'tag.language_id =' => $data['language_id']));
 		$query = $this->db->get('blog_in_tag', $limit, $limit_from);
 		return $query->result_array();
 	}
@@ -86,8 +103,10 @@ class Blog_in_tag_model extends CI_Model{
 	
 	public function save($data, $id = false){
 		if ($id == false){
-			$this->db->insert('blog_in_tag', $data);
-			$ret = $this->db->insert_id();
+			if ($this->exists_by_data($data) == false){
+				$this->db->insert('blog_in_tag', $data);
+				$ret = $this->db->insert_id();
+			}
 		}
 		else{
 			$this->db->where(array('id =' => $id));
@@ -97,7 +116,8 @@ class Blog_in_tag_model extends CI_Model{
 		return $ret;
 	}
 	
-	public function detach_tags($blog_id){
-		$this->db->delete('blog_in_tag', array('blog_id' => $blog_id));
+	public function detach_tags($blog_id, $lang_id){
+		$sql = "DELETE FROM blog_in_tag WHERE blog_id=".$blog_id." AND tag_id IN (SELECT id FROM tag WHERE language_id=".$lang_id.")";
+		$this->db->query($sql);
 	}
 }

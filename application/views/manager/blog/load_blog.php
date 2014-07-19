@@ -37,5 +37,12 @@ function load(){
 	editor.components.video.render();
 	editor.components.tag.render();
 	editor.id = <?php echo $blog_id;?>; 
+	<?php 
+	if (isset($blog_lang)){
+		?>
+		editor.lang = '<?php echo $blog_lang;?>';
+		<?php	
+	}
+	?>
 }
 </script>

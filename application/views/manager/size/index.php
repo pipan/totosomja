@@ -6,6 +6,7 @@
 		<table>
 			<tr>
 				<td>name</td>
+				<td>name_en</td>
 				<td></td>
 			</tr>
 			<?php
@@ -13,6 +14,7 @@
 				?>
 				<tr>
 					<td><?php echo $s["size_name"];?></td>
+					<td><?php echo $s["size_name_en"];?></td>
 					<td><a href = "<?php echo base_url()."index.php/admin/size/edit/".$s["id"];?>"><img src="<?php echo assets_url()."images/update_logo.png";?>" />change</a></td>
 				</tr>
 				<?php

@@ -69,7 +69,7 @@ class Poll_vote_model extends CI_Model{
 	}
 	
 	public function get_vote($poll_id){
-		$sql = "SELECT COUNT(poll_vote.id) as vote, poll_answer.answer, poll_answer.id FROM poll_vote
+		$sql = "SELECT COUNT(poll_vote.id) as vote, poll_answer.answer, poll_answer.answer_en, poll_answer.id FROM poll_vote
 				RIGHT JOIN poll_answer ON poll_vote.poll_answer_id=poll_answer.id
 				WHERE poll_answer.id IN (SELECT id from poll_answer WHERE poll_answer.poll_id=".$poll_id.")
 				GROUP BY poll_answer.id ORDER BY poll_answer.id ASC";
