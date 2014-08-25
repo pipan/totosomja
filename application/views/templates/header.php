@@ -27,6 +27,17 @@
 		</div>
 		<div id="main">
 			<div id="main_center">
+				<div id="language">
+					<?php 
+					foreach ($lang_label as $label){
+						?>
+						<div class="language_label">
+							<a class="<?php echo $label['class'];?>" href="<?php echo $label['link'];?>"><?php echo $label['text'];?></a>
+						</div>
+						<?php 
+					}
+					?>
+				</div>
 				<div id="header">
 					<div id="header_title" style="overflow: visible;">
 						<a href="<?php echo base_url()."index.php/".$language;?>">
@@ -36,7 +47,17 @@
 						</a>
 						<div id="header_login">
 							<div class="header_login_item">
-								<a href=""><?php echo $lang->line('header_cart');?></a>
+								<form id="paypal_view_cart" target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+									<input type="hidden" name="cmd" value="_cart">
+									<input type="hidden" name="business" value="totosomja@mail.com">
+									<!--
+									<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_viewcart_LG.gif" border="0" name="submit" alt="">
+									<img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
+									-->
+									<a href="javascript:void(0);" onClick="submitForm('#paypal_view_cart');"><?php echo $lang->line('header_cart');?></a>
+									<INPUT type="hidden" name="noshipping" value="0">
+									<input type="hidden" name="display" value="1">
+								</form>
 							</div>
 							<div class="header_login_item" style="overflow: visible;min-width: 200px;">
 								<?php

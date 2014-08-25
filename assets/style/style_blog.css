@@ -10,6 +10,7 @@
 	clear: left
 }
 #blog_header_info_date{
+	padding: 8px 0px;
 	float: right;
 }
 #blog_body{
@@ -43,14 +44,14 @@
 }
 .blog_tags_block{
 	clear: both;
-	padding: 10px;
+	padding: 10px 0px;
 }
 .blog_tag{
 	float: left;
 	color: #ffffff;
 	background-color: #04B4AE;
 	padding: 5px 10px;
-	margin: 0px 10px;
+	margin: 0px 10px 0px 0px;
 }
 .blog_tag a{
 	color: #ffffff;

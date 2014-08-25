@@ -103,6 +103,7 @@ class Shirt extends CI_Controller{
 			$where = $this->filter_to_where($filter);
 			$this->data['filter'] = $this->filter_to_array($filter);
 		}
+		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/shirt/'.$page.$this->data['filter']['page_link'], array(), $language);
 		
 		$this->data['title'] = $this->lang->line('title_t_shirt_index');
 		$this->data['shirt'] = $this->product_model->get_sellable_list($where, ($page - 1) * $this->limit, $this->limit);
@@ -131,7 +132,17 @@ class Shirt extends CI_Controller{
 		$this->data['language'] = $language;
 		$this->data['shirt'] = $this->product_model->get_by_slug($slug, $this->data['language_ext']);
 		$this->data['show_error'] = false;
+		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/shirt/'.$slug, array(), $language);
 		if ($this->data['shirt'] != false){
+			$replace = array(
+					'en' => array(
+							'%s' => $this->data['shirt']['product_slug_en'],
+					),
+					'sk' => array(
+							'%s' => $this->data['shirt']['product_slug'],
+					),
+			);
+			$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/shirt/%s', $replace, $language);
 			//akcie co moze robit lognuty user
 			if (is_login($this)){
 				//comment

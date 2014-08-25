@@ -10,6 +10,11 @@ class Blog_series extends CI_Controller{
 	
 	public function index(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - blog series";
 			$data['series'] = $this->blog_series_model->get();
 			$data['admin_id'] = $this->session->userdata('admin_id');
@@ -39,6 +44,11 @@ class Blog_series extends CI_Controller{
 	
 	public function new_blog_serie(){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - new series";
 			$data['functions'] = array(
 					array(
@@ -47,7 +57,8 @@ class Blog_series extends CI_Controller{
 					),
 			);
 			
-			$this->form_validation->set_rules('name', 'serie name', 'required');
+			$this->form_validation->set_rules('name', 'serie name', 'required|max_length[50]');
+			$this->form_validation->set_rules('name_en', 'serie name en', 'required|max_length[50]');
 			
 			if ($this->form_validation->run() == false){
 				$this->load->view("templates/header_manager", $data);
@@ -59,6 +70,7 @@ class Blog_series extends CI_Controller{
 				$table_data = array(
 						'admin_id' => $this->session->userdata('admin_id'),
 						'series_name' => $this->input->post('name'),
+						'series_name_en' => $this->input->post('name_en'),
 				);
 				$this->blog_series_model->save($table_data);
 				redirect("admin/blog_series");
@@ -71,6 +83,11 @@ class Blog_series extends CI_Controller{
 	
 	public function edit($id){
 		if (is_admin_login($this)){
+			$language = "en";
+			$this->lang->load("general", $language);
+			$data['lang'] = $this->lang;
+			$data['language'] = $language;
+			
 			$data['title'] = "totosomja - new series";
 			$data['functions'] = array(
 					array(
@@ -82,7 +99,8 @@ class Blog_series extends CI_Controller{
 			if ($id > 0 && sizeof($this->blog_series_model->get($id)) > 0 && $this->blog_series_model->can_edit($id, $this->session->userdata('admin_id'))){
 				$data['series'] = $this->blog_series_model->get($id);
 			
-				$this->form_validation->set_rules('name', 'serie name', 'required');
+				$this->form_validation->set_rules('name', 'serie name', 'required|max_length[50]');
+				$this->form_validation->set_rules('name_en', 'serie name en', 'required|max_length[50]');
 			
 				if ($this->form_validation->run() === FALSE){
 					$this->load->view("templates/header_manager", $data);
@@ -92,8 +110,9 @@ class Blog_series extends CI_Controller{
 				}
 				else{
 					$table_data = array(
-						'admin_id' => $this->session->userdata('admin_id'),
-						'series_name' => $this->input->post('name'),
+							'admin_id' => $this->session->userdata('admin_id'),
+							'series_name' => $this->input->post('name'),
+							'series_name_en' => $this->input->post('name_en'),
 					);
 					$this->blog_series_model->save($table_data, $id);
 					redirect("admin/blog_series");

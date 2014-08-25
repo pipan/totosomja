@@ -2,8 +2,8 @@
 class Blog_series_model extends CI_Model{
 	
 	public $relation;
-	public static $select = array('blog_series.admin_id', 'blog_series.series_name');
-	public static $select_id = array('blog_series.id', 'blog_series.admin_id', 'blog_series.series_name');
+	public static $select = array('blog_series.admin_id', 'blog_series.series_name', 'blog_series.series_name_en');
+	public static $select_id = array('blog_series.id', 'blog_series.admin_id', 'blog_series.series_name', 'blog_series.series_name_en');
 	
 	public function __construct(){
 		parent::__construct();

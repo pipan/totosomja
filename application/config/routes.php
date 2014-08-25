@@ -63,6 +63,8 @@ $route['admin/color'] = "admin/color";
 $route['admin/product/new_product/(:num)'] = "admin/product/new_product/$1";
 $route['admin/product/(:any)'] = "admin/product/$1";
 $route['admin/product'] = "admin/product";
+$route['(:any)/admin/manager/(:any)'] = "admin/manager/$2/$1";
+$route['(:any)/admin/manager'] = "admin/manager/index/$1";
 $route['admin/manager/(:any)'] = "admin/manager/$1";
 $route['admin/manager'] = "admin/manager";
 /*
@@ -71,7 +73,9 @@ $route['admin/manager'] = "admin/manager";
 $route['admin/system/(:any)'] = "admin/system/$1";
 $route['admin/system'] = "admin/system";
 
-$route['admin/(:any)'] = "admin//$1";
+$route['(:any)/admin/(:any)'] = "admin/$2/$1";
+$route['(:any)/admin'] = "admin/manager/index/$1";
+$route['admin/(:any)'] = "admin/$1";
 $route['admin'] = "admin/manager";
 
 /*

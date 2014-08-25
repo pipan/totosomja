@@ -13,6 +13,10 @@
 					<input id="serie_name" type="text" name="name" value="<?php echo set_value('name');?>" />
 				</div>
 				<div>
+					<label for="serie_name_en">name en</label>
+					<input id="serie_name_en" type="text" name="name_en" value="<?php echo set_value('name_en');?>" />
+				</div>
+				<div>
 					<input type="submit" name="add" value="add" />
 				</div>
 			</form>

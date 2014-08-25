@@ -157,19 +157,19 @@ if (!function_exists("date_to_word")){
 		$rozdiel = $now_min - $datum_min;
 		if ($rozdiel < 60){
 			$n = $rozdiel;
-			$w = get_dtw_minute($language, $rozdiel);
+			$w = get_dtw_minute($language, $n);
 		}
 		elseif ($rozdiel < (24 * 60)){
 			$n = floor($rozdiel/60);
-			$w = get_dtw_hour($language, $rozdiel);
+			$w = get_dtw_hour($language, $n);
 		}
 		elseif ($rozdiel < (30 * 24 * 60)){
 			$n = floor($rozdiel / (60 * 24));
-			$w = get_dtw_day($language, $rozdiel);
+			$w = get_dtw_day($language, $n);
 		}
 		elseif ($rozdiel < (12 * 30 * 24 * 60)){
 			$n = floor($rozdiel / (60 * 24 * 30));
-			$w = get_dtw_month($language, $rozdiel);
+			$w = get_dtw_month($language, $n);
 		}
 		else{
 			$n = floor($rozdiel / (60 * 24 * 30 * 12));

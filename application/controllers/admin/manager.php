@@ -23,7 +23,7 @@ class Manager extends CI_Controller{
 		$this->session->set_userdata('admin_id', $this->admin_model->search_full_nick($name)['id']);
 	}
 	
-	public function index(){
+	public function index($language = "sk"){
 		if (is_admin_login($this)){
 			$language = "sk";
 			$this->lang->load("general", $language);
@@ -42,12 +42,12 @@ class Manager extends CI_Controller{
 		}
 	}
 	
-	public function login(){
-		$language = "sk";
+	public function login($language = "sk"){
 		$this->lang->load("general", $language);
 		$data['lang'] = $this->lang;
 		$data['language'] = $language;
 		$data['login'] = $this->session->userdata('login');
+		$data['lang_label'] = get_lang_label(base_url().'index.php/%l/admin/manager/login', array(), $language);
 		
 		$this->form_validation->set_rules('name', 'name', 'required');
 		$this->form_validation->set_rules('password', 'password', 'required|callback_login_validation');

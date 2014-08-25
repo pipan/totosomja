@@ -95,12 +95,25 @@ function EditorApplication(){
 		}
 		var post = $.post(url, this.getSendableData());
 		post.done(function(data, textStatus, jqXHR){
-			//$("#result").html(data);
-			redirect(BASE_URL + "index.php/admin/message");
+			if (jqXHR.responseText == "" || jqXHR.responseText == "fail"){
+				redirect(BASE_URL + "index.php/admin/message/error_save");
+			}
+			else if (jqXHR.responseText == "success"){
+				redirect(BASE_URL + "index.php/admin/message");
+			}
+			else{
+				$("#result").html(jqXHR.responseText);
+			}
+			$('body').css({'cursor':'default'});
+			$('#body_right a').css({'cursor':'default'});
 		});
 		post.fail(function(jqXHR, textStatus, errorThrown){
-			//$("#result").html(textStatus + " - " + errorThrown + "-" + jqXHR.status + "<br>" + jqXHR.responseText);
-			redirect(BASE_URL + "index.php/admin/message/error_save");
+			if (jqXHR.responseText == "" || jqXHR.responseText == "fail"){
+				redirect(BASE_URL + "index.php/admin/message/error_save");
+			}
+			else{
+				$("#result").html(jqXHR.responseText);
+			}
 		});
 	};
 	

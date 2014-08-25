@@ -18,10 +18,10 @@
 		?>
 		<div id="navigator" class="light_blue_bg">
 			<div>
-				<a href="<?php echo base_url();?>index.php/admin/blog">blog</a>
+				<a class="exception" href="<?php echo base_url();?>index.php/admin/blog">blog</a>
 			</div>
 			<div>
-				<a href="<?php echo base_url();?>index.php/admin/blog_series">blog serie</a>
+				<a class="exception" href="<?php echo base_url();?>index.php/admin/blog_series">blog serie</a>
 			</div>
 		</div>
 	</div>

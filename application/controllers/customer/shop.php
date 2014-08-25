@@ -38,13 +38,7 @@ class Shop extends CI_Controller{
 		$this->data['lang'] = $this->lang;
 		$this->data['language'] = $language;
 		
-		$this->data['filter'] = array(
-				'page_link' => "",
-				'gender' => "",
-				'size' => "",
-				'color' => "",
-				'price' => "",
-		);
+		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l', array(), $language);
 		
 		$this->data['message'] = $this->message_model->get_last();
 		if ($this->data['message'] != false){

@@ -56,8 +56,8 @@ class Color extends CI_Controller{
 				),
 			);
 			
-			$this->form_validation->set_rules('name', 'color name', 'required');
-			$this->form_validation->set_rules('name_en', 'color name en', 'required');
+			$this->form_validation->set_rules('name', 'color name', 'required|max_length[30]');
+			$this->form_validation->set_rules('name_en', 'color name en', 'required|max_length[30]');
 			
 			if ($this->form_validation->run() === FALSE){
 				$this->load->view("templates/header_manager", $data);
@@ -97,8 +97,8 @@ class Color extends CI_Controller{
 			if ($id > 0 && sizeof($this->color_model->get($id)) > 0){
 				$data['color'] = $this->color_model->get($id);
 				
-				$this->form_validation->set_rules('name', 'color name', 'required');
-				$this->form_validation->set_rules('name_en', 'color name en', 'required');
+				$this->form_validation->set_rules('name', 'color name', 'required|max_length[30]');
+				$this->form_validation->set_rules('name_en', 'color name en', 'required|max_length[30]');
 				
 				if ($this->form_validation->run() === FALSE){
 					$this->load->view("templates/header_manager", $data);

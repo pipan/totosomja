@@ -11,13 +11,22 @@ form{
   padding:0px;
   margin:0px;
 }
+input[type=button], input[type=submit]{
+	background-color:#0B243B;
+	border:solid 3px #0B243B;
+	color:#ffffff;
+	outline: none;
+	padding: 3px 10px;
+	margin: 2px;
+	cursor: pointer;
+}
 input[type=password], input[type=text], select, textarea{
   background-color:#04B4AE;
   border:solid 3px #04B4AE;
   color:#ffffff;
   outline: none;
   padding: 1px;
-  margin: 2px;
+  margin: 2pxv;
   }
 input[type=password].dark_exception, input[type=text].dark_exception, select.dark_exception, textarea.dark_exception{
   background-color:#0B243B;
@@ -96,8 +105,11 @@ a:hover{
 }
 #main_center{
   position:relative;
-  margin:80px auto 0px auto;
+  margin:50px auto 0px auto;
   width:800px;
+}
+#language{
+	text-align: right;
 }
 #header{
   position:relative;
@@ -341,6 +353,24 @@ a:hover{
   background-color:#262626;
   z-index:3;
   opacity:0.8;
+}
+
+#paypal_add_to_cart{
+	display: inline-block;
+}
+
+.language_label{
+	float: right;
+	margin: 5px 0px 5px 5px;
+}
+.language_label a{
+	display: block;
+	padding: 5px 10px;
+	color: #000000;
+	text-decoration: none;
+}
+.language_label a:hover{
+	background-color: #04B4AE;
 }
 
 .social_item{

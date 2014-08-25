@@ -227,7 +227,7 @@ class Blog extends CI_Controller{
 						),
 				);
 				
-				$this->form_validation->set_rules('title', 'title', 'required');
+				$this->form_validation->set_rules('title', 'title', 'required|max_length[70]');
 				$this->form_validation->set_rules('titleTextarea', 'textarea title', 'required');
 				$this->form_validation->set_rules('body', 'body', 'required');
 				$this->form_validation->set_rules('bodyTextarea', 'textarea body', 'required');
@@ -242,7 +242,7 @@ class Blog extends CI_Controller{
 					$log .= "THUMBNAIL: ".$this->input->post('thumbnail').PHP_EOL;
 					$log .= "LANG: ".$edit_lang.PHP_EOL;
 					write_file("./content/blog/log/".date("Y-n-d-H-i-s").".txt", $log);
-					//echo "fail";
+					echo validation_errors();
 				}
 				else{
 					$lang = $this->language_model->get_by_name($edit_lang);
@@ -336,11 +336,11 @@ class Blog extends CI_Controller{
 						}
 					}
 					mkdir("./content/blog/".$id."/comments", 0777);
-					//echo "success";
+					echo "success";
 				}
 			}
 			else{
-				//echo "fail";
+				echo "fail";
 			}
 		}
 		else{

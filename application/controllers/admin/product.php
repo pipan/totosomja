@@ -19,6 +19,7 @@ class Product extends CI_Controller{
 		$this->load->model("product_model");
 		$this->load->model("product_changelog_model");
 		$this->load->model("wishlist_model");
+		require './application/libraries/Requests.php';
 	}
 	
 	public function valid_id($val, $id){
@@ -39,6 +40,16 @@ class Product extends CI_Controller{
 		}
 		$this->form_validation->set_message('image_upload', 'Cannot upload image '.$id.', make sure you choose file and image size is less then 512kB or contact system admin');
 		return false;
+	}
+	
+	public function image_max_length($val, $max){
+		if (strlen($this->upload->data()['file_name']) <= $max){
+			return true;
+		}
+		else{
+			$this->form_validation->set_message('image_max_length', 'image name cannot be longen then 100 characters (extension included)');
+			return false;
+		}
 	}
 	
 	public function is_unique_sellable($val, $id){
@@ -200,6 +211,7 @@ class Product extends CI_Controller{
 	
 	public function new_product($id = false){
 		if (is_admin_login($this)){
+			Requests::register_autoloader();
 			$language = "en";
 			$this->lang->load("general", $language);
 			$data['lang'] = $this->lang;
@@ -227,8 +239,8 @@ class Product extends CI_Controller{
 				);
 			}
 			
-			$this->form_validation->set_rules('name', 'name', 'required|callback_is_unique_sellable[0]|valid_id['.$id.']');
-			$this->form_validation->set_rules('name_en', 'name en', 'required|callback_is_unique_sellable_en[0]');
+			$this->form_validation->set_rules('name', 'name', 'required|max_length[70]|callback_is_unique_sellable[0]|valid_id['.$id.']');
+			$this->form_validation->set_rules('name_en', 'name en', 'required|max_length[70]|callback_is_unique_sellable_en[0]');
 			$this->form_validation->set_rules('category_id', 'category', '');
 			$this->form_validation->set_rules('type_id', 'type', 'required');
 			$this->form_validation->set_rules('price', 'price', 'required');
@@ -236,11 +248,11 @@ class Product extends CI_Controller{
 			$this->form_validation->set_rules('size_id', 'size', '');
 			$this->form_validation->set_rules('material_id', 'material', '');
 			$this->form_validation->set_rules('supplier_id', 'supplier', '');
-			$this->form_validation->set_rules('store', 'store', 'required');
-			$this->form_validation->set_rules('gender', 'gender', 'required');
+			$this->form_validation->set_rules('store', 'store', 'required|is_natural');
+			$this->form_validation->set_rules('gender', 'gender', 'required|is_natural');
 			$this->form_validation->set_rules('description', 'description', 'required');
 			$this->form_validation->set_rules('description_en', 'description en', 'required');
-			$this->form_validation->set_rules('image_name', 'image', 'callback_image_upload['.$id.']');
+			$this->form_validation->set_rules('image_name', 'image', 'callback_image_upload['.$id.']|max_length[100]');
 			
 			$config['upload_path'] = './content/product/image/';
 			$config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -275,36 +287,77 @@ class Product extends CI_Controller{
 				$this->load->view("templates/footer", $data);
 			}
 			else{
-				$table_data = array(
-						'product_name' => $this->input->post('name'),
-						'product_name_en' => $this->input->post('name_en'),
-						'product_slug' => url_title(convert_accented_characters($this->input->post('name')), '-', TRUE),
-						'product_slug_en' => url_title(convert_accented_characters($this->input->post('name_en')), '-', TRUE),
-						'category_id' => get_foreign($this->input->post('category_id')),
-						'type_id' => get_foreign($this->input->post('type_id')),
-						'color_id' => get_foreign($this->input->post('color_id')),
-						'size_id' => get_foreign($this->input->post('size_id')),
-						'material_id' => get_foreign($this->input->post('material_id')),
-						'supplier_id' => get_foreign($this->input->post('supplier_id')),
-						'price' => $this->input->post('price'),
-						'store' => $this->input->post('store'),
-						'gender' => get_foreign($this->input->post('gender'), true),
-						'product_image' => $this->input->post('image_name'),
-						'sellable' => 1,
-						'canceled' => 0,
-						'created' => date("Y-n-d H:i:s"),
+				$item_name = url_title(convert_accented_characters($this->input->post('name_en')), '-', TRUE);
+				//registration paypal button
+				$paypal_data = array(
+						'USER' => "totosomja_api2.mail.com",
+						'PWD' => "1405795830",
+						'SIGNATURE' => "APgtiH9avwDmCyY7T5OGvtJRglqLAPerxERo8.lx6l020Y8kNE3IMOdC",
+						'VERSION' => "51.0",
+						'METHOD' => "BMCreateButton",
+						'BUTTONTYPE' => "CART",
+						'UTTONSUBTYPE' => "PRODUCTS",
+						'BUTTONCOUNTRY' => "US",
+						'L_BUTTONVAR1' => 'item_name='.$item_name,
+						'L_BUTTONVAR2' => 'amount='.$this->input->post('price'),
+						'L_BUTTONVAR3' => 'currency_code=EUR',
 				);
-				$id = $this->product_model->save($table_data);
-				write_file("./content/product/description/".$id.".txt", $this->input->post('description'));
-				write_file("./content/product/description/".$id."_en.txt", $this->input->post('description_en'));
-				$table_data = array(
-						'product_id' => $id,
-						'admin_id' => $this->session->userdata('admin_id'),
-						'change_id' => 7,
-						'change_date' => date("Y-n-d H:i:s"),
-				);
-				$this->product_changelog_model->save($table_data);
-				redirect("admin/product");
+				$paypal = Requests::post('https://api-3t.sandbox.paypal.com/nvp', array(), $paypal_data);
+				if ($paypal->success){
+					parse_str($paypal->body, $paypal_response_data);
+					if ($paypal_response_data['ACK'] == "Success"){
+						$table_data = array(
+								'product_name' => $this->input->post('name'),
+								'product_name_en' => $this->input->post('name_en'),
+								'product_slug' => url_title(convert_accented_characters($this->input->post('name')), '-', TRUE),
+								'product_slug_en' => $item_name,
+								'category_id' => get_foreign($this->input->post('category_id')),
+								'type_id' => get_foreign($this->input->post('type_id')),
+								'color_id' => get_foreign($this->input->post('color_id')),
+								'size_id' => get_foreign($this->input->post('size_id')),
+								'material_id' => get_foreign($this->input->post('material_id')),
+								'supplier_id' => get_foreign($this->input->post('supplier_id')),
+								'price' => $this->input->post('price'),
+								'paypal_button' => $paypal_response_data['HOSTEDBUTTONID'],
+								'store' => $this->input->post('store'),
+								'gender' => get_foreign($this->input->post('gender'), true),
+								'product_image' => $this->input->post('image_name'),
+								'sellable' => 1,
+								'canceled' => 0,
+								'created' => date("Y-n-d H:i:s"),
+						);
+						$id = $this->product_model->save($table_data);
+						
+						write_file("./content/product/description/".$id.".txt", $this->input->post('description'));
+						write_file("./content/product/description/".$id."_en.txt", $this->input->post('description_en'));
+						$table_data = array(
+								'product_id' => $id,
+								'admin_id' => $this->session->userdata('admin_id'),
+								'change_id' => 7,
+								'change_date' => date("Y-n-d H:i:s"),
+						);
+						$this->product_changelog_model->save($table_data);
+						redirect("admin/product");
+					}
+					else{
+						$log .= "TYPE: new".PHP_EOL;
+						$log .= "SUCCESS: ".$paypal->success.PHP_EOL;
+						$log .= "ITEM_NAME: ".$item_name.PHP_EOL;
+						$log .= "PRICE: ".$this->input->post('price').PHP_EOL;
+						$log .= "RESPONSE: ".$paypal->body.PHP_EOL;
+						write_file("./content/product/log/".date("Y-n-d-H-i-s").".txt", $log);
+						echo "Error: paypal doesnt respons correctly, contact admin or try again later";
+					}
+				}
+				else{
+					$log .= "TYPE: new".PHP_EOL;
+					$log .= "SUCCESS: ".$paypal->success.PHP_EOL;
+					$log .= "ITEM_NAME: ".$item_name.PHP_EOL;
+					$log .= "PRICE: ".$this->input->post('price').PHP_EOL;
+					$log .= "RESPONSE: ".$paypal->body.PHP_EOL;
+					write_file("./content/product/log/".date("Y-n-d-H-i-s").".txt", $log);
+					echo "Error: paypal doesnt respons correctly, contact admin or try again later";
+				}
 			}
 		}
 		else{
@@ -314,6 +367,7 @@ class Product extends CI_Controller{
 	
 	public function edit($id = 0){
 		if (is_admin_login($this)){
+			Requests::register_autoloader();
 			$language = "en";
 			$this->lang->load("general", $language);
 			$data['lang'] = $this->lang;
@@ -327,17 +381,17 @@ class Product extends CI_Controller{
 					),
 			);
 			if ($id > 0 && $this->product_model->is_sellable(array('product.id =' => $id))){
-				$this->form_validation->set_rules('name', 'name', 'required|callback_is_unique_sellable['.$id.']');
-				$this->form_validation->set_rules('name_en', 'name en', 'required|callback_is_unique_sellable_en['.$id.']');
-				$this->form_validation->set_rules('category_id', 'category', 'required');
+				$this->form_validation->set_rules('name', 'name', 'required|max_length[70]|callback_is_unique_sellable['.$id.']');
+				$this->form_validation->set_rules('name_en', 'name en', 'required|max_length[70]|callback_is_unique_sellable_en['.$id.']');
+				$this->form_validation->set_rules('category_id', 'category', '');
 				$this->form_validation->set_rules('type_id', 'type', 'required');
 				$this->form_validation->set_rules('price', 'price', 'required');
-				$this->form_validation->set_rules('color_id', 'color', 'required');
-				$this->form_validation->set_rules('size_id', 'size', 'required');
-				$this->form_validation->set_rules('material_id', 'material', 'required');
-				$this->form_validation->set_rules('supplier_id', 'supplier', 'required');
-				$this->form_validation->set_rules('store', 'store', 'required');
-				$this->form_validation->set_rules('gender', 'gender', 'required');
+				$this->form_validation->set_rules('color_id', 'color', '');
+				$this->form_validation->set_rules('size_id', 'size', '');
+				$this->form_validation->set_rules('material_id', 'material', '');
+				$this->form_validation->set_rules('supplier_id', 'supplier', '');
+				$this->form_validation->set_rules('store', 'store', 'required|is_natural');
+				$this->form_validation->set_rules('gender', 'gender', 'required|is_natural');
 				$this->form_validation->set_rules('description', 'description', 'required');
 				$this->form_validation->set_rules('description_en', 'description en', 'required');
 				
@@ -364,45 +418,97 @@ class Product extends CI_Controller{
 					$this->load->view("templates/footer", $data);
 				}
 				else{
-					$this->product_model->set_canceled($id);
-					$image = $data['product']['product_image'];
-					if ($this->image_upload("", $id)){
-						$image = $this->upload->data()['file_name'];
+					$item_name = url_title(convert_accented_characters($this->input->post('name_en')), '-', TRUE);
+					//registration paypal button
+					$paypal_data = array(
+							'USER' => "totosomja_api2.mail.com",
+							'PWD' => "1405795830",
+							'SIGNATURE' => "APgtiH9avwDmCyY7T5OGvtJRglqLAPerxERo8.lx6l020Y8kNE3IMOdC",
+							'VERSION' => "51.0",
+							'METHOD' => "BMCreateButton",
+							'BUTTONTYPE' => "CART",
+							'UTTONSUBTYPE' => "PRODUCTS",
+							'BUTTONCOUNTRY' => "US",
+							'L_BUTTONVAR1' => 'item_name='.$item_name,
+							'L_BUTTONVAR2' => 'amount='.$this->input->post('price'),
+					);
+					$paypal = Requests::post('https://api-3t.sandbox.paypal.com/nvp', array(), $paypal_data);
+					if ($paypal->success){
+						parse_str($paypal->body, $paypal_response_data);
+						if ($paypal_response_data['ACK'] == "Success"){
+							$cancel = $this->product_model->get($id);
+							//delete paypal button
+							$paypal_data = array(
+									'USER' => "totosomja_api2.mail.com",
+									'PWD' => "1405795830",
+									'SIGNATURE' => "APgtiH9avwDmCyY7T5OGvtJRglqLAPerxERo8.lx6l020Y8kNE3IMOdC",
+									'VERSION' => "51.0",
+									'METHOD' => "BMManageButtonStatus",
+									'HOSTEDBUTTONID' => $cancel['paypal_button'],
+									'BUTTONSTATUS' => "DELETE",
+							);
+							Requests::post('https://api-3t.sandbox.paypal.com/nvp', array(), $paypal_data);
+							
+							$this->product_model->set_canceled($id);
+							$image = $data['product']['product_image'];
+							if ($this->image_upload("", $id) && $this->image_max_length("", 100)){
+								$image = $this->upload->data()['file_name'];
+							}
+							$table_data = array(
+									'product_name' => $this->input->post('name'),
+									'product_name_en' => $this->input->post('name_en'),
+									'product_slug' => url_title(convert_accented_characters($this->input->post('name')), '-', TRUE),
+									'product_slug_en' => $item_name,
+									'category_id' => $this->input->post('category_id'),
+									'type_id' => $this->input->post('type_id'),
+									'color_id' => $this->input->post('color_id'),
+									'size_id' => $this->input->post('size_id'),
+									'material_id' => $this->input->post('material_id'),
+									'supplier_id' => $this->input->post('supplier_id'),
+									'price' => $this->input->post('price'),
+									'paypal_button' => $paypal_response_data['HOSTEDBUTTONID'],
+									'store' => $this->input->post('store'),
+									'gender' => $this->input->post('gender'),
+									'product_image' => $image,
+									'sellable' => 1,
+									'canceled' => 0,
+									'created' => date("Y-n-d H:i:s"),
+							);
+							$id_new = $this->product_model->save($table_data);
+							$table_data = array(
+									'product_id' => $id_new,
+							);
+							$this->wishlist_model->change_product($id, $table_data);
+							write_file("./content/product/description/".$id_new.".txt", $this->input->post('description'));
+							write_file("./content/product/description/".$id_new."_en.txt", $this->input->post('description_en'));
+							$table_data = array(
+									'product_id' => $id_new,
+									'admin_id' => $this->session->userdata('admin_id'),
+									'change_id' => 6,
+									'change_date' => date("Y-n-d H:i:s"),
+							);
+							$this->product_changelog_model->save($table_data);
+							redirect("admin/product");
+						}
+						else{
+							$log .= "TYPE: edit".PHP_EOL;
+							$log .= "SUCCESS: ".$paypal->success.PHP_EOL;
+							$log .= "ITEM_NAME: ".$item_name.PHP_EOL;
+							$log .= "PRICE: ".$this->input->post('price').PHP_EOL;
+							$log .= "RESPONSE: ".$paypal->body.PHP_EOL;
+							write_file("./content/product/log/".date("Y-n-d-H-i-s").".txt", $log);
+							echo "Error: paypal doesnt respons correctly, contact admin or try again later";
+						}
 					}
-					$table_data = array(
-							'product_name' => $this->input->post('name'),
-							'product_name_en' => $this->input->post('name_en'),
-							'product_slug' => url_title(convert_accented_characters($this->input->post('name')), '-', TRUE),
-							'product_slug_en' => url_title(convert_accented_characters($this->input->post('name_en')), '-', TRUE),
-							'category_id' => $this->input->post('category_id'),
-							'type_id' => $this->input->post('type_id'),
-							'color_id' => $this->input->post('color_id'),
-							'size_id' => $this->input->post('size_id'),
-							'material_id' => $this->input->post('material_id'),
-							'supplier_id' => $this->input->post('supplier_id'),
-							'price' => $this->input->post('price'),
-							'store' => $this->input->post('store'),
-							'gender' => $this->input->post('gender'),
-							'product_image' => $image,
-							'sellable' => 1,
-							'canceled' => 0,
-							'created' => date("Y-n-d H:i:s"),
-					);
-					$id_new = $this->product_model->save($table_data);
-					$table_data = array(
-							'product_id' => $id_new,
-					);
-					$this->wishlist_model->change_product($id, $table_data);
-					write_file("./content/product/description/".$id_new.".txt", $this->input->post('description'));
-					write_file("./content/product/description/".$id_new."_en.txt", $this->input->post('description_en'));
-					$table_data = array(
-							'product_id' => $id_new,
-							'admin_id' => $this->session->userdata('admin_id'),
-							'change_id' => 6,
-							'change_date' => date("Y-n-d H:i:s"),
-					);
-					$this->product_changelog_model->save($table_data);
-					redirect("admin/product");
+					else{
+						$log .= "TYPE: edit".PHP_EOL;
+						$log .= "SUCCESS: ".$paypal->success.PHP_EOL;
+						$log .= "ITEM_NAME: ".$item_name.PHP_EOL;
+						$log .= "PRICE: ".$this->input->post('price').PHP_EOL;
+						$log .= "RESPONSE: ".$paypal->body.PHP_EOL;
+						write_file("./content/product/log/".date("Y-n-d-H-i-s").".txt", $log);
+						echo "Error: paypal doesnt respons correctly, contact admin or try again later";
+					}
 				}
 			}
 			else{

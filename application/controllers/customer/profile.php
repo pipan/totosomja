@@ -47,6 +47,7 @@ class Profile extends CI_Controller{
 			$this->lang->load("profile", $language);
 			$this->lang->load("login", $language);
 			$this->data['language'] = $language;
+			$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/profile/edit', array(), $language);
 			
 			$this->data['functions'] = array(
 					array(
@@ -57,20 +58,20 @@ class Profile extends CI_Controller{
 			
 			$this->data['profile'] = $this->customer_model->get(array('address'), $this->session->userdata('login')['id']);
 			
-			$this->form_validation->set_rules('reg_name', 'name', 'required');
-			$this->form_validation->set_rules('reg_surname', 'surname', 'required');
-			$this->form_validation->set_rules('reg_email', 'email', 'required|valid_email');
+			$this->form_validation->set_rules('reg_name', 'name', 'required|max_length[50]');
+			$this->form_validation->set_rules('reg_surname', 'surname', 'required|max_length[50]');
+			$this->form_validation->set_rules('reg_email', 'email', 'required|valid_email|max_length[100]');
 			
 			$this->form_validation->set_rules('reg_gender', 'gender', '');
 			$this->form_validation->set_rules('reg_day', 'day', 'is_natural');
 			$this->form_validation->set_rules('reg_month', 'month', 'is_natural');
 			$this->form_validation->set_rules('reg_year', 'year', 'is_natural');
 			
-			$this->form_validation->set_rules('reg_street', 'street', 'required');
-			$this->form_validation->set_rules('reg_street_number', 'street number', 'required');
-			$this->form_validation->set_rules('reg_town', 'town', 'required');
-			$this->form_validation->set_rules('reg_postal_code', 'postal code', 'required');
-			$this->form_validation->set_rules('reg_country', 'country code', 'required');
+			$this->form_validation->set_rules('reg_street', 'street', 'required|max_length[50]');
+			$this->form_validation->set_rules('reg_street_number', 'street number', 'required|max_length[10]');
+			$this->form_validation->set_rules('reg_town', 'town', 'required|max_length[50]');
+			$this->form_validation->set_rules('reg_postal_code', 'postal code', 'required|max_length[10]');
+			$this->form_validation->set_rules('reg_country', 'country code', 'required|max_length[40]');
 			$this->form_validation->set_rules('reg_address_id', 'address id', 'required|is_natural');
 			
 			if ($this->form_validation->run() == false){
@@ -121,6 +122,7 @@ class Profile extends CI_Controller{
 			$this->lang->load("profile", $language);
 			$this->lang->load("login", $language);
 			$this->data['language'] = $language;
+			$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/profile/password', array(), $language);
 				
 			$this->data['functions'] = array(
 					array(
@@ -162,6 +164,7 @@ class Profile extends CI_Controller{
 			$this->lang->load("login", $language);
 			$this->lang->load("wishlist", $language);
 			$this->data['language'] = $language;
+			$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/profile/wishlist', array(), $language);
 			$this->data['wish'] = $this->wishlist_model->get_by_customer_id($this->session->userdata('login')['id']);
 			
 			$this->load->view("templates/header", $this->data);

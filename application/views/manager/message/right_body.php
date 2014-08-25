@@ -18,10 +18,7 @@
 		?>
 		<div id="navigator" class="light_blue_bg">
 			<div>
-				<a href="<?php echo base_url();?>index.php/admin/message">message</a>
-			</div>
-			<div>
-				<a href="<?php echo base_url();?>index.php/admin/message/stats">stats</a>
+				<a class="exception" href="<?php echo base_url();?>index.php/admin/message">message</a>
 			</div>
 		</div>
 	</div>

@@ -18,25 +18,25 @@
 		?>
 		<div id="navigator" class="light_blue_bg">
 			<div>
-				<a href="<?php echo base_url();?>index.php/admin/product">products</a>
+				<a class="exception" href="<?php echo base_url();?>index.php/admin/product">products</a>
 			</div>
 			<div>
-				<a href="<?php echo base_url();?>index.php/admin/supplier">suppliers</a>
+				<a class="exception" href="<?php echo base_url();?>index.php/admin/supplier">suppliers</a>
 			</div>
 			<div>
-				<a href="<?php echo base_url();?>index.php/admin/color">colors</a>
+				<a class="exception" href="<?php echo base_url();?>index.php/admin/color">colors</a>
 			</div>
 			<div>
-				<a href="<?php echo base_url();?>index.php/admin/size">sizes</a>
+				<a class="exception" href="<?php echo base_url();?>index.php/admin/size">sizes</a>
 			</div>
 			<div>
-				<a href="<?php echo base_url();?>index.php/admin/material">materials</a>
+				<a class="exception" href="<?php echo base_url();?>index.php/admin/material">materials</a>
 			</div>
 			<div>
-				<a href="<?php echo base_url();?>index.php/admin/category">categories</a>
+				<a class="exception" href="<?php echo base_url();?>index.php/admin/category">categories</a>
 			</div>
 			<div>
-				<a href="<?php echo base_url();?>index.php/admin/type">types</a>
+				<a class="exception" href="<?php echo base_url();?>index.php/admin/type">types</a>
 			</div>
 		</div>
 	</div>

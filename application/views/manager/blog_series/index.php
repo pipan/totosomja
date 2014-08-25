@@ -6,13 +6,15 @@
 		<table>
 			<tr>
 				<td>name</td>
-				<td>change</td>
+				<td>name en</td>
+				<td></td>
 			</tr>
 			<?php
 			foreach($series as $s){
 				?>
 				<tr>
 					<td><?php echo $s["series_name"];?></td>
+					<td><?php echo $s["series_name_en"];?></td>
 					<?php 
 					if ($s["admin_id"] == $admin_id){
 						?>

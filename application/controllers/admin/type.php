@@ -57,8 +57,8 @@ class Type extends CI_Controller{
 					),
 			);
 		
-			$this->form_validation->set_rules('name', 'type name', 'required');
-			$this->form_validation->set_rules('name_en', 'type name en', 'required');
+			$this->form_validation->set_rules('name', 'type name', 'required|max_length[30]');
+			$this->form_validation->set_rules('name_en', 'type name en', 'required|max_length[30]');
 			$this->form_validation->set_rules('description', 'description', 'required');
 			$this->form_validation->set_rules('description_en', 'description en', 'required');
 			
@@ -75,7 +75,7 @@ class Type extends CI_Controller{
 				$this->load->view("templates/footer", $data);
 			}
 			else{
-				if ($this->upload->do_upload('image')){
+				if ($this->upload->do_upload('image') && strlen($this->upload->data()['file_name']) <= 100){
 					$table_data = array(
 							'type_name' => $this->input->post('name'),
 							'type_name_en' => $this->input->post('name_en'),
@@ -117,8 +117,8 @@ class Type extends CI_Controller{
 			if ($id > 0 && sizeof($this->type_model->get($id)) > 0){
 				$data['type'] = $this->type_model->get($id);
 					
-				$this->form_validation->set_rules('name', 'type name', 'required');
-				$this->form_validation->set_rules('name_en', 'type name en', 'required');
+				$this->form_validation->set_rules('name', 'type name', 'required|max_length[30]');
+				$this->form_validation->set_rules('name_en', 'type name en', 'required|max_length[30]');
 				$this->form_validation->set_rules('description', 'description', 'required');
 				$this->form_validation->set_rules('description_en', 'description en', 'required');
 				
@@ -135,7 +135,7 @@ class Type extends CI_Controller{
 					$this->load->view("templates/footer", $data);
 				}
 				else{
-					if ($this->upload->do_upload('image')){
+					if ($this->upload->do_upload('image') && strlen($this->upload->data()['file_name']) <= 100){
 						delete_files("./content/type/image/".$data['type']['type_image']);
 						$table_data = array(
 								'type_name' => $this->input->post('name'),

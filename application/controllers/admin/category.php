@@ -57,8 +57,8 @@ class Category extends CI_Controller{
 				),
 			);
 		
-			$this->form_validation->set_rules('name', 'category name', 'required');
-			$this->form_validation->set_rules('name_en', 'category name en', 'required');
+			$this->form_validation->set_rules('name', 'category name', 'required|max_length[30]');
+			$this->form_validation->set_rules('name_en', 'category name en', 'required|max_length[30]');
 			$this->form_validation->set_rules('description', 'description', 'required');
 			$this->form_validation->set_rules('description_en', 'description en', 'required');
 			
@@ -75,7 +75,7 @@ class Category extends CI_Controller{
 				$this->load->view("templates/footer", $data);
 			}
 			else{
-				if ($this->upload->do_upload('image')){
+				if ($this->upload->do_upload('image') && strlen($this->upload->data()['file_name']) <= 100){
 					$table_data = array(
 							'category_name' => $this->input->post('name'),
 							'category_name_en' => $this->input->post('name_en'),
@@ -117,8 +117,8 @@ class Category extends CI_Controller{
 			if ($id > 0 && sizeof($this->category_model->get($id)) > 0){
 				$data['category'] = $this->category_model->get($id);
 					
-				$this->form_validation->set_rules('name', 'category name', 'required');
-				$this->form_validation->set_rules('name_en', 'category name en', 'required');
+				$this->form_validation->set_rules('name', 'category name', 'required|max_length[30]');
+				$this->form_validation->set_rules('name_en', 'category name en', 'required|max_length[30]');
 				$this->form_validation->set_rules('description', 'description', 'required');
 				$this->form_validation->set_rules('description_en', 'description en', 'required');
 				
@@ -135,7 +135,7 @@ class Category extends CI_Controller{
 					$this->load->view("templates/footer", $data);
 				}
 				else{
-					if ($this->upload->do_upload('image')){
+					if ($this->upload->do_upload('image') && strlen($this->upload->data()['file_name']) <= 100){
 						delete_files("./content/category/image/".$data['category']['category_image']);
 						$table_data = array(
 								'category_name' => $this->input->post('name'),

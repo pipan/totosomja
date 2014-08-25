@@ -2,8 +2,8 @@
 class Product_model extends CI_Model{
 	
 	public $relation;
-	public static $select = array('product.product_name', 'product.product_name_en', 'product.product_slug', 'product.product_slug_en', 'product.category_id', 'product.type_id', 'product.color_id', 'product.size_id', 'product.material_id', 'product.supplier_id', 'product.gender', 'product.store', 'product.product_image', 'product.price', 'product.sellable', 'product.canceled', 'product.created');
-	public static $select_id = array('product.id', 'product.product_name', 'product.product_name_en', 'product.product_slug', 'product.product_slug_en', 'product.category_id', 'product.type_id', 'product.color_id', 'product.size_id', 'product.material_id', 'product.supplier_id', 'product.gender', 'product.store', 'product.product_image', 'product.price', 'product.sellable', 'product.canceled', 'product.created');
+	public static $select = array('product.product_name', 'product.product_name_en', 'product.product_slug', 'product.product_slug_en', 'product.category_id', 'product.type_id', 'product.color_id', 'product.size_id', 'product.material_id', 'product.supplier_id', 'product.gender', 'product.store', 'product.product_image', 'product.price', 'product.paypal_button', 'product.sellable', 'product.canceled', 'product.created');
+	public static $select_id = array('product.id', 'product.product_name', 'product.product_name_en', 'product.product_slug', 'product.product_slug_en', 'product.category_id', 'product.type_id', 'product.color_id', 'product.size_id', 'product.material_id', 'product.supplier_id', 'product.gender', 'product.store', 'product.product_image', 'product.price', 'product.paypal_button', 'product.sellable', 'product.canceled', 'product.created');
 	
 	public function __construct(){
 		parent::__construct();
@@ -157,6 +157,7 @@ class Product_model extends CI_Model{
 	public function set_canceled($id){
 		$this->db->where(array('id =' => $id));
 		$this->db->set('canceled', '1');
+		$this->db->set('paypal_button', null);
 		$this->db->update('product');
 	}
 }

@@ -22,6 +22,8 @@ class Newsletter extends CI_Controller{
 		$this->lang->load("newsletter", $language);
 		$this->data['title'] = "totosomja - newsletter";
 		
+		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/newsletter', array(), $language);
+		
 		$this->form_validation->set_rules('newsletter_email', 'email', 'required|valid_email|is_unique[newsletter_subscriber.email]');
 		$this->form_validation->set_rules('newsletter_agree', 'agreement', 'required');
 		

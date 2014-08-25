@@ -57,7 +57,7 @@ class Supplier extends CI_Controller{
 					),
 			);
 		
-			$this->form_validation->set_rules('name', 'supplier name', 'required');
+			$this->form_validation->set_rules('name', 'supplier name', 'required|max_length[30]');
 			$this->form_validation->set_rules('delivery_count', 'delivery number', 'required');
 			$this->form_validation->set_rules('delivery_time_kind', 'delivery time type', 'required');
 		
@@ -99,7 +99,7 @@ class Supplier extends CI_Controller{
 			if ($id > 0 && sizeof($this->supplier_model->get($id)) > 0){
 				$data['supplier'] = $this->supplier_model->get($id);
 					
-				$this->form_validation->set_rules('name', 'supplier name', 'required');
+				$this->form_validation->set_rules('name', 'supplier name', 'required|max_length[30]');
 				$this->form_validation->set_rules('delivery_count', 'delivery number', 'required');
 			$this->form_validation->set_rules('delivery_time_kind', 'delivery time type', 'required');
 					

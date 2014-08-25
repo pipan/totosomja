@@ -54,11 +54,11 @@
 							<?php echo $lang->line('product_view_number');?>
 						</div>
 						<div class="product_body_item_info_value">
-							<select name="pieces" class="dark_exception">
+							<select id="quantity" name="pieces" class="dark_exception">
 							<?php
-							for ($i = 0; $i <= 10; $i++){
+							for ($i = 1; $i <= 10; $i++){
 								?>
-								<option><?php echo $i;?></option>
+								<option value="<?php echo $i;?>"><?php echo $i;?></option>
 								<?php
 							}
 							?>
@@ -85,7 +85,13 @@
 					<?php
 				}
 				?>
-				<input type="button" name="kupis" value="<?php echo $lang->line('product_view_add_to_cart_button');?>" />
+				<form id="paypal_add_to_cart" target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" onSubmit="paypalSetQuantity();">
+					<input type="hidden" name="cmd" value="_s-xclick">
+					<input type="hidden" name="hosted_button_id" value="<?php echo $shirt['paypal_button'];?>">
+					<input id="paypal_quantity" type="hidden" name="quantity" value="0">
+					<input type="hidden" name="currency_code" value="EUR">
+					<input type="submit" name="submit" value="<?php echo $lang->line('product_view_add_to_cart_button');?>" />
+				</form>
 			</div>
 			<div>
 				<?php echo read_file("./content/product/description/".$shirt['id'].$language_ext.".txt");?>

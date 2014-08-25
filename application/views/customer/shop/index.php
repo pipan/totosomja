@@ -29,6 +29,6 @@
 			?>
 		</div>
 		<?php
-		page_div($page, $page_offset, $last_page, base_url()."index.php/".$language."/shirt/%p".$filter['page_link']);
+		page_div($page, $page_offset, $last_page, base_url()."index.php/".$language."/shirt/%p");
 		?>
 	</div>

@@ -38,6 +38,8 @@ class Login extends CI_Controller{
 			$this->data['language'] = $language;
 			$this->data['login_error'] = true;
 			
+			$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/login', array(), $language);
+			
 			$this->form_validation->set_rules('login_nickname', 'nickname', 'required');
 			$this->form_validation->set_rules('login_password', 'password', 'required|callback_login_validation');
 			
@@ -83,10 +85,10 @@ class Login extends CI_Controller{
 			$this->data['language'] = $language;
 			$this->data['login_error'] = false;
 			
-			$this->form_validation->set_rules('reg_nickname', 'nickname', 'required|is_unique[customer.customer_nickname]');
-			$this->form_validation->set_rules('reg_name', 'name', 'required');
-			$this->form_validation->set_rules('reg_surname', 'surname', 'required');
-			$this->form_validation->set_rules('reg_email', 'email', 'required|valid_email');
+			$this->form_validation->set_rules('reg_nickname', 'nickname', 'required|max_length[50]|is_unique[customer.customer_nickname]');
+			$this->form_validation->set_rules('reg_name', 'name', 'required|max_length[50]');
+			$this->form_validation->set_rules('reg_surname', 'surname', 'required|max_length[50]');
+			$this->form_validation->set_rules('reg_email', 'email', 'required|valid_email|max_length[100]');
 			$this->form_validation->set_rules('reg_pass1', 'password', 'required');
 			$this->form_validation->set_rules('reg_pass2', 'repeated password', 'required|matches[reg_pass1]');
 			
@@ -95,11 +97,11 @@ class Login extends CI_Controller{
 			$this->form_validation->set_rules('reg_month', 'month', 'is_natural');
 			$this->form_validation->set_rules('reg_year', 'year', 'is_natural');
 			
-			$this->form_validation->set_rules('reg_street', 'street', 'required');
-			$this->form_validation->set_rules('reg_street_number', 'street number', 'required');
-			$this->form_validation->set_rules('reg_town', 'town', 'required');
-			$this->form_validation->set_rules('reg_postal_code', 'postal code', 'required');
-			$this->form_validation->set_rules('reg_country', 'country code', 'required');
+			$this->form_validation->set_rules('reg_street', 'street', 'required|max_length[50]');
+			$this->form_validation->set_rules('reg_street_number', 'street number', 'required|max_length[10]');
+			$this->form_validation->set_rules('reg_town', 'town', 'required|max_length[50]');
+			$this->form_validation->set_rules('reg_postal_code', 'postal code', 'required|max_length[10]');
+			$this->form_validation->set_rules('reg_country', 'country code', 'required|max_length[40]');
 			
 			if ($this->form_validation->run() === FALSE){
 				$this->load->view("templates/header", $this->data);

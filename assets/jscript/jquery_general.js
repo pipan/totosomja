@@ -8,6 +8,14 @@ function hide(id){
 	$(id).hide();
 }
 
+function submitForm(id){
+	$(id).submit();
+}
+function paypalSetQuantity(){
+	var q = $('#quantity').val();
+	$('#paypal_quantity').val(q);
+}
+
 function vote(pollId, answerId, lang){
 	$('body').css({'cursor':'wait'});
 	$('#body_right a').css({'cursor':'wait'});

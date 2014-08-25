@@ -48,6 +48,7 @@ class Blog extends CI_Controller{
 		if ($page < 1){
 			$page = 1;
 		}
+		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/blog/'.$page, array(), $language);
 		$this->data['title'] = "totosomja - blog";
 		$this->data['blogs'] = $this->blog_model->get_list(($page - 1) * $this->limit, $this->limit);
 		$this->data['page'] = $page;
@@ -77,7 +78,17 @@ class Blog extends CI_Controller{
 		$this->data['year_list'] = $this->blog_model->get_year_list();
 		$this->data['blog_navigator'] = $this->blog_model->get_blog_navigator();
 		$this->data['blog'] = $this->blog_model->get_by_slug($slug, $this->data['language_ext']);
+		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/blog/'.$slug, array(), $language);
 		if ($this->data['blog'] != false){
+			$replace = array(
+					'en' => array(
+							'%s' => $this->data['blog']['slug_en'],
+					),
+					'sk' => array(
+							'%s' => $this->data['blog']['slug'],
+					),
+			);
+			$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/blog/%s', $replace, $language);
 			$tag_data = array(
 					'blog_id' => $this->data['blog']['id'],
 					'language_id' => $lang_id['id'],
@@ -132,6 +143,7 @@ class Blog extends CI_Controller{
 		if ($page < 1){
 			$page = 1;
 		}
+		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/blog', array(), $language);
 		$tag_data = array(
 				'tag_slug' => $tag,
 				'language_id' => $lang_id['id'],

@@ -169,7 +169,7 @@ class Message extends CI_Controller{
 						),
 				);
 	
-				$this->form_validation->set_rules('title', 'title', 'required');
+				$this->form_validation->set_rules('title', 'title', 'required|max_length[40]');
 				$this->form_validation->set_rules('titleTextarea', 'textarea title', 'required');
 				$this->form_validation->set_rules('body', 'body', 'required');
 				$this->form_validation->set_rules('bodyTextarea', 'textarea body', 'required');
@@ -182,7 +182,7 @@ class Message extends CI_Controller{
 					$log .= "BODY_TEXTAREA: ".$this->input->post('bodyTextarea').PHP_EOL;
 					$log .= "LANG: ".$edit_lang.PHP_EOL;
 					write_file("./content/message/log/".date("Y-n-d-H-i-s").".txt", $log);
-					//echo "fail";
+					echo validation_errors();
 				}
 				else{
 					$post_date = date("Y-n-d H:i:s");
@@ -259,12 +259,12 @@ class Message extends CI_Controller{
 					else{
 						delete_files("./content/message/".$id."/link".$lang_ext.".txt");
 					}
-					//echo "success";
+					echo "success";
 					
 				}
 			}
 			else{
-				//echo "fail";
+				echo "fail";
 			}
 		}
 		else{

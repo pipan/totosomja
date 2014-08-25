@@ -41,9 +41,9 @@ class Profile extends CI_Controller{
 			
 			$this->data['profile'] = $this->admin_model->get_admin($this->session->userdata('admin_id'));
 			
-			$this->form_validation->set_rules('admin_name', 'name', 'required');
-			$this->form_validation->set_rules('admin_surname', 'surname', 'required');
-			$this->form_validation->set_rules('admin_email', 'email', 'required|valid_email');
+			$this->form_validation->set_rules('admin_name', 'name', 'required|max_length[50]');
+			$this->form_validation->set_rules('admin_surname', 'surname', 'required|max_length[50]');
+			$this->form_validation->set_rules('admin_email', 'email', 'required|valid_email|max_length[100]');
 			
 			if ($this->form_validation->run() == false){
 				$this->load->view("templates/header_manager", $this->data);
