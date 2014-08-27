@@ -90,6 +90,7 @@
 					<input type="hidden" name="hosted_button_id" value="<?php echo $shirt['paypal_button'];?>">
 					<input id="paypal_quantity" type="hidden" name="quantity" value="0">
 					<input type="hidden" name="currency_code" value="EUR">
+					<input type="hidden" name="lc" value="<?php echo strtoupper($language);?>">
 					<input type="submit" name="submit" value="<?php echo $lang->line('product_view_add_to_cart_button');?>" />
 				</form>
 			</div>

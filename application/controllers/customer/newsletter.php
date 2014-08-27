@@ -14,12 +14,19 @@ class Newsletter extends CI_Controller{
 		$this->data['login'] = $this->session->userdata('login');
 		$this->data['lang'] = $this->lang;
 		$this->data['style'] = array('style_newsletter');
+		
+		$block = $this->page_link_block_model->get_by_name('footer');
+		$this->data['footer'] = $this->static_page_in_link_block_model->get_by_block($block['id'], array('page'));
+		$block = $this->page_link_block_model->get_by_name('header');
+		$this->data['header'] = $this->static_page_in_link_block_model->get_by_block($block['id'], array('page'));
 	}
 	
 	public function index($language = "sk"){
-		$this->data['language'] = $language;
+		$language = valid_language($language);
+		$this->data['language_ext'] = get_language_ext($language);
 		$this->lang->load("general", $language);
 		$this->lang->load("newsletter", $language);
+		$this->data['language'] = $language;
 		$this->data['title'] = "totosomja - newsletter";
 		
 		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/newsletter', array(), $language);

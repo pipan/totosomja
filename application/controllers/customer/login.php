@@ -17,6 +17,10 @@ class Login extends CI_Controller{
 		
 		$this->data['login'] = $this->session->userdata('login');
 		$this->data['style'] = array('style_registration');
+		$block = $this->page_link_block_model->get_by_name('footer');
+		$this->data['footer'] = $this->static_page_in_link_block_model->get_by_block($block['id'], array('page'));
+		$block = $this->page_link_block_model->get_by_name('header');
+		$this->data['header'] = $this->static_page_in_link_block_model->get_by_block($block['id'], array('page'));
 	}
 	
 	public function login_validation(){
@@ -32,6 +36,8 @@ class Login extends CI_Controller{
 	public function index($language = "sk"){
 		if (is_login($this) == false){
 			$this->data['title'] = "totosomja - login";
+			$language = valid_language($language);
+			$this->data['language_ext'] = get_language_ext($language);
 			$this->lang->load("general", $language);
 			$this->lang->load("login", $language);
 			$this->data['lang'] = $this->lang;

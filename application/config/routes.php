@@ -124,6 +124,8 @@ $route['(:any)/shop/(:any)'] = "customer/shop/$2/$1";
 $route['shop/(:any)'] = "customer/shop/$1";
 $route['(:any)/shop'] = "customer/shop/index/$1";
 $route['shop'] = "customer/shop";
+//static page
+$route['(:any)/(:any)'] = "customer/static_page/index/$2/$1";
 
 $route['(:any)'] = "customer/shop/index/$1";
 $route['default_controller'] = "customer/shop";

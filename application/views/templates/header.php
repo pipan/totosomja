@@ -1,3 +1,23 @@
+<?php 
+$header_global = array(
+		0 => array(
+				'link' => base_url()."index.php/".$language,
+				'text' => $lang->line('header_index'),
+		),
+		1 => array(
+				'link' => base_url()."index.php/".$language."/shirt",
+				'text' => $lang->line('header_t_shirt'),
+		),
+		2 => array(
+				'link' => base_url()."index.php/".$language."/newsletter",
+				'text' => $lang->line('header_newsletter'),
+		),
+		3 => array(
+				'link' => base_url()."index.php/".$language."/blog",
+				'text' => $lang->line('header_blog'),
+		),
+);
+?>
 <!doctype html>
 <html>
 	<head>
@@ -100,24 +120,41 @@
 						</div>
 					</div>
 					<div id="header_navigator">
-						<div style="overflow:hidden; margin-left:102px;">
-							<div class="header_navigator_item">
-								<a href="<?php echo base_url()."index.php/".$language;?>"><?php echo $lang->line('header_index');?></a>
-							</div>
-							<div class="header_navigator_item">
-								<a href="<?php echo base_url()."index.php/".$language."/shirt";?>"><?php echo $lang->line('header_t_shirt');?></a>
-							</div>
-							<div class="header_navigator_item">
-								<a href=""><?php echo $lang->line('header_more');?></a>
-							</div>
-							<div class="header_navigator_item">
-								<a href=""><?php echo $lang->line('header_about');?></a>
-							</div>
-							<div class="header_navigator_item">
-								<a href="<?php echo base_url()."index.php/".$language."/newsletter";?>"><?php echo $lang->line('header_newsletter');?></a>
-							</div>
-							<div class="header_navigator_item">
-								<a href="<?php echo base_url()."index.php/".$language."/blog";?>"><?php echo $lang->line('header_blog');?></a>
+						<div class="outer-center">
+							<div class="inner-center">
+								<?php 
+								$id = 1;
+								$i = 0;
+								if (isset($header)){
+									foreach ($header as $h){
+										if ($h['position'] > $id){
+											while ($i < sizeof($header_global) && $id < $h['position']){
+												?>
+												<div class="header_navigator_item">
+													<a href="<?php echo $header_global[$i]['link'];?>"><?php echo $header_global[$i]['text'];?></a>
+												</div>
+												<?php
+												$i++;
+												$id++;
+											}
+										}
+										?>
+										<div class="header_navigator_item">
+											<a href="<?php echo base_url()."index.php/".$language."/".$h['page_slug'.$language_ext];?>"><?php echo $h['page_title'.$language_ext];?></a>
+										</div>
+										<?php
+										$id++;
+									}
+								}
+								while ($i < sizeof($header_global)){
+									?>
+									<div class="header_navigator_item">
+										<a href="<?php echo $header_global[$i]['link'];?>"><?php echo $header_global[$i]['text'];?></a>
+									</div>
+									<?php
+									$i++;
+								}
+								?>
 							</div>
 						</div>
 					</div>

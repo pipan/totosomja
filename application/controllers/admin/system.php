@@ -423,6 +423,41 @@ class system extends CI_Controller{
 					COLLATE utf8_general_ci,
 					ENGINE innoDB");
 			
+			//Table static_page
+			$this->db->query("CREATE TABLE IF NOT EXISTS static_page(
+					id int(9) NOT NULL AUTO_INCREMENT,
+					page_title varchar(50) NOT NULL,
+					page_title_en varchar(50) NOT NULL,
+					page_slug varchar(50) NOT NULL,
+					page_slug_en varchar(50) NOT NULL,
+					folder varchar(30) NOT NULL,
+					post_date datetime NOT NULL,
+					PRIMARY KEY (id),
+					INDEX slug_id USING BTREE (page_slug),
+					INDEX slug_en_id USING BTREE (page_slug_en))
+					COLLATE utf8_general_ci,
+					ENGINE innoDB");
+			
+			//Table page_link_block
+			$this->db->query("CREATE TABLE IF NOT EXISTS page_link_block(
+					id int(9) NOT NULL AUTO_INCREMENT,
+					block varchar(30) NOT NULL,
+					PRIMARY KEY (id))
+					COLLATE utf8_general_ci,
+					ENGINE innoDB");
+			
+			//Table static_page_in_link_block
+			$this->db->query("CREATE TABLE IF NOT EXISTS static_page_in_link_block(
+					id int(9) NOT NULL AUTO_INCREMENT,
+					page_id int(9) NOT NULL,
+					block_id int(9) NOT NULL,
+					position int(9) NOT NULL,
+					PRIMARY KEY (id),
+					FOREIGN KEY (page_id) REFERENCES static_page(id) ON DELETE CASCADE,
+					FOREIGN KEY (block_id) REFERENCES page_link_block(id) ON DELETE CASCADE)
+					COLLATE utf8_general_ci,
+					ENGINE innoDB");
+			
 			//Alter Address [add foreign key]
 			$this->db->query("ALTER TABLE address
 					ADD FOREIGN KEY (creator_id)
@@ -438,6 +473,9 @@ class system extends CI_Controller{
 	*/
 	public function DB_init_fill(){
 		if (is_admin_login($this)){
+			//empty page_link_block
+			$this->db->empty_table('page_link_block');
+			
 			//change_label
 			$this->db->empty_table('change_label');
 			$data = array(
@@ -506,6 +544,18 @@ class system extends CI_Controller{
 					'language_name' => 'en',
 			);
 			$this->db->insert('language', $data);
+			
+			//page_link_block
+			$data = array(
+					'id' => '1',
+					'block' => 'header',
+			);
+			$this->db->insert('page_link_block', $data);
+			$data = array(
+					'id' => '2',
+					'block' => 'footer',
+			);
+			$this->db->insert('page_link_block', $data);
 		}
 		else{
 			redirect("admin/manager/login");

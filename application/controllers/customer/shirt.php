@@ -28,6 +28,10 @@ class Shirt extends CI_Controller{
 		is_login($this);
 		
 		$this->data['login'] = $this->session->userdata('login');
+		$block = $this->page_link_block_model->get_by_name('footer');
+		$this->data['footer'] = $this->static_page_in_link_block_model->get_by_block($block['id'], array('page'));
+		$block = $this->page_link_block_model->get_by_name('header');
+		$this->data['header'] = $this->static_page_in_link_block_model->get_by_block($block['id'], array('page'));
 	}
 	
 	public function filter_to_where($filter){

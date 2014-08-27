@@ -66,9 +66,9 @@ class Blog_parser{
 		}
 	}
 	
-	public function pure_text($text, $blog_id){
+	public static function pure_text($text, $blog_id, $ext, $formated = false){
 		//remove image
-		if (($image = read_file("./content/blog/".$blog_id."/image.txt")) != false){
+		if (($image = read_file("./content/blog/".$blog_id."/image".$ext.".txt")) != false){
 			$lines = explode(PHP_EOL, $image);
 			$i = 0;
 			$j = 1;
@@ -79,7 +79,7 @@ class Blog_parser{
 			}
 		}
 		//remove video
-		if (($video = read_file("./content/blog/".$blog_id."/video.txt")) != false){
+		if (($video = read_file("./content/blog/".$blog_id."/video".$ext.".txt")) != false){
 			$lines = explode(PHP_EOL, $video);
 			$i = 0;
 			$j = 1;
@@ -90,7 +90,7 @@ class Blog_parser{
 			}
 		}
 		//replace link
-		if (($link = read_file("./content/blog/".$blog_id."/link.txt")) != false){
+		if (($link = read_file("./content/blog/".$blog_id."/link".$ext.".txt")) != false){
 			$lines = explode(PHP_EOL, $link);
 			$i = 0;
 			$j = 1;
@@ -99,6 +99,21 @@ class Blog_parser{
 				$i += 2;
 				$j++;
 			}
+		}
+		if ($formated){
+			$text = Blog_parser::format_text($text);
+		}
+		return $text;
+	}
+	
+	public static function format_text($text){
+		$text = str_replace("[B]", "<b>", $text);
+		$text = str_replace("[/B]", "</b>", $text);
+		$text = str_replace("[I]", "<i>", $text);
+		$text = str_replace("[/I]", "</i>", $text);
+		for ($i = 1; $i <= 7; $i++){
+			$text = str_replace("[TITLE".$i."]", "<div class='title".$i."'>", $text);
+			$text = str_replace("[/TITLE".$i."]", "</div>", $text);
 		}
 		return $text;
 	}

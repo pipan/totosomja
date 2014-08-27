@@ -52,7 +52,7 @@
 						</div>
 					</div>
 					<div id="header_navigator">
-						<div style="overflow:hidden; margin-left:102px;">
+						<div style="overflow:hidden; width:629px; margin:auto;">
 							<div class="header_navigator_item">
 								<a href="<?php echo base_url()."index.php/admin/manager";?>">totosomja</a>
 							</div>
@@ -67,6 +67,9 @@
 							</div>
 							<div class="header_navigator_item">
 								<a href="<?php echo base_url()."index.php/admin/message";?>">message/poll</a>
+							</div>
+							<div class="header_navigator_item">
+								<a href="<?php echo base_url()."index.php/admin/static_page";?>">static pages</a>
 							</div>
 						</div>
 					</div>

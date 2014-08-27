@@ -28,6 +28,10 @@ class Profile extends CI_Controller{
 		$this->data['login'] = $this->session->userdata('login');
 		$this->data['lang'] = $this->lang;
 		$this->data['style'] = array('style_registration');
+		$block = $this->page_link_block_model->get_by_name('footer');
+		$this->data['footer'] = $this->static_page_in_link_block_model->get_by_block($block['id'], array('page'));
+		$block = $this->page_link_block_model->get_by_name('header');
+		$this->data['header'] = $this->static_page_in_link_block_model->get_by_block($block['id'], array('page'));
 	}
 	
 	public function check_password(){
@@ -43,6 +47,8 @@ class Profile extends CI_Controller{
 	public function edit($language = "sk"){
 		if (is_login($this)){
 			$this->data['title'] = "totosomja - edit profile";
+			$language = valid_language($language);
+			$this->data['language_ext'] = get_language_ext($language);
 			$this->lang->load("general", $language);
 			$this->lang->load("profile", $language);
 			$this->lang->load("login", $language);
@@ -118,6 +124,8 @@ class Profile extends CI_Controller{
 	public function password($language = "sk"){
 		if (is_login($this)){
 			$this->data['title'] = "totosomja - edit profile";
+			$language = valid_language($language);
+			$this->data['language_ext'] = get_language_ext($language);
 			$this->lang->load("general", $language);
 			$this->lang->load("profile", $language);
 			$this->lang->load("login", $language);

@@ -128,6 +128,8 @@ class Blog extends CI_Controller{
 			$data['style'] = array('style_blog');
 			$data['jscript'] = array('jscript_blog_oop');
 			$data['title'] = "totosomja - edit blog";
+			$data['url'] = "admin/blog";
+			$data['url_save'] = "/save_new_blog";
 			$data['functions'] = array(
 					array(
 							'link' => base_url().'index.php/admin/blog/new_blog',

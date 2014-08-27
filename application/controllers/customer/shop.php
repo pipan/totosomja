@@ -24,9 +24,16 @@ class Shop extends CI_Controller{
 		$this->load->model("poll_answer_model");
 		$this->load->model("poll_vote_model");
 		$this->load->model("message_model");
+		$this->load->model("static_page_model");
+		$this->load->model("page_link_block_model");
+		$this->load->model("static_page_in_link_block_model");
 		
 		is_login($this);
 		$this->data['login'] = $this->session->userdata('login');
+		$block = $this->page_link_block_model->get_by_name('footer');
+		$this->data['footer'] = $this->static_page_in_link_block_model->get_by_block($block['id'], array('page'));
+		$block = $this->page_link_block_model->get_by_name('header');
+		$this->data['header'] = $this->static_page_in_link_block_model->get_by_block($block['id'], array('page'));
 	}
 	
 	public function index($language = "sk"){

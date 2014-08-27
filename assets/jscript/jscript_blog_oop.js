@@ -23,6 +23,8 @@ function EditorApplication(){
 	this.body = "";
 	this.id = 0;
 	this.lang = "sk";
+	this.urlSave = "";
+	this.url = "";
 	
 	this.setTitle = function(){
 		this.title = $(this.titleTextareaId).val();
@@ -44,6 +46,12 @@ function EditorApplication(){
 
 	this.setItalic = function(){
 		var text = selectEdit($(this.bodyTextareaId), "[I]", "[/I]");
+		$(this.bodyTextareaId).val(text);
+		this.refresh();
+	};
+	
+	this.setTextTitle = function(h){
+		var text = selectEdit($(this.bodyTextareaId), "[TITLE" + h + "]", "[/TITLE" + h + "]");
 		$(this.bodyTextareaId).val(text);
 		this.refresh();
 	};
@@ -74,6 +82,10 @@ function EditorApplication(){
 		text = replaceRegExp(text, "\\[/B\\]", "</b>");
 		text = replaceRegExp(text, "\\[I\\]", "<i>");
 		text = replaceRegExp(text, "\\[/I\\]", "</i>");
+		for (var i = 1; i <= 3; i++){
+			text = replaceRegExp(text, "\\[TITLE" + i + "\\]", "</p><div class='title" + i + "'>");
+			text = replaceRegExp(text, "\\[/TITLE" + i + "\\]", "</div><p>");
+		}
 		text = replaceRegExp(text, "(\\n|\\r)", "</p><p>");
 		text = "<p>" + text + "</p>";
 		$("#blog_body").html(text);
@@ -82,19 +94,19 @@ function EditorApplication(){
 	this.save = function(){
 		$('body').css({'cursor':'wait'});
 		$('#body_right a').css({'cursor':'wait'});
-		if (editor.id > 0){
-			url = BASE_URL + "index.php/admin/blog/save_new_blog/" + editor.id + "/" + editor.lang;
+		if (this.id > 0){
+			url = BASE_URL + "index.php/" + editor.url + this.urlSave + "/" + this.id + "/" + this.lang;;
 		}
 		else{
-			url = BASE_URL + "index.php/admin/blog/save_new_blog";
+			url = BASE_URL + "index.php/" + editor.url + this.urlSave;
 		}
 		var post = $.post(url, this.getSendableData());
 		post.done(function(data, textStatus, jqXHR){
 			if (jqXHR.responseText == "" || jqXHR.responseText == "fail"){
-				redirect(BASE_URL + "index.php/admin/blog/error_save");
+				redirect(BASE_URL + "index.php/" + this.url + "/error_save");
 			}
 			else if (jqXHR.responseText == "success"){
-				redirect(BASE_URL + "index.php/admin/blog");
+				redirect(BASE_URL + "index.php/" + editor.url);
 			}
 			else{
 				$("#result").html(jqXHR.responseText);
@@ -104,7 +116,7 @@ function EditorApplication(){
 		});
 		post.fail(function(jqXHR, textStatus, errorThrown){
 			if (jqXHR.responseText == "" || jqXHR.responseText == "fail"){
-				redirect(BASE_URL + "index.php/admin/blog/error_save");
+				redirect(BASE_URL + "index.php/" + this.url + "/error_save");
 			}
 			else{
 				$("#result").html(jqXHR.responseText);

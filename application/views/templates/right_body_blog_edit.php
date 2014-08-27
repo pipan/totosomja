@@ -20,6 +20,7 @@
 					<div>
 						<input class="blog_edit_button" type="button" name="bold" value="B" onClick="editor.setBold();" />
 						<input class="blog_edit_button" type="button" name="italic" value="I" onClick="editor.setItalic();" />
+						<input class="blog_edit_button" type="button" name="textTitle" value="title" onClick="editor.setTextTitle(2);" />
 					</div>
 				</form>
 			</div>

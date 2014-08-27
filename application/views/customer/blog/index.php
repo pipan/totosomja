@@ -6,7 +6,7 @@
 				?>
 				<div class="white_bg_transparent blog_preview">
 					<div class="title1">
-						<?php echo Blog_parser::pure_text($b['title'.$language_ext], $b['id']);?>
+						<?php echo Blog_parser::pure_text($b['title'.$language_ext], $b['id'], $language_ext);?>
 					</div>
 					<div class="blog_preview_body">
 						<?php 
@@ -17,7 +17,7 @@
 							</div>
 							<?php
 						}
-						echo word_limiter(Blog_parser::pure_text(read_file("./content/blog/".$b['id']."/bodyTextarea".$language_ext.".txt"), $b['id']), 50);?>
+						echo word_limiter(Blog_parser::pure_text(read_file("./content/blog/".$b['id']."/bodyTextarea".$language_ext.".txt"), $b['id'], $language_ext, true), 50);?>
 						<a href="<?php echo base_url()."index.php/".$language."/blog/".$b['slug'.$language_ext];?>"><?php echo $lang->line('word_more');?></a>
 					</div>
 				</div>
