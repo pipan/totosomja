@@ -5,6 +5,9 @@
 		</div>
 	<div>
 	<div class="help_blok">
+		<div class="help_note light_blue_bg_transparent">
+			<b>Important:</b> Ešte pred tým ako začneš vytvárať produkty a blogy je najdôležitejší krok kompletne vyplniť profil. najme časť o predajcovi (takže o stránke a.k.a. firme totosomja). Tam treba vyplniť adresu a názov a veci ktoré sa zobrazia na faktúrer ako predajca.
+		</div>
 	    <div class="title3">
 	    	vysvetlivky
 	    </div>

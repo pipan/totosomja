@@ -119,6 +119,9 @@ $route['(:any)/profile/(:any)'] = "customer/profile/$2/$1";
 $route['profile/(:any)'] = "customer/profile/$1";
 $route['(:any)/profile'] = "customer/profile/index/$1";
 $route['profile'] = "customer/profile";
+//orders
+$route['(:any)/orders/view/(:any)'] = "customer/orders/view/$2/$1";
+$route['orders/view/(:any)'] = "customer/orders/view/$1";
 //shop/index
 $route['(:any)/shop/(:any)'] = "customer/shop/$2/$1";
 $route['shop/(:any)'] = "customer/shop/$1";

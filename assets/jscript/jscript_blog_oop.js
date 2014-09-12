@@ -23,8 +23,8 @@ function EditorApplication(){
 	this.body = "";
 	this.id = 0;
 	this.lang = "sk";
-	this.urlSave = "";
-	this.url = "";
+	this.urlSave = "save_new_blog";
+	this.url = "admin/blog/";
 	
 	this.setTitle = function(){
 		this.title = $(this.titleTextareaId).val();

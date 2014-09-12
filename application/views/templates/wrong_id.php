@@ -1,9 +1,9 @@
 <div id="body">
 	<div id="body_left" class="white_bg_transparent">
 		<div class="title2">
-			Warrning
+			<?php echo $error_title;?>
 		</div>
 		<div>
-			product does not exist 
+			<?php echo $error_body;?> 
 		</div>
 	</div>

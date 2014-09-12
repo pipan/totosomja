@@ -125,22 +125,22 @@ class Blog extends CI_Controller{
 			$data['lang'] = $this->lang;
 			$data['language'] = $language;
 			
-			$data['style'] = array('style_blog');
-			$data['jscript'] = array('jscript_blog_oop');
-			$data['title'] = "totosomja - edit blog";
-			$data['url'] = "admin/blog";
-			$data['url_save'] = "/save_new_blog";
-			$data['functions'] = array(
-					array(
-							'link' => base_url().'index.php/admin/blog/new_blog',
-							'text' => 'new blog',
-					),
-					array(
-							'link' => base_url().'index.php/admin/blog/help',
-							'text' => 'help',
-					),
-			);
-			if ($this->blog_model->get(array(), $id) != false){
+			if ($this->blog_model->exists($id)){
+				$data['style'] = array('style_blog');
+				$data['jscript'] = array('jscript_blog_oop');
+				$data['title'] = "totosomja - edit blog";
+				$data['url'] = "admin/blog";
+				$data['url_save'] = "/save_new_blog";
+				$data['functions'] = array(
+						array(
+								'link' => base_url().'index.php/admin/blog/new_blog',
+								'text' => 'new blog',
+						),
+						array(
+								'link' => base_url().'index.php/admin/blog/help',
+								'text' => 'help',
+						),
+				);
 				$edit_lang = valid_language($edit_lang);
 				$edit_lang_id = $this->language_model->get_by_name($edit_lang);
 				$lang_ext = get_language_ext($edit_lang);
@@ -196,9 +196,12 @@ class Blog extends CI_Controller{
 				$this->load->view("templates/footer", $data);
 			}
 			else{
+				$data['error_title'] = $this->lang->line('static_page_error_body_title');
+				$data['error_body'] = $this->lang->line('static_page_error_body');
+				$data['title'] = "totosomja - ".$this->lang->line('static_page_error_title');
 				$this->load->view("templates/header_manager", $data);
 				$this->load->view("templates/wrong_id", $data);
-				$this->load->view("templates/right_body_blog", $data);
+				$this->load->view("templates/right_body_blank", $data);
 				$this->load->view("templates/footer", $data);
 			}
 		}
@@ -276,6 +279,7 @@ class Blog extends CI_Controller{
 						$table_data['post_date'] = date("Y-n-d H:i:s");
 						$id = $this->blog_model->save($table_data);
 						mkdir("./content/blog/".$id, 0777);
+						mkdir("./content/blog/".$id."/comments", 0777);
 					}
 					write_file("./content/blog/".$id."/title".$lang_ext.".txt", $this->input->post('title'));
 					write_file("./content/blog/".$id."/titleTextarea".$lang_ext.".txt", $this->input->post('titleTextarea'));
@@ -337,7 +341,6 @@ class Blog extends CI_Controller{
 							$this->blog_in_tag_model->save($table_data);
 						}
 					}
-					mkdir("./content/blog/".$id."/comments", 0777);
 					echo "success";
 				}
 			}

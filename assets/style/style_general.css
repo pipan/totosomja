@@ -52,7 +52,6 @@ img{
 }
 div{
 	overflow:hidden;
-	color: #0B243B;
 }
 a.exception{
 	text-decoration: none;
@@ -164,6 +163,7 @@ p {
   position:relative;
   overflow:hidden;
   padding-top: 20px;
+  color: #0B243B;
 }
 #body_left{
   float:left;
@@ -187,6 +187,9 @@ p {
   width:220px;
   height:260px;
   padding:10px;
+}
+#filter select{
+	width: 110px;
 }
 #footer{
   width:800px;
@@ -455,6 +458,23 @@ p {
 	text-align: center;
 	float: left;
 }
+.wish_image_body_large{
+	width: 80px;
+	height: 80px;
+	text-align: center;
+	float: left;
+}
+	.wish_image_body_quantity{
+		position: relative;
+		float: left;
+		top: 10px
+	}
+	.wish_image_body_image{
+		float: left;
+	}
+	.wish_image_body_title{
+		text-align: center;
+	}
 .wish_image{
 	padding: 5px;
 	max-width: 50px;

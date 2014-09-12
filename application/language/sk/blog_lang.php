@@ -1,4 +1,4 @@
 <?php
-$lang['blog_comment_send_button'] = "posli";
+$lang['blog_comment_send_button'] = "poľli";
 
-$lang['blog_view_error_can_comment'] = "Komentovat mozu len registrovany zakaznici";
+$lang['blog_view_error_can_comment'] = "Komentovať môžu len registrovaný používatelia";

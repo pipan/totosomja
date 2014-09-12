@@ -49,6 +49,14 @@ class Manager extends CI_Controller{
 		$data['login'] = $this->session->userdata('login');
 		$data['lang_label'] = get_lang_label(base_url().'index.php/%l/admin/manager/login', array(), $language);
 		
+		if (is_login($this)){
+			$login = $this->customer_model->login_by_id($this->session->userdata('login')['id']);
+			$data['login_custom'] = $this->paypal->encrypt_user($login['id'], $login['salt']);
+		}
+		else{
+			$data['login_custom'] = 0;
+		}
+		
 		$this->form_validation->set_rules('name', 'name', 'required');
 		$this->form_validation->set_rules('password', 'password', 'required|callback_login_validation');
 		

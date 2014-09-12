@@ -10,9 +10,10 @@ class Blog extends CI_Controller{
 		$this->load->helper('text');
 		$this->load->helper('builder');
 		$this->load->helper('login');
-		$this->load->helper('MY_date');
+		$this->load->helper('my_date');
 		$this->load->library("blog_parser");
 		$this->load->library("form_validation");
+		$this->load->library("paypal");
 		$this->load->model("admin_model");
 		$this->load->model("address_model");
 		$this->load->model("customer_model");
@@ -21,7 +22,14 @@ class Blog extends CI_Controller{
 		$this->load->model("comment_blog_model");
 		$this->load->model("tag_model");
 		$this->load->model("blog_in_tag_model");
-		is_login($this);
+		
+		if (is_login($this)){
+			$login = $this->customer_model->login_by_id($this->session->userdata('login')['id']);
+			$this->data['login_custom'] = $this->paypal->encrypt_user($login['id'], $login['salt']);
+		}
+		else{
+			$this->data['login_custom'] = 0;
+		}
 		
 		$this->data['login'] = $this->session->userdata('login');
 		$this->data['lang'] = $this->lang;
@@ -130,6 +138,9 @@ class Blog extends CI_Controller{
 			$this->load->view("templates/footer", $this->data);
 		}
 		else{
+			$this->data['title'] = $this->lang->line('static_page_error_title');
+			$this->data['error_title'] = $this->lang->line('static_page_error_body_title');
+			$this->data['error_body'] = $this->lang->line('static_page_error_body');
 			$this->load->view("templates/header", $this->data);
 			$this->load->view("templates/wrong_id", $this->data);
 			$this->load->view("customer/blog/right_body", $this->data);

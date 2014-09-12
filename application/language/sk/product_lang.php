@@ -2,7 +2,7 @@
 $lang['product_comment_send_button'] = "pošli";
 
 $lang['product_view_type'] = "Typ";
-$lang['product_view_size'] = "Velkosť";
+$lang['product_view_size'] = "Veľkosť";
 $lang['product_view_color'] = "Farba";
 $lang['product_view_price'] = "Cena";
 $lang['product_view_number'] = "Počet ks";

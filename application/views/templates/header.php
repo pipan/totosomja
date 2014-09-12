@@ -70,6 +70,8 @@ $header_global = array(
 								<form id="paypal_view_cart" target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
 									<input type="hidden" name="cmd" value="_cart">
 									<input type="hidden" name="business" value="totosomja@mail.com">
+									<input type="hidden" name="return" value="<?php echo base_url()."index.php/".$language."/shop/purchase";?>">
+									<input type="hidden" name="custom" value="<?php echo $login_custom;?>">
 									<!--
 									<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_viewcart_LG.gif" border="0" name="submit" alt="">
 									<img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
@@ -94,7 +96,7 @@ $header_global = array(
 												<a href="<?php echo base_url()."index.php/".$language."/profile/edit"?>"><?php echo $lang->line('header_login_edit_profile');?></a>
 											</div>
 											<div class="header_login_menu_item">
-												<a href=""><?php echo $lang->line('header_login_orders');?></a>
+												<a href="<?php echo base_url()."index.php/".$language."/profile/orders"?>"><?php echo $lang->line('header_login_orders');?></a>
 											</div>
 											<div class="header_login_menu_item">
 												<a href="<?php echo base_url()."index.php/".$language."/profile/wishlist"?>"><?php echo $lang->line('header_login_wishlist');?></a>

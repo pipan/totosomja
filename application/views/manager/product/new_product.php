@@ -34,7 +34,7 @@
 					?>
 				</div>
 				<div>
-					<label for="product_price">price</label>
+					<label for="product_price">price (without tax - <?php echo TAX."%";?>)</label>
 					<input id="product_price" type="text" name="price" value="<?php echo set_value('price', $product['price']);?>" />
 				</div>
 				<div>

@@ -119,6 +119,9 @@ class Supplier extends CI_Controller{
 				}
 			}
 			else{
+				$data['error_title'] = $this->lang->line('static_page_error_body_title');
+				$data['error_body'] = $this->lang->line('static_page_error_body');
+				$data['title'] = "totosomja - ".$this->lang->line('static_page_error_title');
 				$this->load->view("templates/header_manager", $data);
 				$this->load->view("templates/wrong_id", $data);
 				$this->load->view("templates/right_body_manager", $data);

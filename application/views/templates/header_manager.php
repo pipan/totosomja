@@ -52,24 +52,29 @@
 						</div>
 					</div>
 					<div id="header_navigator">
-						<div style="overflow:hidden; width:629px; margin:auto;">
-							<div class="header_navigator_item">
-								<a href="<?php echo base_url()."index.php/admin/manager";?>">totosomja</a>
-							</div>
-							<div class="header_navigator_item">
-								<a href="<?php echo base_url()."index.php/admin/product";?>">product</a>
-							</div>
-							<div class="header_navigator_item">
-								<a href="<?php echo base_url()."index.php/admin/blog";?>">blog</a>
-							</div>
-							<div class="header_navigator_item">
-								<a href="<?php echo base_url()."index.php/admin/profile";?>">admin profile</a>
-							</div>
-							<div class="header_navigator_item">
-								<a href="<?php echo base_url()."index.php/admin/message";?>">message/poll</a>
-							</div>
-							<div class="header_navigator_item">
-								<a href="<?php echo base_url()."index.php/admin/static_page";?>">static pages</a>
+						<div class="outer-center">
+							<div class="inner-center">
+								<div class="header_navigator_item">
+									<a href="<?php echo base_url()."index.php/admin/manager";?>">totosomja</a>
+								</div>
+								<div class="header_navigator_item">
+									<a href="<?php echo base_url()."index.php/admin/product";?>">product</a>
+								</div>
+								<div class="header_navigator_item">
+									<a href="<?php echo base_url()."index.php/admin/blog";?>">blog</a>
+								</div>
+								<div class="header_navigator_item">
+									<a href="<?php echo base_url()."index.php/admin/profile";?>">admin profile</a>
+								</div>
+								<div class="header_navigator_item">
+									<a href="<?php echo base_url()."index.php/admin/message";?>">message/poll</a>
+								</div>
+								<div class="header_navigator_item">
+									<a href="<?php echo base_url()."index.php/admin/static_page";?>">static pages</a>
+								</div>
+								<div class="header_navigator_item">
+									<a href="<?php echo base_url()."index.php/admin/orders";?>">orders</a>
+								</div>
 							</div>
 						</div>
 					</div>

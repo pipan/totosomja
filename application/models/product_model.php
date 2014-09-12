@@ -47,6 +47,13 @@ class Product_model extends CI_Model{
 		);
 	}
 	
+	public static function get_select(){
+		return array('product.product_name', 'product.product_name_en', 'product.product_slug', 'product.product_slug_en', 'product.category_id', 'product.type_id', 'product.color_id', 'product.size_id', 'product.material_id', 'product.supplier_id', 'product.gender', 'product.store', 'product.product_image', 'product.price', 'product.paypal_button', 'product.sellable', 'product.canceled', 'product.created');
+	}
+	public static function get_select_id(){
+		return array('product.id', 'product.product_name', 'product.product_name_en', 'product.product_slug', 'product.product_slug_en', 'product.category_id', 'product.type_id', 'product.color_id', 'product.size_id', 'product.material_id', 'product.supplier_id', 'product.gender', 'product.store', 'product.product_image', 'product.price', 'product.paypal_button', 'product.sellable', 'product.canceled', 'product.created');
+	}
+	
 	public function is_sellable($where = array()){
 		$where = array_merge(array('canceled =' => '0', 'sellable =' => '1'), $where);
 		$this->db->select('id');

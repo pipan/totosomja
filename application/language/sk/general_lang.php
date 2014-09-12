@@ -43,3 +43,9 @@ $lang['title_t_shirt_index'] = "totosomja - tričká";
 
 //form
 $lang['form_none'] = "žiadne";
+
+//static page
+//not found
+$lang['static_page_error_title'] = "stránka sa nenašla";
+$lang['static_page_error_body_title'] = "Ospravedlňujeme sa";
+$lang['static_page_error_body'] = "táto stránka neexistuje";

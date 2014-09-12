@@ -10,9 +10,9 @@ $lang['filter_price_less50'] = "menej ako 50";
 $lang['filter_filter'] = "filtruj";
 $lang['filter_cancel'] = "zruš";
 
-$lang['filter_title'] = "Zorď podľa";
+$lang['filter_title'] = "Zoraď podľa";
 
 $lang['filter_label_gender'] = "Typ";
-$lang['filter_label_size'] = "Velkosť";
+$lang['filter_label_size'] = "Veľkosť";
 $lang['filter_label_color'] = "Farba";
 $lang['filter_label_price'] = "Cena";

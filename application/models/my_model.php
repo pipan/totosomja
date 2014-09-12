@@ -25,6 +25,25 @@ class MY_Model extends CI_Model{
 		return ($this->db->count_all_results() > 0);
 	}
 	
+	public function data_match($id, $data){
+		$ret = true;
+		$db_data = $this->get(array(), $id);
+		foreach ($data as $key => $d){
+			echo $key."=>".$d;
+			if (!isset($db_data[$key])){
+				$ret = false;
+				break;
+			}
+			else{
+				if ($d != $db_data[$key]){
+					$ret = false;
+					break;
+				}
+			}
+		}
+		return $ret;
+	}
+	
 	public function join($join, $select = false){
 		if ($select == false){
 			$select = $this->select_id;
@@ -35,10 +54,22 @@ class MY_Model extends CI_Model{
 				$class = ucfirst($explode[0])."_model"; 
 				$rel = $class::get_relation();
 				$rel = $rel[$explode[1]];
+				if (isset($this->relation[$rel]['as'])){
+					$this->relation[$rel]['join'] .= " AS ".$this->relation[$rel]['as'];
+					$on = explode("=", $this->relation[$rel]['on']);
+					$on2 = explode(".", $on[1]);
+					$this->relation[$rel]['on'] = $on[0]."=".$this->relation[$rel]['as'].".".$on2[1];
+				}
 				$this->db->join($this->relation[$rel]['join'], $this->relation[$rel]['on'], $this->relation[$rel]['type']);
 				$select = array_merge($select, $this->relation[$j]['select']);
 			}
 			else{
+				if (isset($this->relation[$j]['as'])){
+					$this->relation[$j]['join'] .= " AS ".$this->relation[$j]['as'];
+					$on = explode("=", $this->relation[$j]['on']);
+					$on2 = explode(".", $on[1]);
+					$this->relation[$j]['on'] = $on[0]."=".$this->relation[$j]['as'].".".$on2[1];
+				}
 				$this->db->join($this->relation[$j]['join'], $this->relation[$j]['on'], $this->relation[$j]['type']);
 				if (isset($this->relation[$j]['select'])){
 					$tmp_sel = $this->relation[$j]['select'];

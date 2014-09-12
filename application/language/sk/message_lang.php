@@ -1,2 +1,2 @@
 <?php
-$lang['message_error_no_message'] = "ziadna sprava";
+$lang['message_error_no_message'] = "žiadna správa";

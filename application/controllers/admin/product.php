@@ -198,6 +198,9 @@ class Product extends CI_Controller{
 				}
 			}
 			else{
+				$data['error_title'] = $this->lang->line('static_page_error_body_title');
+				$data['error_body'] = $this->lang->line('static_page_error_body');
+				$data['title'] = "totosomja - ".$this->lang->line('static_page_error_title');
 				$this->load->view("templates/header_manager", $data);
 				$this->load->view("templates/wrong_id", $data);
 				$this->load->view("templates/right_body_manager", $data);
@@ -219,6 +222,7 @@ class Product extends CI_Controller{
 			if ($id != false){
 				$data['product'] = $this->product_model->get($id);
 				$data['product']['description'] = read_file("./content/product/description/".$id.".txt");
+				$data['product']['description_en'] = read_file("./content/product/description/".$id."_en.txt");
 			}
 			else{
 				$data['product'] = array(
@@ -296,11 +300,12 @@ class Product extends CI_Controller{
 						'VERSION' => "51.0",
 						'METHOD' => "BMCreateButton",
 						'BUTTONTYPE' => "CART",
-						'UTTONSUBTYPE' => "PRODUCTS",
-						'BUTTONCOUNTRY' => "US",
+						'BUTTONSUBTYPE' => "PRODUCTS",
+						'BUTTONCOUNTRY' => "SK",
 						'L_BUTTONVAR1' => 'item_name='.$item_name,
 						'L_BUTTONVAR2' => 'amount='.$this->input->post('price'),
 						'L_BUTTONVAR3' => 'currency_code=EUR',
+						'L_BUTTONVAR4' => 'tax_rate='.TAX,
 				);
 				$paypal = Requests::post('https://api-3t.sandbox.paypal.com/nvp', array(), $paypal_data);
 				if ($paypal->success){
@@ -427,10 +432,12 @@ class Product extends CI_Controller{
 							'VERSION' => "51.0",
 							'METHOD' => "BMCreateButton",
 							'BUTTONTYPE' => "CART",
-							'UTTONSUBTYPE' => "PRODUCTS",
-							'BUTTONCOUNTRY' => "US",
+							'BUTTONSUBTYPE' => "PRODUCTS",
+							'BUTTONCOUNTRY' => "SK",
 							'L_BUTTONVAR1' => 'item_name='.$item_name,
 							'L_BUTTONVAR2' => 'amount='.$this->input->post('price'),
+							'L_BUTTONVAR3' => 'currency_code=EUR',
+							'L_BUTTONVAR4' => 'tax_rate='.TAX,
 					);
 					$paypal = Requests::post('https://api-3t.sandbox.paypal.com/nvp', array(), $paypal_data);
 					if ($paypal->success){
@@ -459,16 +466,16 @@ class Product extends CI_Controller{
 									'product_name_en' => $this->input->post('name_en'),
 									'product_slug' => url_title(convert_accented_characters($this->input->post('name')), '-', TRUE),
 									'product_slug_en' => $item_name,
-									'category_id' => $this->input->post('category_id'),
-									'type_id' => $this->input->post('type_id'),
-									'color_id' => $this->input->post('color_id'),
-									'size_id' => $this->input->post('size_id'),
-									'material_id' => $this->input->post('material_id'),
-									'supplier_id' => $this->input->post('supplier_id'),
+									'category_id' => get_foreign($this->input->post('category_id')),
+									'type_id' => get_foreign($this->input->post('type_id')),
+									'color_id' => get_foreign($this->input->post('color_id')),
+									'size_id' => get_foreign($this->input->post('size_id')),
+									'material_id' => get_foreign($this->input->post('material_id')),
+									'supplier_id' => get_foreign($this->input->post('supplier_id')),
 									'price' => $this->input->post('price'),
 									'paypal_button' => $paypal_response_data['HOSTEDBUTTONID'],
 									'store' => $this->input->post('store'),
-									'gender' => $this->input->post('gender'),
+									'gender' => get_foreign($this->input->post('gender'), true),
 									'product_image' => $image,
 									'sellable' => 1,
 									'canceled' => 0,
@@ -512,6 +519,9 @@ class Product extends CI_Controller{
 				}
 			}
 			else{
+				$data['error_title'] = $this->lang->line('static_page_error_body_title');
+				$data['error_body'] = $this->lang->line('static_page_error_body');
+				$data['title'] = "totosomja - ".$this->lang->line('static_page_error_title');
 				$this->load->view("templates/header_manager", $data);
 				$this->load->view("templates/wrong_id", $data);
 				$this->load->view("templates/right_body_manager", $data);

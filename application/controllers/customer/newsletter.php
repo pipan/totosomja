@@ -9,7 +9,14 @@ class Newsletter extends CI_Controller{
 		$this->load->helper('login');
 		$this->load->library("form_validation");
 		$this->load->model("newsletter_subscriber_model");
-		is_login($this);
+		
+		if (is_login($this)){
+			$login = $this->customer_model->login_by_id($this->session->userdata('login')['id']);
+			$this->data['login_custom'] = $this->paypal->encrypt_user($login['id'], $login['salt']);
+		}
+		else{
+			$this->data['login_custom'] = 0;
+		}
 		
 		$this->data['login'] = $this->session->userdata('login');
 		$this->data['lang'] = $this->lang;

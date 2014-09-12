@@ -1,0 +1,41 @@
+\\invoic
+body{
+  background-color: #ffffff;
+  margin: 0px;
+  cursor: default;
+  font-family: "Arial";
+}
+div{
+	overflow: hidden;
+}
+
+#invoic-header{
+	border-bottom: solid 1px #000000;
+}
+#invoic-body{
+	clear: both;
+}
+
+.address{
+	float: left;
+	width: 50%;
+}
+.address-label{
+	float: left;
+	width: 50%;
+}
+
+.title1{
+	font-size: 20px;
+	color:#000000;
+	padding: 10px 0px;
+}
+.title2{
+  font-size: 17px;
+  font-weight:bold;
+  color:#000000;
+}
+.title3{
+  font-weight:bold;
+  color:#000000;
+}

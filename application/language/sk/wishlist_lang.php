@@ -1,4 +1,4 @@
 <?php
 $lang['wishlist_title'] = "Wishlist";
 
-$lang['wishlist_remove'] = "odstran";
+$lang['wishlist_remove'] = "odstráň";

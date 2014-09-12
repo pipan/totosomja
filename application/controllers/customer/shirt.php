@@ -11,7 +11,7 @@ class Shirt extends CI_Controller{
 		$this->load->helper('builder');
 		$this->load->helper('gender');
 		$this->load->helper('store');
-		$this->load->helper('MY_date');
+		$this->load->helper('my_date');
 		$this->load->helper('login');
 		$this->load->library('form_validation');
 		$this->load->model('type_model');
@@ -25,7 +25,14 @@ class Shirt extends CI_Controller{
 		$this->load->model("customer_model");
 		$this->load->model("wishlist_model");
 		$this->load->model("comment_model");
-		is_login($this);
+		
+		if (is_login($this)){
+			$login = $this->customer_model->login_by_id($this->session->userdata('login')['id']);
+			$this->data['login_custom'] = $this->paypal->encrypt_user($login['id'], $login['salt']);
+		}
+		else{
+			$this->data['login_custom'] = 0;
+		}
 		
 		$this->data['login'] = $this->session->userdata('login');
 		$block = $this->page_link_block_model->get_by_name('footer');
@@ -190,6 +197,9 @@ class Shirt extends CI_Controller{
 			$this->load->view("templates/footer", $this->data);
 		}
 		else{
+			$this->data['title'] = $this->lang->line('static_page_error_title');
+			$this->data['error_title'] = $this->lang->line('static_page_error_body_title');
+			$this->data['error_body'] = $this->lang->line('static_page_error_body');
 			$this->load->view("templates/header", $this->data);
 			$this->load->view("templates/wrong_id", $this->data);
 			$this->load->view("customer/blog/right_body", $this->data);

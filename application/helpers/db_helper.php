@@ -9,3 +9,8 @@ if (!function_exists("get_foreign")){
 		}
 	}
 }
+if(!function_exists("database_link")){
+	function database_link(){
+		return "http://nibiru.zarea.net/sqladmin/";
+	}
+}

@@ -206,7 +206,6 @@ class Message extends CI_Controller{
 						if ($edit_id != false){
 							$poll_id = $this->message_model->get(array(), $edit_id)['poll_id'];
 							if ($poll_id != null){
-								echo $poll_id['poll_id'];
 								$this->poll_answer_model->delete_by_poll_id($poll_id);
 							}
 						}
@@ -217,7 +216,7 @@ class Message extends CI_Controller{
 								'question_en' => $this->input->post('poll_question_en'),
 						);
 						if ($edit_id == false){
-							$table_data['post_date'] = $post_date;
+							$table_data['poll_post_date'] = $post_date;
 						}
 						$poll_id = $this->poll_model->save($table_data, $poll_id);
 						$poll_id_table = $poll_id;
@@ -241,7 +240,7 @@ class Message extends CI_Controller{
 					);
 						
 					$id = $this->message_model->save($table_data, $edit_id);
-					if ($edit_id == false){
+					if (!file_exists("./content/message/".$id)){
 						mkdir("./content/message/".$id, 0777);
 					}
 					write_file("./content/message/".$id."/title".$lang_ext.".txt", $this->input->post('title'));

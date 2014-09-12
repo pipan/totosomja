@@ -13,7 +13,14 @@ class Login extends CI_Controller{
 		$this->load->library('bcrypt');
 		$this->load->model('address_model');
 		$this->load->model('customer_model');
-		is_login($this);
+		
+		if (is_login($this)){
+			$login = vlogin_by_id($this->session->userdata('login')['id']);
+			$this->data['login_custom'] = $this->paypal->encrypt_user($login['id'], $login['salt']);
+		}
+		else{
+			$this->data['login_custom'] = 0;
+		}
 		
 		$this->data['login'] = $this->session->userdata('login');
 		$this->data['style'] = array('style_registration');
@@ -90,6 +97,8 @@ class Login extends CI_Controller{
 			$this->data['lang'] = $this->lang;
 			$this->data['language'] = $language;
 			$this->data['login_error'] = false;
+			
+			$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/login/registration', array(), $language);
 			
 			$this->form_validation->set_rules('reg_nickname', 'nickname', 'required|max_length[50]|is_unique[customer.customer_nickname]');
 			$this->form_validation->set_rules('reg_name', 'name', 'required|max_length[50]');

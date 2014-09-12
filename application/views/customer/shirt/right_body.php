@@ -22,6 +22,7 @@
 					select_form('product_filter_color', 'filter_color', $db['color'], 'id', 'color_name', $lang, $filter['color'], 'dark_exception')
 					?>
 				</div>
+				<!-- 
 				<div class="body_item_info_line">
 					<label for="product_filter_price"><?php echo $lang->line('filter_label_price');?></label>
 					<select id="product_filter_price" name="filter_price" class="dark_exception">
@@ -32,6 +33,7 @@
 						<option value="50" <?php echo set_select('', '', $filter['price'] == 50);?>><?php echo $lang->line('filter_price_less50');?></option>
 					</select>
 				</div>
+				 -->
 				<div class="body_item_info_line">
 					<input id="page_language" type="hidden" name="language" value="<?php echo $language;?>" />
 					<input type="button" name="filter" value="<?php echo $lang->line('filter_filter');?>" onClick="filter_proces();" />

@@ -13,6 +13,7 @@ class Profile extends CI_Controller{
 		$this->load->helper('MY_date');
 		$this->load->library('form_validation');
 		$this->load->library('bcrypt');
+		$this->load->library('paypal');
 		$this->load->model('type_model');
 		$this->load->model('category_model');
 		$this->load->model('color_model');
@@ -23,7 +24,18 @@ class Profile extends CI_Controller{
 		$this->load->model("product_model");
 		$this->load->model("customer_model");
 		$this->load->model("wishlist_model");
-		is_login($this);
+		$this->load->model("firm_model");
+		$this->load->model("order_status_model");
+		$this->load->model("invoic_model");
+		$this->load->model("product_in_invoic_model");
+		
+		if (is_login($this)){
+			$login = $this->customer_model->login_by_id($this->session->userdata('login')['id']);
+			$this->data['login_custom'] = $this->paypal->encrypt_user($login['id'], $login['salt']);
+		}
+		else{
+			$this->data['login_custom'] = 0;
+		}
 		
 		$this->data['login'] = $this->session->userdata('login');
 		$this->data['lang'] = $this->lang;
@@ -190,6 +202,34 @@ class Profile extends CI_Controller{
 			$this->wishlist_model->remove_wish($this->session->userdata('login')['id'], $product_id);
 			
 			redirect($language."/profile/wishlist");
+		}
+		else{
+			redirect($language."/login");
+		}
+	}
+	
+	public function orders($language = "sk"){
+		if (is_login($this)){
+			$this->data['language_ext'] = get_language_ext($language);
+			$this->data['title'] = "totosomja - orders";
+			$this->lang->load("general", $language);
+			$this->lang->load("profile", $language);
+			$this->lang->load("login", $language);
+			$this->lang->load("wishlist", $language);
+			$this->lang->load("order", $language);
+			$this->data['language'] = $language;
+			$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/profile/orders', array(), $language);
+			$this->data['invoic'] = $this->invoic_model->get_by_customer_id($this->session->userdata('login')['id'], array('status'));
+			$i = 0;
+			foreach ($this->data['invoic'] as $invoic){
+				$this->data['invoic'][$i]['products'] = $this->product_in_invoic_model->get_by_invoic($invoic['id'], array('product'));
+				$i++;
+			}
+				
+			$this->load->view("templates/header", $this->data);
+			$this->load->view("customer/profile/orders", $this->data);
+			$this->load->view("customer/profile/right_body", $this->data);
+			$this->load->view("templates/footer", $this->data);
 		}
 		else{
 			redirect($language."/login");

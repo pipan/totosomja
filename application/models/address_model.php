@@ -11,6 +11,10 @@ class Address_model extends CI_Model{
 		
 		);
 	}
+	
+	public static function get_select_as($as){
+		return array($as.'.town AS '.$as.'_town', $as.'.postal_code AS '.$as.'_postal_code', $as.'.street AS '.$as.'_street', $as.'.street_number AS '.$as.'_street_number', $as.'.country AS '.$as.'_country', $as.'.creator_id AS '.$as.'_creator_id');
+	}
 
 	public function is_empty(){
 		$this->db->select('id');
@@ -87,6 +91,19 @@ class Address_model extends CI_Model{
 				$this->db->insert('address', $data);
 				$ret = $this->db->insert_id();
 			}
+		}
+		return $ret;
+	}
+	
+	public function save_override($data, $id = false){
+		if ($id == false){
+			$this->db->insert('address', $data);
+			$ret = $this->db->insert_id();
+		}
+		else{
+			$this->db->where(array('id =' => $id));
+			$this->db->update('address', $data);
+			$ret = $id;
 		}
 		return $ret;
 	}

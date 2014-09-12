@@ -43,3 +43,9 @@ $lang['title_t_shirt_index'] = "totosomja - t-shirts";
 
 //form
 $lang['form_none'] = "none";
+
+//static page
+	//not found
+	$lang['static_page_error_title'] = "page not found";
+	$lang['static_page_error_body_title'] = "We are sorry";
+	$lang['static_page_error_body'] = "this page does not exists";

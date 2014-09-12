@@ -172,9 +172,12 @@ class Static_page extends CI_Controller{
 				$this->load->view("templates/footer", $data);
 			}
 			else{
+				$data['error_title'] = $this->lang->line('static_page_error_body_title');
+				$data['error_body'] = $this->lang->line('static_page_error_body');
+				$data['title'] = "totosomja - ".$this->lang->line('static_page_error_title');
 				$this->load->view("templates/header_manager", $data);
 				$this->load->view("templates/wrong_id", $data);
-				$this->load->view("templates/right_body_blog", $data);
+				$this->load->view("templates/right_body_blank", $data);
 				$this->load->view("templates/footer", $data);
 			}
 		}
